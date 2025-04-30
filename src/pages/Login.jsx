@@ -2,13 +2,14 @@
 
 
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import universeLogo from "../assets/images/universeLogo.png";
 import { LuUserRound } from "react-icons/lu";
 import { Link } from "react-router-dom";
 
 import { useAppKit } from '@reown/appkit/react';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 import {
@@ -24,6 +25,9 @@ export default function Login() {
   const { open } = useAppKit(); // This triggers wallet connection
   const { address, caipAddress, isConnected, status, embeddedWalletInfo } = useAppKitAccount();
   const navigate = useNavigate();
+
+  const [inputData, setInputData] = useState('');
+
 
   useEffect(() => {
     if (isConnected) {
@@ -47,8 +51,22 @@ export default function Login() {
       console.error('Wallet connection failed:', err);
     }
   };
+
+  const handleUserIdClick = async (e) => {
+    e.preventDefault(); // prevent navigation
+
+    if (inputData) {
+      // Perform any action with the input data, like navigating to a user panel
+      console.log("User ID entered:", inputData);
+      navigate('/user-panel-home', { state: { userId: inputData } });
+    } else {
+      // alert("Please enter a valid user ID.");
+      toast("Please enter a valid user ID.")
+    }
+  }
   return (
     <div className="min-h-screen bg-gradient-to-b from-black to-green-800">
+      <ToastContainer />
       <div className="flex flex-col items-center py-10 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20">
         <div
           className="flex flex-col justify-start items-center rounded-xl w-full max-w-xl p-6 sm:p-10 bg-gradient-to-b from-[#eceefa] via-[#096f72e8] to-[#096f72e8] shadow-lg"
@@ -74,7 +92,7 @@ export default function Login() {
           <button
             // to="/d-matrix"
             onClick={handleClick}
-            className="w-full max-w-xs mt-6 rounded-xl text-lg sm:text-xl font-semibold text-black py-3 text-center transition hover:brightness-110"
+            className="w-full max-w-xs mt-6 rounded-xl text-lg sm:text-xl font-semibold text-black py-3 text-center transition hover:brightness-110 cursor-pointer"
             style={{
               background:
                 "linear-gradient(262deg, rgba(32, 173, 29, 1) 0%, rgba(239, 185, 10, 1) 50%)",
@@ -90,20 +108,23 @@ export default function Login() {
               type="text"
               className="mt-4 w-full max-w-xs px-4 py-2 rounded-md text-center bg-gray-300 outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter user id"
+              value={inputData}
+              onChange={(e) => setInputData(e.target.value)}
             />
           </div>
 
           {/* Viewing Button */}
-          <Link
-            to="/user-panel-home"
-            className="w-full max-w-xs mt-8 rounded-xl text-lg sm:text-xl font-semibold text-black py-3 text-center transition hover:brightness-110"
+          <button
+            // to="/user-panel-home"
+            onClick={handleUserIdClick}
+            className="w-full max-w-xs mt-8 rounded-xl text-lg sm:text-xl font-semibold text-black py-3 text-center transition hover:brightness-110 cursor-pointer"
             style={{
               background:
                 "linear-gradient(262deg, rgba(32, 173, 29, 1) 0%, rgba(239, 185, 10, 1) 50%)",
             }}
           >
             Viewing
-          </Link>
+          </button>
 
           {/* Join Info */}
           <div className="mt-10 text-center text-white">
