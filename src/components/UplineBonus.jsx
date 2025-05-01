@@ -6,31 +6,35 @@ import { IoMdLogOut } from "react-icons/io";
 import universeLogo from "../assets/images/universeLogo.png";
 import universeCoin from "../assets/images/universeCoin.png";
 import { FaTelegram } from "react-icons/fa";
+import { PiUsersFourBold } from "react-icons/pi";
+import { GiSplitArrows } from "react-icons/gi";
+import { MdOutlineContactMail } from "react-icons/md";
+import { FaCheckToSlot } from "react-icons/fa6";
 
 export default function UplineBonus() {
   const values = [0.005, 0.001, 0.003, 0.003, 0.002, 0.004, 0.002];
   return (
     <div className=" px-4"
-    style={{
-      background: "linear-gradient(180deg, #000000, #25752D)",
-    }}
+      style={{
+        background: "linear-gradient(180deg, #000000, #25752D)",
+      }}
     >
       <div className="max-w-6xl  h-auto m-auto p-4">
-         <div className="flex flex-col md:flex-row justify-between items-center  mx-4 md:mx-10">
-                  <Link to="/">
-                    <img
-                      src={universeLogo}
-                      alt="Logo Image"
-                      className="h-20 md:h-[100px]"
-                    />
-                  </Link>
-                  <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-sm md:text-xl text-white  md:mt-0">
-                    <div className="flex justify-center items-center gap-4"> <FaTelegram className="text-blue-500"/> Official Channel</div> 
-                    <div className="flex gap-1 items-center ">
-                      <div>Logout</div> <IoMdLogOut className="text-red-500" />
-                    </div>
-                  </div>
-                </div>
+        <div className="flex flex-col md:flex-row justify-between items-center  mx-4 md:mx-10">
+          <Link to="/user-panel-home">
+            <img
+              src={universeLogo}
+              alt="Logo Image"
+              className="h-20 md:h-[100px]"
+            />
+          </Link>
+          <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-sm md:text-xl text-white  md:mt-0">
+            <div className="flex justify-center items-center gap-4"> <FaTelegram className="text-blue-500" /> Official Channel</div>
+            <div className="flex gap-1 items-center ">
+              <div>Logout</div> <IoMdLogOut className="text-red-500" />
+            </div>
+          </div>
+        </div>
         <div className="flex flex-col lg:flex-row justify-between mt-10 mx-4 md:mx-10 gap-10">
           {/* left part */}
           <div
@@ -88,28 +92,34 @@ export default function UplineBonus() {
                     "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
                 }}
               >
-                <div>
-                  <span className="text-lg md:text-2xl font-bold">
-                    Partners Invited :
-                  </span>
-                  <br />
-                  <span>Income : 0000000.00 RAMA</span>
+                <div className="flex justify-center items-center gap-6">
+                  <div> <PiUsersFourBold className="text-6xl text-[#f9ad13]" />
+                  </div>
+                  <div className="">
+                    <div className="text-lg md:text-2xl font-bold">
+                      Partners Invited :
+                    </div>
+                    <span>Income : 0000000.00 RAMA</span>
+                  </div>
                 </div>
               </Link>
               <Link
-                to="/user-panel-home/upline-bonus"
+                to="/user-panel-home/split-bonus"
                 className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl  text-black p-4"
                 style={{
                   background:
                     "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
                 }}
               >
-                <div>
-                  <span className="text-lg md:text-2xl font-bold">
-                    Split Bonus
-                  </span>
-                  <br />
-                  <span>Income : 0000000.00 RAMA</span>
+                <div className="flex justify-center items-center gap-6">
+                  <div><GiSplitArrows className="text-5xl text-[#f9ad13]" /></div>
+                  <div>
+                    <span className="text-lg md:text-2xl font-bold">
+                      Split Bonus
+                    </span>
+                    <br />
+                    <span>Income : 0000000.00 RAMA</span>
+                  </div>
                 </div>
               </Link>
               <Link
@@ -120,12 +130,15 @@ export default function UplineBonus() {
                     "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
                 }}
               >
-                <div>
-                  <span className="text-lg md:text-2xl font-bold">
-                    Slot Activated
-                  </span>
-                  <br />
-                  <span>Income : 0000000.00 RAMA</span>
+                <div className="flex justify-center items-center gap-6">
+                  <div><FaCheckToSlot className="text-5xl text-[#f9ad13]" /></div>
+                  <div>
+                    <span className="text-lg md:text-2xl font-bold">
+                      Slot Activated
+                    </span>
+                    <br />
+                    <span>Income : 0000000.00 RAMA</span>
+                  </div>
                 </div>
               </Link>
               <div
@@ -135,26 +148,30 @@ export default function UplineBonus() {
                     "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
                 }}
               >
-                <div>
-                  <span className="text-lg md:text-2xl font-bold">
-                    Affiliated Link
-                  </span>
-                  <br />
-                  <span>Click to Copy</span>
+                <div className="flex justify-center items-center gap-6">
+                  <div><MdOutlineContactMail className="text-5xl text-[#f9ad13]" /></div>
+                  <div>
+                    <span className="text-lg md:text-2xl font-bold">
+                      Affiliated Link
+                    </span>
+                    <br />
+                    <span>Click to Copy</span>
+                  </div>
+                  <div><RxCopy className="text-3xl  hover:text-[#f9ad13]" /></div>
                 </div>
               </div>
             </div>
 
             {/* Partners table */}
-            <div className="flex flex-col mt-10  border-1 rounded-2xl p-6 text-center" 
+            <div className="flex flex-col mt-10  border-1 rounded-2xl p-6 text-center"
               style={{
                 background:
                   "linear-gradient(178deg, rgba(5, 53, 102, 1) 0%, rgba(96, 103, 55, 1) 100%)",
               }}>
               <div className="text-3xl font-bold mb-5 text-start text-[#EFB90A]">
-                Profit Statastics
+                Partners
               </div>
-              <div className="bg-white text-black mb-10  border-1 h-30 rounded-2xl">
+              {/* <div className="bg-white text-black mb-10  border-1 h-30 rounded-2xl">
                 <div className="text-start px-5 py-2 text-2xl font-bold">
                   Profit Filter
                 </div>
@@ -179,14 +196,15 @@ export default function UplineBonus() {
                     Apply
                   </div>
                 </div>
-              </div>
+              </div> */}
               <div className="overflow-x-auto">
                 {" "}
                 {/* Enables horizontal scrolling on small screens */}
                 <table className="w-full min-w-[600px] border-collapse">
                   <thead>
                     <tr className="">
-                      <th className="p-2 border">Type</th>
+                      <th className="p-2 border">ID</th>
+                      <th className="p-2 border">Date</th>
                       <th className="p-2 border">From Wallet</th>
                       <th className="p-2 border">Tx Hash</th>
                       <th className="p-2 border">Profit</th>
@@ -195,6 +213,7 @@ export default function UplineBonus() {
                   <tbody>
                     <tr className="border-t">
                       <td className="p-2 border">34</td>
+                      <td className="p-2 border">12/02/2024</td>
                       <td className="p-2 border">0xc09...12344</td>
                       <td className="p-2 border">0xc03...38624</td>
                       <td className="p-2 border">0.000 / $0.000</td>

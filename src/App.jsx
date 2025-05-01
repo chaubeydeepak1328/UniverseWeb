@@ -16,8 +16,9 @@ import Home from './pages/Home';
 // import LaunchingPage from './components/LanchingPage';
 import Dmatrix1 from './pages/userpaneldmatrix/Dmatrix1';
 import Umatrix1 from './pages/userpaneldmatrix/Umatrix1';
-
-
+import SplitBonus from './components/SplitBonus';
+import UmatrixUThreeplus from './pages/userpaneldmatrix/UmatrixUThreeplus';
+import UniverseU10 from "./pages/UniverseU5/UniverseU10";
 // =================================================
 // Wallet Connect Functionality
 // =================================================
@@ -33,7 +34,7 @@ import { createAppKit } from '@reown/appkit/react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { projectId, metadata, networks, wagmiAdapter } from './config'
-
+import Umatrix4 from './pages/userpaneldmatrix/UmatrixU4';
 
 const queryClient = new QueryClient()
 
@@ -94,11 +95,18 @@ function App() {
           <Route path='/user-panel-home/team' element={<Team />} />
           <Route path='/user-panel-home/partners' element={<Partners />} />
           <Route path='/user-panel-home/upline-bonus' element={<UplineBonus />} />
+          <Route path='/user-panel-home/split-bonus' element={<SplitBonus />} />
           <Route path='/user-panel-home/slot-activate' element={<Activate />} />
           {/* dmatrix 10 */}
           <Route path='/user-panel-dmatrix1' element={<Dmatrix1 />} />
           {/* umatrix */}
-          <Route path='/user-panel-home/user-panel-umatrix1' element={<Umatrix1 />} />
+          <Route path='/user-panel-home/user-panel-umatrix5' element={<Umatrix1 />} />
+          <Route path='/user-panel-home/user-panel-umatrix4' element={<Umatrix4 />} />
+          <Route path='/user-panel-home/user-panel-umatrix-3plus' element={<UmatrixUThreeplus />} />
+
+          {/* Universe U5 sub part */}
+          <Route path='/user-panel-home/universe/10' element={<UniverseU10 />} />
+
         </Routes>
       </QueryClientProvider>
     </WagmiProvider>

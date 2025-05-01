@@ -155,7 +155,7 @@ const RightUserPannel = () => {
                             className="flex flex-col items-center"
                         >
                             <div className="h-10 w-20 sm:w-24 md:w-28 lg:w-26 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg sm:text-xl">
-                                {value}
+                                {value}$
                             </div>
                             {[...Array(2)].map((_, i) => (
                                 <div key={i} className="flex justify-center gap-2">
@@ -188,7 +188,7 @@ const RightUserPannel = () => {
                             className="flex flex-col items-center"
                         >
                             <div className="h-10 w-20 sm:w-24 md:w-28 lg:w-26 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg sm:text-xl">
-                                {value}
+                                {value}$
                             </div>
                             {[...Array(2)].map((_, i) => (
                                 <div key={i} className="flex justify-center gap-2">
@@ -221,7 +221,7 @@ const RightUserPannel = () => {
                             className="flex flex-col items-center"
                         >
                             <div className="h-10 w-20 sm:w-24 md:w-28 lg:w-26 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg sm:text-xl">
-                                {value}
+                                {value}$
                             </div>
                             {[...Array(2)].map((_, i) => (
                                 <div key={i} className="flex justify-center gap-2">
