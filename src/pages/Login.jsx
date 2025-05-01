@@ -17,7 +17,10 @@ import {
 } from '@reown/appkit/react'
 import { useSearchParams } from 'react-router-dom';
 
+import { useStore } from '../Store/UserStore';
+
 export default function Login() {
+  const getAllusers = useStore((state) => state.getAllusers);
 
   const { open } = useAppKit(); // This triggers wallet connection
   const { address, caipAddress, isConnected, status, embeddedWalletInfo } = useAppKitAccount();
@@ -57,7 +60,13 @@ export default function Login() {
     if (inputData) {
       // Perform any action with the input data, like navigating to a user panel
       console.log("User ID entered:", inputData);
-      navigate('/user-panel-home', { state: { userId: inputData } });
+
+      const userAddress = await getAllusers(inputData)
+      console.log("User Address:", userAddress); // Log the fetched users to the console
+
+      if (userAddress) {
+        navigate('/user-panel-home', { state: { userId: inputData, userAddress } });
+      }
     } else {
       // alert("Please enter a valid user ID.");
       toast("Please enter a valid user ID.")
@@ -78,6 +87,7 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-black to-green-800">
       <ToastContainer />
+
       <div className="flex flex-col items-center py-10 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20">
         <div
           className="flex flex-col justify-start items-center rounded-xl w-full max-w-xl p-6 sm:p-10 bg-gradient-to-b from-[#eceefa] via-[#096f72e8] to-[#096f72e8] shadow-lg"

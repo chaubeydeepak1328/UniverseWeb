@@ -113,6 +113,23 @@ export const useStore = create((set) => ({
     transactions: [],
     addTransaction: (tx) => set((state) => ({ transactions: [...state.transactions, tx] })),
 
+
+    getAllusers: async (userId) => {
+        try {
+            const { abi, contractAddress } = await fetchContractAbi("UserMang");
+
+            const contract = new web3.eth.Contract(abi, contractAddress);
+            const userAddress = await contract.methods.allUsers(userId).call();
+
+            console.log("Users:", userAddress); // Log the fetched users to the console
+            return userAddress.toString();
+        } catch (error) {
+            console.error("Error:", error);
+            alert(`user Id Exist ${error.message}`);
+            throw error;
+        }
+    },
+
     registerUser: async (sponsorAddress, address, isConnected) => {
         try {
 
@@ -130,6 +147,11 @@ export const useStore = create((set) => ({
                 return;
             }
 
+            const balanceWei = await web3.eth.getBalance(address); // address = user's wallet
+            const balanceEth = web3.utils.fromWei(balanceWei, 'ether');
+
+            console.log("Wallet Balance in ETH:", balanceEth);
+
 
             const trxData = contract.methods.register(sponsorAddress).encodeABI();
             const nonce = await web3.eth.getTransactionCount(address, "latest");
@@ -137,16 +159,25 @@ export const useStore = create((set) => ({
 
             console.log("txData, nonce, gasPrice", trxData, nonce, gasPrice)
 
-            const valueInWei = web3.utils.toWei('22', 'ether');
-            console.log("Value in Wei:", valueInWei, address); // Log the value in Wei
+            const valueInWei = web3.utils.toWei('0.000045', 'ether');
+            console.log("Value in Wei:", address, contractAddress, valueInWei, trxData); // Log the value in Wei
 
 
-            const gasLimit = await web3.eth.estimateGas({
-                from: address,
-                to: contractAddress,
-                value: valueInWei,
-                data: trxData
-            });
+            let gasLimit;
+
+            try {
+                gasLimit = await web3.eth.estimateGas({
+                    from: address,
+                    // to: contractAddress,
+                    // value: valueInWei,
+                    // data: trxData
+                });
+            } catch (error) {
+                console.error("Gas estimation failed:", error);
+                alert("Gas estimation failed. Please check your inputs.");
+                return;
+            }
+
 
             console.log("Gas Limit:", gasLimit); // Log the gas limit
 
@@ -188,9 +219,8 @@ export const useStore = create((set) => ({
                 data: trxData,
                 gas: gasLimit,
                 gasPrice: gasPrice,
-                nonce: nonce,
-                gasPrice: gasPrice,
-                chainId: "1370",
+                // nonce: nonce,
+                // chainId: "1370",
                 value: valueInWei,
             };
 
@@ -204,8 +234,8 @@ export const useStore = create((set) => ({
                 })
 
 
-            console.log('Transaction Hash:', tx.transactionHash);
-            alert(`Transaction successful! Hash: ${tx.transactionHash}`);
+            // console.log('Transaction Hash:', tx.transactionHash);
+            // alert(`Transaction successful! Hash: ${tx.transactionHash}`);
 
             return tx;
 

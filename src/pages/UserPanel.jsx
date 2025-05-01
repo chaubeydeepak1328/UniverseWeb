@@ -5,15 +5,19 @@ import { RxCopy } from "react-icons/rx";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaTelegram } from "react-icons/fa";
 import RightUserPannel from "../components/RightUserPannel";
 import RightUserPannel1 from "../components/RightUserPannel1";
 import { useDisconnect } from "@reown/appkit/react";
 
 export default function UserPanel() {
-  const { disconnect } = useDisconnect(); // AppKit hook to disconnect
+  const { state } = useLocation();
+  const { userId, userAddress } = state || {};
+
   const navigate = useNavigate();
+
+  const { disconnect } = useDisconnect();
 
   const handleDisconnect = async () => {
     try {
@@ -24,6 +28,8 @@ export default function UserPanel() {
       console.error("Failed to disconnect:", error);
     }
   };
+
+
   return (
     <div
       style={{
@@ -83,13 +89,13 @@ export default function UserPanel() {
                   className="h-10 w-10"
                 />
               </div>
-              <div className="text-3xl font-bold">Id</div>
+              <div className="text-3xl font-bold">Id {userId}</div>
             </div>
             <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
               RAMA 0.000
             </div>
             <div className="mt-2 h-10 flex items-center justify-center w-full lg:w-[250px] mx-auto">
-              0xf3585...6347733
+              {userAddress ? userAddress.slice(0, 7) + "..." + userAddress.slice(-7) : "0x"}
             </div>
             <div className="flex justify-between  mt-2 px-2">
               <FaExternalLinkAlt className="hover:text-blue-700" />
@@ -106,14 +112,16 @@ export default function UserPanel() {
             </div>
             <div className="flex justify-between  mt-2 px-2">
               <FaExternalLinkAlt className="hover:text-blue-700" />
-              <div> 0xf3585...6347733</div>
+              <div>  {userAddress ? userAddress.slice(0, 7) + "..." + userAddress.slice(-7) : "0x"}</div>
               <RxCopy className="text-xl font-bold hover:text-blue-700" />
             </div>
           </div>
 
           {/* Right Side Content */}
-          {/* <RightUserPannel /> */}
-          <RightUserPannel1 />
+
+          {userId ? <RightUserPannel /> : <RightUserPannel1 />}
+
+
 
         </div>
       </div>
