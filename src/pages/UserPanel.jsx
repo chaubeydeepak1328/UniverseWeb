@@ -13,7 +13,9 @@ import { useDisconnect } from "@reown/appkit/react";
 
 export default function UserPanel() {
   const { state } = useLocation();
-  const { userId, userAddress } = state || {};
+  const { userId, userAddress, data } = state || {};
+
+  console.log("User ID:", userId, userAddress, data);
 
   const navigate = useNavigate();
 
@@ -108,11 +110,11 @@ export default function UserPanel() {
               https://ramestta.com
             </Link>
             <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
-              Universe Contract
+              Sponser Address
             </div>
             <div className="flex justify-between  mt-2 px-2">
               <FaExternalLinkAlt className="hover:text-blue-700" />
-              <div>  {userAddress ? userAddress.slice(0, 7) + "..." + userAddress.slice(-7) : "0x"}</div>
+              <div>  {data ? data?.sponserAdd?.slice(0, 7) + "..." + data?.sponserAdd?.slice(-7) : "0x"}</div>
               <RxCopy className="text-xl font-bold hover:text-blue-700" />
             </div>
           </div>

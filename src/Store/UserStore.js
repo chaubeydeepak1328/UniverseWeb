@@ -72,14 +72,25 @@ import { create } from 'zustand';
 import Web3 from 'web3';
 
 
+// const Contract = {
+//     "U5": "0xEE2cFEE128dC97A45C32D629E0DD262c23546B84",
+//     "U4": "0x04d85a366c0B4be7c22AFC94f3Df5775190baF4d",
+//     "U3prem": "0x65C05fda54d11B61Bf28d2F2993E39439CF15294",
+//     "U3plus": "0xaC621ACF9B4F80fe2071B49747BCD35272d722b2",
+//     "UIncome": "0xa6e74cae22C51c35C89A9941243869a99af442AE",
+//     "UserMang": "0xBCce2Ff6c1Fe17392364c7B675B6Da7F52377C06",
+//     "PriceConv": "0x4edcF03Fba12114bdEA9EbD02690C9bf083dBCeD",
+// }
+
+
 const Contract = {
-    "U5": "0xEE2cFEE128dC97A45C32D629E0DD262c23546B84",
-    "U4": "0x04d85a366c0B4be7c22AFC94f3Df5775190baF4d",
-    "U3prem": "0x65C05fda54d11B61Bf28d2F2993E39439CF15294",
-    "U3plus": "0xaC621ACF9B4F80fe2071B49747BCD35272d722b2",
-    "UIncome": "0xa6e74cae22C51c35C89A9941243869a99af442AE",
-    "UserMang": "0xBCce2Ff6c1Fe17392364c7B675B6Da7F52377C06",
-    "PriceConv": "0x4edcF03Fba12114bdEA9EbD02690C9bf083dBCeD",
+    "U5": "0x8BA97298981E1658040005ab0CE700Fcb2D6ef6F",
+    "U4": "0x0BC02173436ACC3e6fa527Af03ADDfa27E78311A",
+    "U3prem": "0x1C8506f4532485325B7200D4021D4E02377EF8bf",
+    "U3plus": "0xA55D00833bc101604d1627fbdE6269876B3228DD",
+    "UIncome": "0x34019Db97158bEc799d5F920669D8CCA75200ac6",
+    "UserMang": "0x006a31610340F29EB70c1E35444f72524C0648F6",
+    "PriceConv": "0x63a5dC720E8B71Fb61035bf33a72e4d0C0D640d5",
 }
 
 const fetchContractAbi = async (contractName) => {
@@ -126,6 +137,41 @@ export const useStore = create((set) => ({
         } catch (error) {
             console.error("Error:", error);
             alert(`user Id Exist ${error.message}`);
+            throw error;
+        }
+    },
+
+    IsUserExist: async (walletAdd) => {
+        try {
+            // const walletAdd = "0x25fB86046a1ccfa490a21Dbb9BA08E2803a45B8b";
+            if (!walletAdd) {
+                throw new Error("Invalid wallet address");
+            }
+            const { abi, contractAddress } = await fetchContractAbi("UserMang");
+
+            const contract = new web3.eth.Contract(abi, contractAddress);
+            const isExist = await contract.methods.isRegistered(walletAdd).call();
+
+            console.log("is Users exist:", isExist, walletAdd);
+            if (isExist) {
+
+                const user = await contract.methods.getUser(walletAdd).call();
+                return {
+                    isexist: true,
+                    walletAdd: walletAdd,
+                    userId: user.id,
+                    sponserAdd: user.sponsor,
+                    regTime: user.registrationTime,
+                    directReferral: user.directReferrals,
+                }
+            }
+            return {
+                isexist: false,
+                walletAdd: walletAdd
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert(`Error checking user: ${error.message}`);
             throw error;
         }
     },

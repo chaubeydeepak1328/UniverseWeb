@@ -21,6 +21,8 @@ import { useStore } from '../Store/UserStore';
 
 export default function Login() {
   const getAllusers = useStore((state) => state.getAllusers);
+  const IsUserExist = useStore((state) => state.IsUserExist);
+
 
   const { open } = useAppKit(); // This triggers wallet connection
   const { address, caipAddress, isConnected, status, embeddedWalletInfo } = useAppKitAccount();
@@ -30,29 +32,43 @@ export default function Login() {
   const [inputData, setInputData] = useState('');
 
 
-  useEffect(() => {
-    if (isConnected) {
-      // navigate('/d-matrix');
-      navigate('/user-panel-home');
-    }
-  }, [isConnected])
+  const [walletPrompted, setWalletPrompted] = useState(false);
 
   const handleClick = async (e) => {
-    e.preventDefault(); // prevent navigation
-
+    e.preventDefault();
     try {
-      await open(); // open wallet connect modal
-
-      console.log("Wallet connected:", address, caipAddress, isConnected, status, embeddedWalletInfo); // Log the connected address
-
-      // Optional: wait for wallet connection, then navigate
-      // You could check if connected using `useAppKitAccount`'s `isConnected`
-
-      // navigate('/d-matrix'); // navigate manually after connection
+      await open(); // Trigger wallet connection
+      setWalletPrompted(true);
     } catch (err) {
-      console.error('Wallet connection failed:', err);
+      console.error('Wallet connect error:', err);
     }
   };
+
+  useEffect(() => {
+    const checkUserAfterConnect = async () => {
+      if (walletPrompted && isConnected && address) {
+        try {
+          const user = await IsUserExist(address);
+          console.log("this is User=========>", user?.userId?.toString(), user)
+
+          navigate('/user-panel-home', {
+            state: {
+              userId: user?.userId?.toString() || null,
+              userAddress: user?.walletAdd, data: user || null,
+            }
+          });
+        } catch (err) {
+          console.error("Error checking user:", err);
+          toast.error("Failed to verify user.");
+        } finally {
+          setWalletPrompted(false); // Reset to prevent re-trigger
+        }
+      }
+    };
+
+    checkUserAfterConnect();
+  }, [walletPrompted, isConnected, address]);
+
 
   const handleUserIdClick = async (e) => {
     e.preventDefault(); // prevent navigation
