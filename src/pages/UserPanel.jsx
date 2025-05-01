@@ -5,14 +5,25 @@ import { RxCopy } from "react-icons/rx";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaTelegram } from "react-icons/fa";
 import RightUserPannel from "../components/RightUserPannel";
 import RightUserPannel1 from "../components/RightUserPannel1";
+import { useDisconnect } from "@reown/appkit/react";
 
 export default function UserPanel() {
+  const { disconnect } = useDisconnect(); // AppKit hook to disconnect
+  const navigate = useNavigate();
 
+  const handleDisconnect = async () => {
+    try {
+      await disconnect();
+      navigate('/user-login');
 
+    } catch (error) {
+      console.error("Failed to disconnect:", error);
+    }
+  };
   return (
     <div
       style={{
@@ -47,7 +58,7 @@ export default function UserPanel() {
                 <div>Official Channel</div>
               </a>
             </div>
-            <div className="hover:text-red-600 flex items-center gap-2 cursor-pointer">
+            <div onClick={handleDisconnect} className="hover:text-red-600 flex items-center gap-2 cursor-pointer">
               <div>Logout</div>
               <RiLogoutCircleRLine className="text-red-500" />
             </div>
@@ -101,8 +112,8 @@ export default function UserPanel() {
           </div>
 
           {/* Right Side Content */}
-          <RightUserPannel />
-          {/* <RightUserPannel1 /> */}
+          {/* <RightUserPannel /> */}
+          <RightUserPannel1 />
 
         </div>
       </div>

@@ -1,26 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useStore } from '../Store/UserStore';
+import { useAppKitAccount } from '@reown/appkit/react';
 
 const RightUserPannel1 = () => {
-    const [referalAddress, setReferalAddress] = useState('');
+    const { address, isConnected } = useAppKitAccount()
+    const registerUser = useStore((state) => state.registerUser);
+
+    useEffect(() => {
+        console.log("Address:", address);
+        console.log("Is Connected:", isConnected);
+    }, [isConnected])
+
+    const [sponsorAddress, setSponsorAddress] = useState('');
 
     const [isValidser, setIsValidser] = useState(false);
     const [message, setMessage] = useState('');
 
     const handleValidation = () => {
-        if (referalAddress.length === 0) {
+        if (sponsorAddress.length === 0) {
             setMessage('Please enter a valid address');
             return;
         } else { setMessage('Valid Sponser address! You can proceed with registration.'); }
         // Example validation logic
-        // const isValid = referalAddress.length > 0; // Check if the address is not empty
+        // const isValid = sponsorAddress.length > 0; // Check if the address is not empty
         setIsValidser(true);
     }
 
-    const handleRegister = () => {
+    const handleRegister = async () => {
         // Example registration logic
         if (isValidser) {
-            console.log('Registering with address:', referalAddress);
-            // Add your registration logic here
+            try {
+                console.log('Registering with address:', sponsorAddress);
+                await registerUser(sponsorAddress, address, isConnected);
+                setMessage('Registration successful!');
+                setSponsorAddress('');
+                setIsValidser(false);
+            } catch (error) {
+                setMessage(`Registration failed: ${error.message}`);
+            }
         } else {
             console.log('Invalid address. Please enter a valid referral address.');
         }
@@ -44,8 +61,8 @@ const RightUserPannel1 = () => {
                 <input
                     type="text"
                     id="walletAddress"
-                    value={referalAddress}
-                    onChange={(e) => setReferalAddress(e.target.value)}
+                    value={sponsorAddress}
+                    onChange={(e) => setSponsorAddress(e.target.value)}
                     placeholder="Enter referral address"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-black"
                 />

@@ -1,0 +1,246 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "initialOwner",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "userManagementAddr",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "priceConversionAddr",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "u3PlusMatrixAddr",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "u5MatrixAddr",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "u4MatrixAddr",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "u3PremiumMatrixAddr",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnableInvalidOwner",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "OwnableUnauthorizedAccount",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "enum MatrixType",
+                "name": "matrix",
+                "type": "uint8"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "level",
+                "type": "uint256"
+            }
+        ],
+        "name": "SlotUpgraded",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_level",
+                "type": "uint256"
+            }
+        ],
+        "name": "buyU3plusSlot",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "priceConversion",
+        "outputs": [
+            {
+                "internalType": "contract PriceConversion",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_sponsor",
+                "type": "address"
+            }
+        ],
+        "name": "register",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "u3PlusMatrix",
+        "outputs": [
+            {
+                "internalType": "contract U3PlusMatrix",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "u3PremiumMatrix",
+        "outputs": [
+            {
+                "internalType": "contract U3PremiumMatrix",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "u4Matrix",
+        "outputs": [
+            {
+                "internalType": "contract U4Matrix",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "u5Matrix",
+        "outputs": [
+            {
+                "internalType": "contract U5Matrix",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "userManagement",
+        "outputs": [
+            {
+                "internalType": "contract UserManagement",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

@@ -13,25 +13,24 @@ import { ToastContainer, toast } from 'react-toastify';
 
 
 import {
-  useAppKitState,
-  useAppKitTheme,
-  useAppKitEvents,
   useAppKitAccount,
-  useWalletInfo
 } from '@reown/appkit/react'
+import { useSearchParams } from 'react-router-dom';
 
 export default function Login() {
 
   const { open } = useAppKit(); // This triggers wallet connection
   const { address, caipAddress, isConnected, status, embeddedWalletInfo } = useAppKitAccount();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const [inputData, setInputData] = useState('');
 
 
   useEffect(() => {
     if (isConnected) {
-      navigate('/d-matrix');
+      // navigate('/d-matrix');
+      navigate('/user-panel-home');
     }
   }, [isConnected])
 
@@ -64,6 +63,18 @@ export default function Login() {
       toast("Please enter a valid user ID.")
     }
   }
+
+
+
+  useEffect(() => {
+    const walletAdd = searchParams.get('walletAdd');
+
+    // If found in URL, set state and store it
+    if (walletAdd) {
+      // setReferalAddress(walletAdd);
+      localStorage.setItem('walletAdd', walletAdd);
+    }
+  }, [searchParams]);
   return (
     <div className="min-h-screen bg-gradient-to-b from-black to-green-800">
       <ToastContainer />
@@ -85,7 +96,7 @@ export default function Login() {
             The Entrance to the Office
           </h1>
           <p className="text-center text-lg sm:text-xl mt-2 text-white">
-            Rama Wallet
+            Ramestta Newtork
           </p>
 
           {/* Authorization Button */}
@@ -106,7 +117,7 @@ export default function Login() {
             <h2 className="text-xl sm:text-2xl">To View, enter the account ID</h2>
             <input
               type="text"
-              className="mt-4 w-full max-w-xs px-4 py-2 rounded-md text-center bg-gray-300 outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-4 w-full max-w-xs px-4 py-2 rounded-md text-center bg-gray-300 outline-none focus:ring-2 focus:ring-blue-500 text-black"
               placeholder="Enter user id"
               value={inputData}
               onChange={(e) => setInputData(e.target.value)}
