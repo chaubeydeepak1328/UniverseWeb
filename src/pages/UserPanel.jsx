@@ -91,7 +91,7 @@ export default function UserPanel() {
                   className="h-10 w-10"
                 />
               </div>
-              <div className="text-3xl font-bold">Id {userId}</div>
+              <div className="text-3xl font-bold">Id :{userId ? userId : "N/A"}</div>
             </div>
             <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
               RAMA 0.000
@@ -114,7 +114,7 @@ export default function UserPanel() {
             </div>
             <div className="flex justify-between  mt-2 px-2">
               <FaExternalLinkAlt className="hover:text-blue-700" />
-              <div>  {data ? data?.sponserAdd?.slice(0, 7) + "..." + data?.sponserAdd?.slice(-7) : "0x"}</div>
+              <div>  {data?.sponserAdd ? data?.sponserAdd?.slice(0, 7) + "..." + data?.sponserAdd?.slice(-7) : "Not Available"}</div>
               <RxCopy className="text-xl font-bold hover:text-blue-700" />
             </div>
           </div>

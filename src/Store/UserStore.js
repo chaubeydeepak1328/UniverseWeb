@@ -122,7 +122,11 @@ const web3 = new Web3(INFURA_URL);
 
 export const useStore = create((set) => ({
     transactions: [],
+    walletAddress: null,
     addTransaction: (tx) => set((state) => ({ transactions: [...state.transactions, tx] })),
+
+    setWalletAddress: (address) => set({ walletAddress: address }),
+
 
 
     getAllusers: async (userId) => {
@@ -141,9 +145,9 @@ export const useStore = create((set) => ({
         }
     },
 
-    IsUserExist: async (walletAdd) => {
+    IsUserExist: async (walletAdd1) => {
         try {
-            // const walletAdd = "0x25fB86046a1ccfa490a21Dbb9BA08E2803a45B8b";
+            const walletAdd = "0x25fB86046a1ccfa490a21Dbb9BA08E2803a45B8b";
             if (!walletAdd) {
                 throw new Error("Invalid wallet address");
             }
@@ -173,6 +177,27 @@ export const useStore = create((set) => ({
             console.error("Error:", error);
             alert(`Error checking user: ${error.message}`);
             throw error;
+        }
+    },
+
+    getU3Plus: async () => {
+
+        try {
+            const walletAdd = "0x25fB86046a1ccfa490a21Dbb9BA08E2803a45B8b";
+            if (!walletAdd) {
+                throw new Error("Invalid wallet address");
+            }
+            const { abi, contractAddress } = await fetchContractAbi("UserMang");
+
+            const contract = new web3.eth.Contract(abi, contractAddress);
+            const lastSloat = await contract.methods.getUsersSlotLevel(walletAdd).call();
+
+            // const 
+
+            return lastSloat.toString();
+        } catch (error) {
+            console.error("Error:", error);
+            alert(`Error checking user: ${error.message}`);
         }
     },
 
