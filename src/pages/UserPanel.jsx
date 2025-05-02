@@ -1,15 +1,16 @@
 import React from "react";
-import universeLogo from "../assets/images/universeLogo.png";
+
 import universeCoin from "../assets/images/universeCoin.png";
 import { RxCopy } from "react-icons/rx";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaTelegram } from "react-icons/fa";
+
 import RightUserPannel from "../components/RightUserPannel";
 import RightUserPannel1 from "../components/RightUserPannel1";
 import { useDisconnect } from "@reown/appkit/react";
+import Header from "../components/Header";
 
 export default function UserPanel() {
   const { state } = useLocation();
@@ -17,19 +18,9 @@ export default function UserPanel() {
 
   console.log("User ID:", userId, userAddress, data);
 
-  const navigate = useNavigate();
 
-  const { disconnect } = useDisconnect();
 
-  const handleDisconnect = async () => {
-    try {
-      await disconnect();
-      navigate('/user-login');
 
-    } catch (error) {
-      console.error("Failed to disconnect:", error);
-    }
-  };
 
 
   return (
@@ -40,38 +31,7 @@ export default function UserPanel() {
     >
       <div className="max-w-6xl mx-auto p-4">
         {/* Top Header */}
-        <div className="flex flex-col md:flex-row justify-between items-center mt-2 mx-4 md:mx-10">
-          <Link to="/" className="rounded-3xl">
-            <img src={universeLogo} alt="Logo" className="h-20 md:h-[100px]" />
-          </Link>
-          <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-sm md:text-xl text-white mt-4 md:mt-0">
-            {/* <div className="hover:text-blue-600">
-              <a
-                href="https://www.ramestta.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Ramestta Blockchain
-              </a>
-            </div> */}
-            <div className="hover:text-blue-600">
-              <a
-                href="https://t.me/ramauniverse"
-                target="_blank"
-                className="flex justify-center items-center gap-2"
-              >
-                <div>
-                  <FaTelegram className="text-blue-500" />
-                </div>
-                <div>Official Channel</div>
-              </a>
-            </div>
-            <div onClick={handleDisconnect} className="hover:text-red-600 flex items-center gap-2 cursor-pointer">
-              <div>Logout</div>
-              <RiLogoutCircleRLine className="text-red-500" />
-            </div>
-          </div>
-        </div>
+        <Header />
         {/* Main Panel */}
         <div className="flex flex-col lg:flex-row justify-between mt-10 mx-4 md:mx-10 gap-10">
           {/* Left Side Card */}

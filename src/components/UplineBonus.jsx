@@ -10,6 +10,8 @@ import { PiUsersFourBold } from "react-icons/pi";
 import { GiSplitArrows } from "react-icons/gi";
 import { MdOutlineContactMail } from "react-icons/md";
 import { FaCheckToSlot } from "react-icons/fa6";
+import LeftUserPannel from "./LeftUserPannel";
+import Header from "./Header";
 
 export default function UplineBonus() {
   const values = [0.005, 0.001, 0.003, 0.003, 0.002, 0.004, 0.002];
@@ -20,66 +22,12 @@ export default function UplineBonus() {
       }}
     >
       <div className="max-w-6xl  h-auto m-auto p-4">
-        <div className="flex flex-col md:flex-row justify-between items-center  mx-4 md:mx-10">
-          <Link to="/user-panel-home">
-            <img
-              src={universeLogo}
-              alt="Logo Image"
-              className="h-20 md:h-[100px]"
-            />
-          </Link>
-          <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-sm md:text-xl text-white  md:mt-0">
-            <div className="flex justify-center items-center gap-4"> <FaTelegram className="text-blue-500" /> Official Channel</div>
-            <div className="flex gap-1 items-center ">
-              <div>Logout</div> <IoMdLogOut className="text-red-500" />
-            </div>
-          </div>
-        </div>
+        {/* Top Header */}
+        <Header />
+        {/* Main Panel */}
         <div className="flex flex-col lg:flex-row justify-between mt-10 mx-4 md:mx-10 gap-10">
-          {/* left part */}
-          <div
-            className="flex flex-col rounded-2xl w-full lg:w-[350px] p-10 text-white text-center bg-white/10 backdrop-blur-md shadow-xl h-[102vh]"
-            style={{
-              background:
-                "linear-gradient(180deg, rgba(11, 11, 142, 1) 0%, rgba(115, 118, 120, 1) 100%)",
-            }}
-          >
-            <div className="flex justify-between items-center">
-              <div className="text-6xl text-blue-500">
-                {/* <RiBitCoinLine /> */}
-                <img
-                  src={universeCoin}
-                  alt="universeCoin"
-                  className="h-10 w-10"
-                />
-              </div>
-              <div className="text-3xl font-bold">Id</div>
-            </div>
-            <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
-              RAMA 0.000
-            </div>
-            <div className="mt-2 h-10 flex items-center justify-center w-full lg:w-[250px] mx-auto">
-              0xf3585...6347733
-            </div>
-            <div className="flex justify-between  mt-2 px-2">
-              <FaExternalLinkAlt className="hover:text-blue-700" />
-              <RxCopy className="text-xl font-bold hover:text-blue-700" />
-            </div>
-            <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
-              Ramestta Blockchain
-            </div>
-            <Link className="mt-2 h-10 flex items-center justify-center w-full lg:w-[250px] mx-auto hover:to-blue-700">
-              https://ramestta.com
-            </Link>
-            <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
-              Universe Contract
-            </div>
-            <div className="flex justify-between  mt-2 px-2">
-              <FaExternalLinkAlt className="hover:text-blue-700" />
-              <div> 0xf3585...6347733</div>
-              <RxCopy className="text-xl font-bold hover:text-blue-700" />
-            </div>
-          </div>
+          {/* Left Side Card */}
+          <LeftUserPannel />
 
           {/* Right Part */}
           <div className="w-full">
@@ -171,32 +119,7 @@ export default function UplineBonus() {
               <div className="text-3xl font-bold mb-5 text-start text-[#EFB90A]">
                 Partners
               </div>
-              {/* <div className="bg-white text-black mb-10  border-1 h-30 rounded-2xl">
-                <div className="text-start px-5 py-2 text-2xl font-bold">
-                  Profit Filter
-                </div>
-                <div className="flex justify-start items-center gap-10 px-5">
-                  <select className="border-2 border-blue-500 w-[300px] py-1">
-                    <option className="" value="All">All</option>
-                    <option value="E3-Plus">U3 Plus</option>
-                    <option value="Upline">Upline</option>
-                    <option value="Bonus">Bonus</option>
-                    <option value="E5">U5</option>
-                    <option value="E5-Plus">U5 Plus</option>
-                    <option value="EG-4">UG-4</option>
-                    <option value="E3-Premium">U3 Premium</option>
-                  </select>
 
-                  <div className="bg-blue-500 w-30 py-2 text-md font-semibold text-white rounded-md hover:bg-blue-600"
-                    style={{
-                      background:
-                        "linear-gradient(262deg, rgba(32, 173, 29, 1) 0%, rgba(239, 185, 10, 1) 50%)",
-                    }}
-                  >
-                    Apply
-                  </div>
-                </div>
-              </div> */}
               <div className="overflow-x-auto">
                 {" "}
                 {/* Enables horizontal scrolling on small screens */}

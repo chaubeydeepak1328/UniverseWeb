@@ -11,10 +11,11 @@ import { MdOutlineContactMail } from "react-icons/md";
 import { RxCopy } from "react-icons/rx";
 
 import { useStore } from '../Store/UserStore';
+import { useAppKitAccount } from '@reown/appkit/react';
 
 
 const RightUserPannel = () => {
-
+    const { address } = useAppKitAccount();
     const getU3Plus = useStore((state) => state.getU3Plus);
     const [lastSlot, setLastSlot] = useState()
 
@@ -22,7 +23,7 @@ const RightUserPannel = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const lastSlot = await getU3Plus();
+                const lastSlot = await getU3Plus(address);
                 console.log("lastSlot:", lastSlot);
                 setLastSlot(lastSlot)
             } catch (error) {

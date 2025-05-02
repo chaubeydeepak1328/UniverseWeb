@@ -21,11 +21,18 @@ import { GiSplitArrows } from "react-icons/gi";
 import { MdOutlineContactMail } from "react-icons/md";
 import { FaCheckToSlot } from "react-icons/fa6";
 
+import LeftUserPannel from "../../components/LeftUserPannel";
+import Header from "../../components/Header";
+
 export default function UserPanel() {
   const values = [1]; // Only one value
   const url = ["user-panel-dmatrix1"]; // Corresponding URL
   const [slotIndex, setSlotIndex] = useState(0);
   const [cycleIndex, setCycleIndex] = useState(0);
+
+
+
+  // const { userId, userAddress, data } = state || {};
 
 
 
@@ -84,74 +91,12 @@ export default function UserPanel() {
     >
       <div className="max-w-6xl mx-auto p-4">
         {/* Top Header */}
-        <div className="flex flex-col md:flex-row justify-between items-center mt-2 mx-4 md:mx-10">
-          <Link to="/user-panel-home" className="rounded-3xl">
-            <img src={universeLogo} alt="Logo" className="h-20 md:h-[100px]" />
-          </Link>
-          <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-sm md:text-xl text-white mt-4 md:mt-0">
-            <div className="hover:text-blue-600">
-              <a
-                href="https://t.me/ramauniverse"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex justify-center items-center gap-2"
-              >
-                <FaTelegram className="text-blue-500" />
-                <span>Official Channel</span>
-              </a>
-            </div>
-            <div className="hover:text-red-600 flex items-center gap-2 cursor-pointer">
-              <span>Logout</span>
-              <RiLogoutCircleRLine className="text-red-500" />
-            </div>
-          </div>
-        </div>
+        <Header />
 
         {/* Main Panel */}
         <div className="flex flex-col lg:flex-row justify-between mt-10 mx-4 md:mx-10 gap-10">
           {/* Left Side Card */}
-          <div
-            className="flex flex-col rounded-2xl w-full lg:w-[350px] p-10 text-white text-center backdrop-blur-md shadow-xl h-[102vh]"
-            style={{
-              background:
-                "linear-gradient(180deg, rgba(11, 11, 142, 1) 0%, rgba(115, 118, 120, 1) 100%)",
-            }}
-          >
-            <div className="flex justify-between items-center">
-              <div className="text-6xl text-blue-500">
-                <img
-                  src={universeCoin}
-                  alt="universeCoin"
-                  className="h-10 w-10"
-                />
-              </div>
-              <div className="text-3xl font-bold">Id</div>
-            </div>
-            <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
-              RAMA 0.000
-            </div>
-            <div className="mt-2 h-10 flex items-center justify-center w-full lg:w-[250px] mx-auto">
-              0xf3585...6347733
-            </div>
-            <div className="flex justify-between mt-2 px-2">
-              <FaExternalLinkAlt className="hover:text-blue-700" />
-              <RxCopy className="text-xl font-bold hover:text-blue-700" />
-            </div>
-            <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
-              Ramestta Blockchain
-            </div>
-            <Link className="mt-2 h-10 flex items-center justify-center w-full lg:w-[250px] mx-auto hover:to-blue-700">
-              https://ramestta.com
-            </Link>
-            <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
-              Universe Contract
-            </div>
-            <div className="flex justify-between mt-2 px-2">
-              <FaExternalLinkAlt className="hover:text-blue-700" />
-              <span> 0xf3585...6347733</span>
-              <RxCopy className="text-xl font-bold hover:text-blue-700" />
-            </div>
-          </div>
+          <LeftUserPannel />
 
           {/* Right Side Content */}
           <div className="w-full">
@@ -242,9 +187,20 @@ export default function UserPanel() {
                   "linear-gradient(178deg, rgba(5, 53, 102, 1) 0%, rgba(96, 103, 55, 1) 100%)",
               }}
             >
-              <div className="mt-10">
-                <span className="border-2 text-2xl px-12 py-2">Sponsor ID</span>
+
+              <div>
+                <span className="text-4xl md:text-5xl text-[#EFB90A] font-extrabold">
+                  Universe
+                </span>{" "}
+                <span className="text-2xl md:text-xl font-bold text-blue-500">
+                  U3 Plus
+                </span>
               </div>
+
+              {/* <div className="mt-10">
+                <span className="border-2 text-2xl px-12 py-2">Sponsor ID</span>
+              </div> */}
+
 
               <div className="flex flex-wrap justify-start items-center gap-0 mt-10 p-4">
                 {/* Recycle Control */}

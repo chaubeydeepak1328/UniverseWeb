@@ -121,11 +121,9 @@ const web3 = new Web3(INFURA_URL);
 
 
 export const useStore = create((set) => ({
-    transactions: [],
-    walletAddress: null,
-    addTransaction: (tx) => set((state) => ({ transactions: [...state.transactions, tx] })),
 
-    setWalletAddress: (address) => set({ walletAddress: address }),
+    // walletAddress: null,
+    // setWalletAddress: (address) => set({ walletAddress: address }),
 
 
 
@@ -163,7 +161,7 @@ export const useStore = create((set) => ({
                 return {
                     isexist: true,
                     walletAdd: walletAdd,
-                    userId: user.id,
+                    userId: user.id.toString(),
                     sponserAdd: user.sponsor,
                     regTime: user.registrationTime,
                     directReferral: user.directReferrals,
@@ -180,10 +178,10 @@ export const useStore = create((set) => ({
         }
     },
 
-    getU3Plus: async () => {
+    getU3Plus: async (walletAdd1) => {
+        const walletAdd = "0x25fB86046a1ccfa490a21Dbb9BA08E2803a45B8b";
 
         try {
-            const walletAdd = "0x25fB86046a1ccfa490a21Dbb9BA08E2803a45B8b";
             if (!walletAdd) {
                 throw new Error("Invalid wallet address");
             }
@@ -201,7 +199,7 @@ export const useStore = create((set) => ({
         }
     },
 
-    registerUser: async (sponsorAddress, address, isConnected) => {
+    registerUser: async (sponsorAddress, address) => {
         try {
 
             const { abi, contractAddress } = await fetchContractAbi("UIncome");
@@ -209,15 +207,7 @@ export const useStore = create((set) => ({
             const contract = new web3.eth.Contract(abi, contractAddress);
             console.log("====================", sponsorAddress, contractAddress);
 
-            if (!isConnected) {
-                alert("Please Connect Wallet First");
-                return;
-            }
-            if (!sponsorAddress) {
-                alert("Please Provide Sponser Wallet Address");
-                return;
-            }
-
+            
             const balanceWei = await web3.eth.getBalance(address); // address = user's wallet
             const balanceEth = web3.utils.fromWei(balanceWei, 'ether');
 

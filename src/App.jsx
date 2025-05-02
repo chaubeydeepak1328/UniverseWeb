@@ -105,7 +105,7 @@ function App() {
           <Route path='/user-panel-home/user-panel-umatrix-3plus' element={<UmatrixUThreeplus />} />
 
           {/* Universe U5 sub part */}
-          <Route path='/user-panel-home/universe/10' element={<UniverseU10 />} />
+          <Route path='/user-panel-home/universe' element={<UniverseU10 />} />
 
         </Routes>
       </QueryClientProvider>

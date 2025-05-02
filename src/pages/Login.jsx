@@ -25,7 +25,7 @@ export default function Login() {
 
 
   const { open } = useAppKit(); // This triggers wallet connection
-  const { address, caipAddress, isConnected, status, embeddedWalletInfo } = useAppKitAccount();
+  const { address, isConnected } = useAppKitAccount();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 

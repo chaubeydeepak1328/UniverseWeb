@@ -30,8 +30,18 @@ const RightUserPannel1 = () => {
         // Example registration logic
         if (isValidser) {
             try {
+
+                if (!isConnected) {
+                    alert("Please Connect Wallet First");
+                    return;
+                }
+                if (!sponsorAddress) {
+                    alert("Please Provide Sponser Wallet Address");
+                    return;
+                }
+
                 console.log('Registering with address:', sponsorAddress);
-                await registerUser(sponsorAddress, address, isConnected);
+                await registerUser(sponsorAddress, address);
                 setMessage('Registration successful!');
                 setSponsorAddress('');
                 setIsValidser(false);
