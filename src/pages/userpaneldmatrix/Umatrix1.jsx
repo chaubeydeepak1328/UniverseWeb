@@ -4,7 +4,7 @@ import universeCoin from "../../assets/images/universeCoin.png";
 import { RxCopy } from "react-icons/rx";
 import { FaExternalLinkAlt, FaTelegram } from "react-icons/fa";
 import { RiLogoutCircleRLine } from "react-icons/ri";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PiLineVerticalLight } from "react-icons/pi";
 import { BsCaretUpFill } from "react-icons/bs";
 import { PiUsersFourBold } from "react-icons/pi";
@@ -19,7 +19,8 @@ import Header from "../../components/Header";
 
 
 export default function UserPanel() {
-  // const values = ["$10", "$30", "$90", "$270", "$810"];
+
+  const navigate = useNavigate();
 
 
 
@@ -61,9 +62,7 @@ export default function UserPanel() {
   };
 
 
-  const sanitizedUrls = values.map(
-    (val) => `user-panel-home/universe?plan=${val.replace(/\$/g, "").trim()}`
-  );
+
 
 
   return (
@@ -217,9 +216,12 @@ export default function UserPanel() {
                     {/* First Card */}
                     <div className="flex justify-center">
                       <div className="flex flex-col items-center">
-                        <Link to={`/${sanitizedUrls[0]}`} className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg">
+                        <button
+                          onClick={() => navigate('/user-panel-home/universe', { state: { id: id, slotVal: 1, plan: values[0].replace(/\$/g, "").trim(), slotsArr: slotsPosition[0] } })}
+
+                          className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg">
                           {values[0]}
-                        </Link>
+                        </button>
                         {[...Array(2)].map((_, i) => (
                           <div key={i} className="flex justify-center gap-2">
                             {[...Array(5)].map((__, j) => (
@@ -247,9 +249,11 @@ export default function UserPanel() {
                     <div className="flex flex-wrap justify-center gap-4 my-10">
                       {values.slice(1).map((value, index) => (
                         <div key={index + 1} className="flex flex-col items-center">
-                          <Link to={`/${sanitizedUrls[0]}`} className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg">
+                          <button
+                            onClick={() => navigate('/user-panel-home/universe', { state: { id: id, slotVal: index + 2, plan: value.replace(/\$/g, "").trim(), slotsArr: slotsPosition[index + 1] } })}
+                            className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg">
                             {value}
-                          </Link>
+                          </button>
                           {[...Array(2)].map((_, i) => (
                             <div key={i} className="flex justify-center gap-2">
                               {[...Array(5)].map((__, j) => (
@@ -326,6 +330,6 @@ export default function UserPanel() {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 }

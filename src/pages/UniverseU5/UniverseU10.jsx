@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import universeLogo from "../../assets/images/universeLogo.png";
 import universeCoin from "../../assets/images/universeCoin.png";
 import { RxCopy } from "react-icons/rx";
@@ -15,7 +15,7 @@ import { PiLineVerticalLight, PiUsersFourBold } from "react-icons/pi";
 import { GiCircle, GiSplitArrows } from "react-icons/gi";
 import { TfiReload } from "react-icons/tfi";
 import { LuUsers } from "react-icons/lu";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { MdOutlineContactMail } from "react-icons/md";
 import { BsCaretUpFill } from "react-icons/bs";
 import Header from "../../components/Header";
@@ -29,22 +29,29 @@ export default function UserPanel() {
         u.replace(/[^\w-]/gi, "-").toLowerCase()
     );
 
+    const location = useLocation();
+    const { id, slotVal, plan, slotsArr } = location.state || {};
+
+    useEffect(() => {
+        console.log("slotsArr", slotsArr);
+    }, [slotsArr]);
+
 
 
 
 
     const dummyData = [
-        ["$4098", "$1345", "$2222"],
-        ["$4598", "$3442", "$3333"],
-        ["$3453", "$3543", "$4444"],
-        ["$9898", "$1122", "$5555"],
-        ["$7788", "$2233", "$6666"],
+        ["$10", "$30", "$90", "$270", "$810"],
+        ["$30", "$30", "$90", "$270", "$810"],
+        ["$90", "$30", "$90", "$270", "$810"],
+        ["$270", "$30", "$90", "$270", "$810"],
+        ["$810", "$30", "$90", "$270", "$810"],
     ];
-    const maximumCycle = dummyData.length;
-    const maximumSlot = dummyData[0]?.length || 0;
+    const maximumCycle = dummyData.length; //position
+    const maximumSlot = dummyData[0]?.length || 0; //slots
 
     const [cycleIndex, setCycleIndex] = useState(0); // vertical
-    const [slotIndex, setSlotIndex] = useState(0);   // horizontal
+    const [slotIndex, setSlotIndex] = useState(slotVal - 1);   // horizontal
 
 
 
@@ -139,15 +146,15 @@ export default function UserPanel() {
                             }}
                         >
                             <div className="mt-10">
-                                <span className="border-2 text-2xl px-12 py-2"> Detailed View U5{'>>>>>'} </span>
+                                <span className="border-2 text-sm lg:text-2xl px-12 py-2"> Detailed View U5{'>>>>>'} </span>
                             </div>
 
                             <div className="mt-10">
-                                <span className="border-2 text-2xl px-12 py-2">slot 1</span>
+                                <span className="border-2 text-2xl px-12 py-2">slot {slotIndex + 1}</span>
                             </div>
 
                             {/* Matrix View */}
-                            <div className="flex flex-wrap justify-start items-center gap-0 mt-10 p-4">
+                            <div className="flex flex-wrap justify-content-center  gap-8 mt-10 p-4">
 
 
                                 <div className="flex flex-col items-center justify-center mt-30">
@@ -173,9 +180,9 @@ export default function UserPanel() {
                                             className="hover:text-blue-500 text-xl cursor-pointer"
                                             onClick={handleLeft}
                                         />
-                                        <div className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm">
+                                        {/* <div className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm">
                                             {slotIndex + 1}
-                                        </div>
+                                        </div> */}
                                     </div>
 
                                     {/* User Card */}
@@ -194,17 +201,14 @@ export default function UserPanel() {
                                             ))}
 
                                             <div className="flex justify-center items-center gap-1">
-                                                {[...Array(5)].map((_, j) => (
+                                                {slotsArr.map((val, j) => (
                                                     <button
                                                         key={j}
-                                                        className={`h-[20px] w-[20px] rounded-full flex justify-center items-center cursor-pointer border border-black ${j % 2 === 0 ? "bg-yellow-500" : "bg-blue-400"
-                                                            } hover:opacity-80`}
-                                                        onClick={() => console.log(`Button ${j + 1} clicked`)}
+                                                        className={`h-[20px] w-[20px] rounded-full flex justify-center items-center cursor-pointer border border-black
+                                                                ${val === "1" ? (j % 2 === 0 ? "bg-yellow-500" : "bg-blue-400") : ""} hover:opacity-80`}
                                                     >
-                                                        {j % 2 === 0 ? (
+                                                        {val === "1" && j % 2 === 0 && (
                                                             <BsCaretUpFill className="text-black text-xl" />
-                                                        ) : (
-                                                            ""
                                                         )}
                                                     </button>
                                                 ))}
@@ -213,9 +217,9 @@ export default function UserPanel() {
                                     </div>
 
                                     <div className="flex justify-center items-center gap-2">
-                                        <div className="w-10 h-10 bg-[#24b6ca] text-3xl font-bold flex justify-center items-center rounded-sm">
+                                        {/* <div className="w-10 h-10 bg-[#24b6ca] text-3xl font-bold flex justify-center items-center rounded-sm">
                                             {slotIndex + 2}
-                                        </div>
+                                        </div> */}
                                         <FaChevronRight
                                             className="hover:text-blue-500 text-xl cursor-pointer"
                                             onClick={handleRight}
