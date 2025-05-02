@@ -49,6 +49,25 @@ const RightUserPannel = () => {
         "user-panel-dmatrix9",
         "user-panel-dmatrix10",
     ];
+
+    // Dynamic the page 
+    const slotData = [
+        { users: 1, cycles: 2 },
+        { users: 1, cycles: 1 },
+        { users: 3, cycles: 0 },
+        { users: 2, cycles: 3 }, // Last active with 2 users
+        { users: 0, cycles: 0 },
+        { users: 0, cycles: 0 },
+        { users: 0, cycles: 0 },
+        { users: 0, cycles: 0 },
+        { users: 0, cycles: 0 },
+        { users: 0, cycles: 0 },
+    ];
+
+    // Determine last active slot with users > 0
+    const lastActiveIndex = slotData.reduce((acc, curr, idx) => curr.users > 0 ? idx : acc, -1);
+
+
     return (
         <div className="w-full">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -149,101 +168,150 @@ const RightUserPannel = () => {
 
                 {/* First Card - First Row */}
                 <div className="flex justify-center mt-10">
-                    {values.slice(0, 1).map((value, index) => (
-                        <Link
-                            key={index}
-                            to="/user-panel-dmatrix1"
-                            className="flex flex-col items-center"
-                        >
-                            <div className="h-10 w-20 sm:w-24 md:w-28 lg:w-26 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg sm:text-xl">
-                                {value}$
-                            </div>
-                            {[...Array(2)].map((_, i) => (
-                                <div key={i} className="flex justify-center gap-2">
-                                    {[...Array(4)].map((__, j) => (
-                                        <PiLineVerticalLight key={j} />
-                                    ))}
+                    {values.slice(0, 1).map((value, index) => {
+                        const slot = slotData[index];
+                        const isLastActive = index === lastActiveIndex;
+                        const circleClass = isLastActive && slot.users === 2 ? "text-white" : "";
+
+                        return (
+                            <Link
+                                key={index}
+                                to="/user-panel-dmatrix1"
+                                className="flex flex-col items-center"
+                            >
+                                <div className="h-10 w-20 sm:w-24 md:w-28 lg:w-26 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg sm:text-xl">
+                                    {value}$
                                 </div>
-                            ))}
-                            <div className="flex justify-center gap-2">
-                                {[...Array(4)].map((_, j) => (
-                                    <GiCircle key={j} />
+                                {[...Array(2)].map((_, i) => (
+                                    <div key={i} className="flex justify-center gap-2">
+                                        {[...Array(4)].map((__, j) => (
+                                            <PiLineVerticalLight key={j} />
+                                        ))}
+                                    </div>
                                 ))}
-                            </div>
-                            <div className="flex justify-center items-center gap-2 mt-2">
-                                <div>0</div>
-                                <LuUsers />
-                                <div>0</div>
-                                <TfiReload className="text-pink-600 font-bold" />
-                            </div>
-                        </Link>
-                    ))}
+                                <div className="flex justify-center gap-2">
+                                    {[...Array(4)].map((_, j) => {
+                                        const isFilled = j < slot.users; // Fill based on user count
+                                        return (
+                                            <GiCircle
+                                                key={j}
+                                                className={isFilled ? "bg-white rounded-2xl" : "text-gray-500"}
+                                            />
+                                        );
+                                    })}
+                                </div>
+                                <div className="flex justify-center items-center gap-2 mt-2">
+                                    <div>{slot.users}</div>
+                                    <LuUsers />
+                                    <div>{slot.cycles}</div>
+                                    <TfiReload className="text-pink-600 font-bold" />
+                                </div>
+                            </Link>
+                        );
+                    })}
+
                 </div>
 
                 {/* 5 Cards - Second Row */}
+
                 <div className="flex flex-wrap justify-center gap-4 mt-4">
-                    {values.slice(1, 6).map((value, index) => (
-                        <Link
-                            key={index + 1}
-                            to="/user-panel-dmatrix1"
-                            className="flex flex-col items-center"
-                        >
-                            <div className="h-10 w-20 sm:w-24 md:w-28 lg:w-26 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg sm:text-xl">
-                                {value}$
-                            </div>
-                            {[...Array(2)].map((_, i) => (
-                                <div key={i} className="flex justify-center gap-2">
-                                    {[...Array(4)].map((__, j) => (
-                                        <PiLineVerticalLight key={j} />
-                                    ))}
+                    {values.slice(1, 6).map((value, index) => {
+                        const slotIndex = index + 1;
+                        const slot = slotData[slotIndex];
+                        {/* console.log(slot, "slot") */ }
+                        const isLastActive = slotIndex === lastActiveIndex;
+                        const circleClass = isLastActive && slot.users === 2 ? "text-white" : "";
+
+                        return (
+                            <Link
+                                key={slotIndex}
+                                to="/user-panel-dmatrix1"
+                                className="flex flex-col items-center"
+                            >
+                                <div className="h-10 w-20 sm:w-24 md:w-28 lg:w-26 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg sm:text-xl">
+                                    {value}$
                                 </div>
-                            ))}
-                            <div className="flex justify-center gap-2">
-                                {[...Array(4)].map((_, j) => (
-                                    <GiCircle key={j} />
+                                {[...Array(2)].map((_, i) => (
+                                    <div key={i} className="flex justify-center gap-2">
+                                        {[...Array(4)].map((__, j) => (
+                                            <PiLineVerticalLight key={j} />
+                                        ))}
+                                    </div>
                                 ))}
-                            </div>
-                            <div className="flex justify-center items-center gap-2 mt-2">
-                                <div>0</div>
-                                <LuUsers />
-                                <div>0</div>
-                                <TfiReload className="text-pink-600 font-bold" />
-                            </div>
-                        </Link>
-                    ))}
+                                <div className="flex justify-center gap-2">
+                                    {[...Array(4)].map((_, j) => {
+                                        const isFilled = j < slot.users; // Fill based on user count
+                                        return (
+                                            <GiCircle
+                                                key={j}
+                                                className={isFilled ? "bg-white rounded-2xl" : "text-gray-500"}
+                                            />
+                                        );
+                                    })}
+                                </div>
+                                <div className="flex justify-center items-center gap-2 mt-2">
+                                    <div>{slot.users}</div>
+                                    <LuUsers />
+                                    <div>{slot.cycles}</div>
+                                    <TfiReload className="text-pink-600 font-bold" />
+                                </div>
+                            </Link>
+                        );
+                    })}
+
                 </div>
 
                 {/* Remaining Cards - Third Row */}
                 <div className="flex flex-wrap justify-center gap-4 mt-4">
-                    {values.slice(6).map((value, index) => (
-                        <Link
-                            key={index + 6}
-                            to="/user-panel-dmatrix1"
-                            className="flex flex-col items-center"
-                        >
-                            <div className="h-10 w-20 sm:w-24 md:w-28 lg:w-26 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg sm:text-xl">
-                                {value}$
-                            </div>
-                            {[...Array(2)].map((_, i) => (
-                                <div key={i} className="flex justify-center gap-2">
-                                    {[...Array(4)].map((__, j) => (
-                                        <PiLineVerticalLight key={j} />
-                                    ))}
+                    {values.slice(6).map((value, index) => {
+                        const slotIndex = index + 6;
+                        const slot = slotData[slotIndex];
+                        const isLastActive = slotIndex === lastActiveIndex;
+                        const circleClass = isLastActive && slot.users === 2 ? "text-white" : "";
+
+                        return (
+                            <Link
+                                key={slotIndex}
+                                to="/user-panel-dmatrix1"
+                                className="flex flex-col items-center"
+                            >
+                                <div className="h-10 w-20 sm:w-24 md:w-28 lg:w-26 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg sm:text-xl">
+                                    {value}$
                                 </div>
-                            ))}
-                            <div className="flex justify-center gap-2">
-                                {[...Array(4)].map((_, j) => (
-                                    <GiCircle key={j} />
+                                {[...Array(2)].map((_, i) => (
+                                    <div key={i} className="flex justify-center gap-2">
+                                        {[...Array(4)].map((__, j) => (
+                                            <PiLineVerticalLight key={j} />
+                                        ))}
+                                    </div>
                                 ))}
-                            </div>
-                            <div className="flex justify-center items-center gap-2 mt-2">
-                                <div>0</div>
-                                <LuUsers />
-                                <div>0</div>
-                                <TfiReload className="text-pink-600 font-bold" />
-                            </div>
-                        </Link>
-                    ))}
+                                {/* <div className="flex justify-center gap-2">
+                                    {[...Array(4)].map((_, j) => (
+                                        <GiCircle key={j} className={circleClass} />
+                                    ))}
+                                </div> */}
+
+                                <div className="flex justify-center gap-2">
+                                    {[...Array(4)].map((_, j) => {
+                                        const isFilled = j < slot.users; // Fill based on user count
+                                        return (
+                                            <GiCircle
+                                                key={j}
+                                                className={isFilled ? "bg-white rounded-2xl" : "text-gray-500"}
+                                            />
+                                        );
+                                    })}
+                                </div>
+                                <div className="flex justify-center items-center gap-2 mt-2">
+                                    <div>{slot.users}</div>
+                                    <LuUsers />
+                                    <div>{slot.cycles}</div>
+                                    <TfiReload className="text-pink-600 font-bold" />
+                                </div>
+                            </Link>
+                        );
+                    })}
+
                 </div>
             </div>
 
