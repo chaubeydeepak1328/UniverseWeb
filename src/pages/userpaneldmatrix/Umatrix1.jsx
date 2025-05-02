@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import universeLogo from "../../assets/images/universeLogo.png";
 import universeCoin from "../../assets/images/universeCoin.png";
 import { RxCopy } from "react-icons/rx";
@@ -19,7 +19,46 @@ import Header from "../../components/Header";
 
 
 export default function UserPanel() {
-  const values = ["$10", "$30", "$90", "$270", "$810"];
+  // const values = ["$10", "$30", "$90", "$270", "$810"];
+
+
+
+  const [currentIdIndex, setCurrentIdIndex] = useState(0);
+
+  const matrixData = [
+    {
+      id: 1,
+      values: ["$10", "$30", "$90", "$270", "$810"],
+      slotsPosition: [
+        ["1", "1", "0", "0", "0"],
+        ["1", "0", "0", "0", "0"],
+        ["1", "1", "1", "0", "0"],
+        ["0", "0", "0", "0", "0"],
+        ["0", "0", "", "0", "0"],
+      ]
+    },
+    {
+      id: 2,
+      values: ["$10", "$30", "$90", "$270", "$810"],
+      slotsPosition: [
+        ["1", "1", "1", "0", "0"],
+        ["1", "1", "1", "0", "0"],
+        ["1", "1", "0", "0", "0"],
+        ["1", "0", "0", "0", "0"],
+        ["1", "1", "1", "1", "0"],
+      ]
+    },
+  ];
+
+  const { id, values, slotsPosition } = matrixData[currentIdIndex];
+
+  const next = () => {
+    if (currentIdIndex < matrixData.length - 1) setCurrentIdIndex(currentIdIndex + 1);
+  };
+
+  const prev = () => {
+    if (currentIdIndex > 0) setCurrentIdIndex(currentIdIndex - 1);
+  };
 
 
   const sanitizedUrls = values.map(
@@ -132,7 +171,7 @@ export default function UserPanel() {
               }}
             >
               <div className="flex items-center justify-between">
-                <button onClick={""}><FaChevronLeft className="text-3xl hover:text-yellow-500" />
+                <button className="cursor-pointer" onClick={prev} disabled={currentIdIndex === 0}><FaChevronLeft className="text-3xl hover:text-yellow-500" />
                 </button>
                 <div>
                   <div className="flex flex-wrap gap-y-4 justify-between">
@@ -164,20 +203,21 @@ export default function UserPanel() {
                     </div>
                   </div>
 
-                  <div className="mt-10">
-                    <span className="border-2 text-2xl px-12 py-2">Id 1</span>
-                  </div>
+
 
                   {/* Levels */}
                   {/* Levels */}
                   <div className="flex flex-col items-center gap-4 mt-10">
-                    {/* First Card - First Line */}
+
+
+                    <div className="mt-10">
+                      <span className="border-2 text-2xl px-12 py-2"> Id {id} </span>
+                    </div>
+
+                    {/* First Card */}
                     <div className="flex justify-center">
                       <div className="flex flex-col items-center">
-                        <Link
-                          className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg"
-                          to={`/${sanitizedUrls[0]}`}
-                        >
+                        <Link to={`/${sanitizedUrls[0]}`} className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg">
                           {values[0]}
                         </Link>
                         {[...Array(2)].map((_, i) => (
@@ -188,18 +228,14 @@ export default function UserPanel() {
                           </div>
                         ))}
                         <div className="flex justify-center items-center gap-1">
-                          {[...Array(5)].map((_, j) => (
+                          {slotsPosition[0].map((value, j) => (
                             <button
                               key={j}
-                              className={`h-[20px] w-[20px] rounded-full flex justify-center items-center cursor-pointer border border-black ${j % 2 === 0 ? "bg-yellow-500" : "bg-blue-400"
-                                } hover:opacity-80`}
-                              onClick={() => console.log(`Button ${j + 1} clicked`)}
+                              className={`h-[20px] w-[20px] rounded-full flex justify-center items-center cursor-pointer border border-black
+                  ${value === "1" ? (j % 2 === 0 ? "bg-yellow-500" : "bg-blue-400") : ""} hover:opacity-80`}
                             >
-                              {" "}
-                              {j % 2 === 0 ? (
+                              {value === "1" && j % 2 === 0 && (
                                 <BsCaretUpFill className="text-black text-xl" />
-                              ) : (
-                                ""
                               )}
                             </button>
                           ))}
@@ -207,14 +243,11 @@ export default function UserPanel() {
                       </div>
                     </div>
 
-                    {/* Remaining Cards - Second Line */}
+                    {/* Remaining Cards */}
                     <div className="flex flex-wrap justify-center gap-4 my-10">
                       {values.slice(1).map((value, index) => (
                         <div key={index + 1} className="flex flex-col items-center">
-                          <Link
-                            className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg"
-                            to={`/${sanitizedUrls[index + 1]}`}
-                          >
+                          <Link to={`/${sanitizedUrls[0]}`} className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg">
                             {value}
                           </Link>
                           {[...Array(2)].map((_, i) => (
@@ -225,20 +258,14 @@ export default function UserPanel() {
                             </div>
                           ))}
                           <div className="flex justify-center items-center gap-1">
-                            {[...Array(5)].map((_, j) => (
+                            {slotsPosition[index + 1].map((val, j) => (
                               <button
                                 key={j}
-                                className={`h-[20px] w-[20px] rounded-full flex justify-center items-center cursor-pointer border border-black ${j % 2 === 0 ? "bg-yellow-500" : "bg-blue-400"
-                                  } hover:opacity-80`}
-                                onClick={() =>
-                                  console.log(`Button ${j + 1} clicked`)
-                                }
+                                className={`h-[20px] w-[20px] rounded-full flex justify-center items-center cursor-pointer border border-black
+                    ${val === "1" ? (j % 2 === 0 ? "bg-yellow-500" : "bg-blue-400") : ""} hover:opacity-80`}
                               >
-                                {" "}
-                                {j % 2 === 0 ? (
+                                {val === "1" && j % 2 === 0 && (
                                   <BsCaretUpFill className="text-black text-xl" />
-                                ) : (
-                                  ""
                                 )}
                               </button>
                             ))}
@@ -247,12 +274,16 @@ export default function UserPanel() {
                       ))}
                     </div>
                   </div>
+
+                  {/* Levels */}
+                  {/* Levels */}
                 </div>
-                <button onClick={""}><FaAngleRight className="text-4xl hover:text-yellow-500" />
+                <button className="cursor-pointer" onClick={next} disabled={currentIdIndex === matrixData.length - 1}><FaAngleRight className="text-4xl hover:text-yellow-500" />
                 </button>
               </div>
             </div>
 
+            {/* Table */}
             {/* Table */}
             <div className="flex flex-col mt-10 border-2 rounded-2xl p-4 sm:p-6 text-center w-full">
               <div className="text-2xl sm:text-3xl font-bold mb-4 text-start">
@@ -290,6 +321,8 @@ export default function UserPanel() {
                 </table>
               </div>
             </div>
+
+
           </div>
         </div>
       </div>

@@ -11,6 +11,7 @@ import RightUserPannel from "../components/RightUserPannel";
 import RightUserPannel1 from "../components/RightUserPannel1";
 import { useDisconnect } from "@reown/appkit/react";
 import Header from "../components/Header";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function UserPanel() {
   const { state } = useLocation();
@@ -22,6 +23,21 @@ export default function UserPanel() {
 
 
 
+  const handleCopy = (address) => {
+    if (address) {
+      navigator.clipboard.writeText(address);
+      toast.success("Address copied to clipboard!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
+
 
   return (
     <div
@@ -29,6 +45,7 @@ export default function UserPanel() {
         background: "linear-gradient(180deg, #000000, #25752D)",
       }}
     >
+      <ToastContainer />
       <div className="max-w-6xl mx-auto p-4">
         {/* Top Header */}
         <Header />
@@ -61,7 +78,7 @@ export default function UserPanel() {
             </div>
             <div className="flex justify-between  mt-2 px-2">
               <FaExternalLinkAlt className="hover:text-blue-700" />
-              <RxCopy className="text-xl font-bold hover:text-blue-700" />
+              <RxCopy onClick={() => handleCopy(userAddress)} className="text-xl font-bold hover:text-blue-700 cursor-pointer" />
             </div>
             <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
               Ramestta Blockchain
@@ -77,7 +94,7 @@ export default function UserPanel() {
             </div>
             <div className="flex justify-between  mt-2 px-2">
               <FaExternalLinkAlt className="hover:text-blue-700" />
-              <RxCopy className="text-xl font-bold hover:text-blue-700" />
+              <RxCopy onClick={() => handleCopy(data?.sponserAdd)} className="text-xl font-bold hover:text-blue-700 cursor-pointer" />
             </div>
 
           </div>

@@ -9,6 +9,7 @@ import {
     FaExternalLinkAlt,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
 
 const LeftUserPannel = () => {
 
@@ -35,6 +36,21 @@ const LeftUserPannel = () => {
     }, [address]); // <-- You had an extra } here previously
 
 
+    const handleCopy = (address) => {
+        if (address) {
+            navigator.clipboard.writeText(address);
+            toast.success("Address copied to clipboard!", {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
+    };
+
     return (
         <div
             className="flex flex-col rounded-2xl w-full lg:w-[350px] p-10 text-white text-center bg-white/10 backdrop-blur-md shadow-xl h-[102vh]"
@@ -43,6 +59,7 @@ const LeftUserPannel = () => {
                     "linear-gradient(180deg, rgba(11, 11, 142, 1) 0%, rgba(115, 118, 120, 1) 100%)",
             }}
         >
+            <ToastContainer />
             <div className="flex justify-between items-center">
                 <div className="text-6xl text-blue-500">
                     {/* <RiBitCoinLine /> */}
@@ -62,7 +79,7 @@ const LeftUserPannel = () => {
             </div>
             <div className="flex justify-between  mt-2 px-2">
                 <FaExternalLinkAlt className="hover:text-blue-700" />
-                <RxCopy className="text-xl font-bold hover:text-blue-700" />
+                <RxCopy onClick={() => handleCopy(userAddress)} className="text-xl font-bold hover:text-blue-700 cursor-pointer" />
             </div>
             <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
                 Ramestta Blockchain
@@ -78,7 +95,7 @@ const LeftUserPannel = () => {
             </div>
             <div className="flex justify-between  mt-2 px-2">
                 <FaExternalLinkAlt className="hover:text-blue-700" />
-                <RxCopy className="text-xl font-bold hover:text-blue-700" />
+                <RxCopy onClick={() => handleCopy(data?.sponserAdd)} className="text-xl font-bold hover:text-blue-700 cursor-pointer" />
             </div>
 
         </div>
