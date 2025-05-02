@@ -37,18 +37,6 @@ const RightUserPannel = () => {
     const values = [
         10, 20, 40, 80, 160, 320, 640, 1280, 2560, 5120,
     ].slice(0, lastSlot); // Adjust the number of values as needed
-    const url = [
-        "user-panel-dmatrix1",
-        "user-panel-dmatrix2",
-        "user-panel-dmatrix3",
-        "user-panel-dmatrix4",
-        "user-panel-dmatrix5",
-        "user-panel-dmatrix6",
-        "user-panel-dmatrix7",
-        "user-panel-dmatrix8",
-        "user-panel-dmatrix9",
-        "user-panel-dmatrix10",
-    ];
 
     // Dynamic the page 
     const slotData = [
@@ -162,7 +150,7 @@ const RightUserPannel = () => {
                         Universe
                     </span>{" "}
                     <span className="text-2xl md:text-xl font-bold text-blue-500">
-                        U3 Plus
+                        U3 Plus {'>>>>'}
                     </span>
                 </div>
 
@@ -180,7 +168,7 @@ const RightUserPannel = () => {
                                 className="flex flex-col items-center"
                             >
                                 <div className="h-10 w-20 sm:w-24 md:w-28 lg:w-26 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg sm:text-xl">
-                                    {value}$
+                                    ${value}
                                 </div>
                                 {[...Array(2)].map((_, i) => (
                                     <div key={i} className="flex justify-center gap-2">
@@ -229,7 +217,7 @@ const RightUserPannel = () => {
                                 className="flex flex-col items-center"
                             >
                                 <div className="h-10 w-20 sm:w-24 md:w-28 lg:w-26 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg sm:text-xl">
-                                    {value}$
+                                    ${value}
                                 </div>
                                 {[...Array(2)].map((_, i) => (
                                     <div key={i} className="flex justify-center gap-2">
@@ -276,7 +264,7 @@ const RightUserPannel = () => {
                                 className="flex flex-col items-center"
                             >
                                 <div className="h-10 w-20 sm:w-24 md:w-28 lg:w-26 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg sm:text-xl">
-                                    {value}$
+                                    ${value}
                                 </div>
                                 {[...Array(2)].map((_, i) => (
                                     <div key={i} className="flex justify-center gap-2">
@@ -325,10 +313,16 @@ const RightUserPannel = () => {
                 };
 
                 // Map each name to its unique value
-                const valueMap = {
-                    U5: "$ 10",
-                    U4: "$ 40",
-                    "U3 Premium": "$ 640",
+                const idMap = {
+                    U5: "1",
+                    U4: "4",
+                    "U3 Premium": "30",
+                };
+
+                const EarnedRama = {
+                    U5: "2",
+                    U4: "6",
+                    "U3 Premium": "4",
                 };
 
                 return (
@@ -344,9 +338,11 @@ const RightUserPannel = () => {
                             <span className="text-4xl md:text-5xl text-[#EFB90A] font-extrabold">
                                 Universe
                             </span>{" "}
-                            {name}
+                            <span className="text-2xl md:text-xl font-bold text-blue-500">
+                                {name} {name == "U5" ? ">>>>>" : name == "U3 Premium" ? ">>>" : ">>>>"}
+                            </span>
                             <br />
-                            <span className="text-2xl md:text-xl font-bold">0.000 RAMA</span>
+                            <span className="text-2xl md:text-xl font-bold">{EarnedRama[name]} RAMA</span>
                         </div>
                         <div className="flex flex-col items-center mt-4">
                             <Link
@@ -357,7 +353,7 @@ const RightUserPannel = () => {
                                         "linear-gradient(100deg, rgba(239, 185, 10, 1) 0%, rgba(156, 148, 121, 1) 100%)",
                                 }}
                             >
-                                {valueMap[name]}
+                                {idMap[name]}
                             </Link>
                             <div className="bg-white h-6 w-20 text-black font-bold mt-0">
                                 No of Id

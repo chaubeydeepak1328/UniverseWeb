@@ -188,14 +188,20 @@ export default function UserPanel() {
               }}
             >
 
-              <div>
-                <span className="text-4xl md:text-5xl text-[#EFB90A] font-extrabold">
-                  Universe
-                </span>{" "}
-                <span className="text-2xl md:text-xl font-bold text-blue-500">
-                  U3 Plus
-                </span>
+              <div className="w-full">
+                <div className="flex justify-start">
+                  <span className="text-2xl md:text-5xl text-[#EFB90A] font-extrabold">
+                    Universe
+                  </span>{" "}
+                  <span className="text-2xl md:text-xl font-bold text-blue-500">
+                    U3 Plus {'>>>>'}
+                  </span>
+                </div>
               </div>
+
+              {/* <div className="mt-10">
+                <span className="border-2 text-2xl px-12 py-2">Slot 1</span>
+              </div> */}
 
               {/* <div className="mt-10">
                 <span className="border-2 text-2xl px-12 py-2">Sponsor ID</span>
@@ -232,13 +238,13 @@ export default function UserPanel() {
                       ID : {currentCycle.userId}
                     </div>
                     <div className="bg-[#24b6ca] w-30 h-8 ml-36 mt-[-10px] z-0 rounded-sm text-white flex justify-center items-center">
-                      Level - {currentCycle.level}
+                      slot  {currentCycle.level}
                     </div>
 
                     {/* Vertical Lines */}
                     <div className="mt-4 space-y-1">
                       {[...Array(2)].map((_, i) => (
-                        <div key={i} className="flex justify-center gap-2">
+                        <div key={i} className="flex justify-center gap-5">
                           {[...Array(4)].map((__, j) => (
                             <PiLineVerticalLight
                               key={j}
@@ -252,17 +258,17 @@ export default function UserPanel() {
                     {/* Circles */}
                     <div className="flex justify-center gap-3 mt-2">
                       {[...Array(4)].map((_, j) => (
-                        <GiCircle key={j} className="text-white text-xl" />
+                        <GiCircle key={j} className="text-white text-xl size-8" />
                       ))}
                     </div>
 
                     {/* Stats */}
-                    <div className="flex justify-center items-center gap-4 mt-4 text-white text-lg">
+                    {/* <div className="flex justify-center items-center gap-4 mt-4 text-white text-lg">
                       <div>{currentCycle.users}</div>
                       <LuUsers className="text-xl" />
                       <div>{currentCycle.recycles}</div>
                       <TfiReload className="text-pink-600 font-bold text-xl" />
-                    </div>
+                    </div> */}
                   </div>
 
                   <div className="flex justify-center items-center gap-2">
@@ -332,7 +338,7 @@ export default function UserPanel() {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 

@@ -34,11 +34,11 @@ export default function UserPanel() {
 
 
     const dummyData = [
-        ["id: 4098", "id: 1345", "id: 2222"],
-        ["id: 4598", "id: 3442", "id: 3333"],
-        ["id: 3453", "id: 3543", "id: 4444"],
-        ["id: 9898", "id: 1122", "id: 5555"],
-        ["id: 7788", "id: 2233", "id: 6666"],
+        ["$4098", "$1345", "$2222"],
+        ["$4598", "$3442", "$3333"],
+        ["$3453", "$3543", "$4444"],
+        ["$9898", "$1122", "$5555"],
+        ["$7788", "$2233", "$6666"],
     ];
     const maximumCycle = dummyData.length;
     const maximumSlot = dummyData[0]?.length || 0;
@@ -139,11 +139,17 @@ export default function UserPanel() {
                             }}
                         >
                             <div className="mt-10">
-                                <span className="border-2 text-2xl px-12 py-2"> Detailed View</span>
+                                <span className="border-2 text-2xl px-12 py-2"> Detailed View U5{'>>>>>'} </span>
+                            </div>
+
+                            <div className="mt-10">
+                                <span className="border-2 text-2xl px-12 py-2">slot 1</span>
                             </div>
 
                             {/* Matrix View */}
                             <div className="flex flex-wrap justify-start items-center gap-0 mt-10 p-4">
+
+
                                 <div className="flex flex-col items-center justify-center mt-30">
                                     <FaChevronUp
                                         className="text-3xl hover:text-4xl hover:text-blue-500 cursor-pointer"

@@ -57,7 +57,7 @@ const LeftUserPannel = () => {
             <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
                 RAMA 0.000
             </div>
-            <div className="mt-2 h-10 flex items-center justify-center w-full lg:w-[250px] mx-auto">
+            <div className="mt-2 h-10 flex items-center justify-center w-full lg:w-[250px] mx-auto text-xl font-bold">
                 {userAddress ? userAddress.slice(0, 7) + "..." + userAddress.slice(-7) : "0x"}
             </div>
             <div className="flex justify-between  mt-2 px-2">
@@ -67,17 +67,20 @@ const LeftUserPannel = () => {
             <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
                 Ramestta Blockchain
             </div>
-            <Link className="mt-2 h-10 flex items-center justify-center w-full lg:w-[250px] mx-auto hover:to-blue-700">
+            <Link className="mt-2 h-10 flex items-center justify-center w-full lg:w-[250px] mx-auto hover:to-blue-700 ">
                 https://ramestta.com
             </Link>
             <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
                 Sponser Address
             </div>
+            <div className="text-xl font-bold">
+                {data?.sponserAdd ? data?.sponserAdd?.slice(0, 7) + "..." + data?.sponserAdd?.slice(-7) : "Not Available"} {`(id 34)`}
+            </div>
             <div className="flex justify-between  mt-2 px-2">
                 <FaExternalLinkAlt className="hover:text-blue-700" />
-                <div>  {data?.sponserAdd ? data?.sponserAdd?.slice(0, 7) + "..." + data?.sponserAdd?.slice(-7) : "Not Available"}</div>
                 <RxCopy className="text-xl font-bold hover:text-blue-700" />
             </div>
+
         </div>
     )
 }

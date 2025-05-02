@@ -13,6 +13,8 @@ import { MdOutlineContactMail } from "react-icons/md";
 import { FaCheckToSlot } from "react-icons/fa6";
 import { FaChevronLeft } from "react-icons/fa6";
 import { FaAngleRight } from "react-icons/fa6";
+import LeftUserPannel from "../../components/LeftUserPannel";
+import Header from "../../components/Header";
 
 
 
@@ -24,6 +26,7 @@ export default function UserPanel() {
     (val) => `user-panel-home/universe?plan=${val.replace(/\$/g, "").trim()}`
   );
 
+
   return (
     <div
       className="rounded-3xl"
@@ -31,70 +34,12 @@ export default function UserPanel() {
     >
       <div className="max-w-6xl mx-auto p-4">
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-center mt-2 mx-4 md:mx-10">
-          <Link to="/user-panel-home" className="rounded-3xl">
-            <img src={universeLogo} alt="Logo" className="h-20 md:h-[100px]" />
-          </Link>
-          <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-sm md:text-xl text-white mt-4 md:mt-0">
-            <a
-              href="https://t.me/ramauniverse"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 hover:text-blue-600"
-            >
-              <FaTelegram className="text-blue-500" />
-              <span>Official Channel</span>
-            </a>
-            <div className="hover:text-red-600 flex items-center gap-2 cursor-pointer">
-              <span>Logout</span>
-              <RiLogoutCircleRLine className="text-red-500" />
-            </div>
-          </div>
-        </div>
+        <Header />
 
         {/* Panel */}
         <div className="flex flex-col lg:flex-row justify-between mt-10 mx-4 md:mx-10 gap-10">
           {/* Left Side */}
-          <div
-            className="flex flex-col rounded-2xl w-full lg:w-[350px] p-10 text-white text-center backdrop-blur-md shadow-xl h-[102vh]"
-            style={{
-              background:
-                "linear-gradient(180deg, rgba(11, 11, 142, 1) 0%, rgba(115, 118, 120, 1) 100%)",
-            }}
-          >
-            <div className="flex justify-between items-center">
-              <img
-                src={universeCoin}
-                alt="universeCoin"
-                className="h-10 w-10"
-              />
-              <div className="text-3xl font-bold">Id</div>
-            </div>
-            <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
-              RAMA 0.000
-            </div>
-            <div className="mt-2 h-10 flex items-center justify-center w-full lg:w-[250px] mx-auto">
-              0xf3585...6347733
-            </div>
-            <div className="flex justify-between mt-2 px-2">
-              <FaExternalLinkAlt className="hover:text-blue-700" />
-              <RxCopy className="text-xl font-bold hover:text-blue-700" />
-            </div>
-            <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
-              Ramestta Blockchain
-            </div>
-            <Link className="mt-2 h-10 flex items-center justify-center w-full lg:w-[250px] mx-auto hover:text-blue-700">
-              https://ramestta.com
-            </Link>
-            <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
-              Universe Contract
-            </div>
-            <div className="flex justify-between mt-2 px-2">
-              <FaExternalLinkAlt className="hover:text-blue-700" />
-              <span>0xf3585...6347733</span>
-              <RxCopy className="text-xl font-bold hover:text-blue-700" />
-            </div>
-          </div>
+          <LeftUserPannel />
 
           {/* Right Side */}
           <div className="w-full">
@@ -190,18 +135,19 @@ export default function UserPanel() {
                 <button onClick={""}><FaChevronLeft className="text-3xl hover:text-yellow-500" />
                 </button>
                 <div>
-                  <div className="flex justify-between items-center">
+                  <div className="flex flex-wrap gap-y-4 justify-between">
                     <div>
                       <span className="text-4xl md:text-5xl text-[#EFB90A] font-extrabold">
                         Universe
                       </span>
                       <span className="text-2xl md:text-xl font-bold text-blue-500">
                         {" "}
-                        U5
+                        U5 {">>>>>"}
                       </span>
                     </div>
 
                     <div>
+
                       <div className="flex justify-center items-center gap-1">
                         <div className="h-[20px] w-[20px] rounded-full flex justify-center items-center cursor-pointer border border-black bg-yellow-500">
                           <BsCaretUpFill className="text-black text-xl" />
@@ -216,6 +162,10 @@ export default function UserPanel() {
                         </div>
                       </div>
                     </div>
+                  </div>
+
+                  <div className="mt-10">
+                    <span className="border-2 text-2xl px-12 py-2">Id 1</span>
                   </div>
 
                   {/* Levels */}
