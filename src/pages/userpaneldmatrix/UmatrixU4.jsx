@@ -30,7 +30,7 @@ export default function UserPanel() {
         "$20480",
     ];
     const sanitizedUrls = values.map(
-        (val) => `user-panel-home/universe/${val.replace(/\$/g, "").trim()}`
+        (val) => `user-panel-home/universe?plan=${val.replace(/\$/g, "").trim()}`
     );
 
     return (

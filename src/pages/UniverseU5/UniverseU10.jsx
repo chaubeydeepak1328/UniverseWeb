@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import universeLogo from "../../assets/images/universeLogo.png";
 import universeCoin from "../../assets/images/universeCoin.png";
 import { RxCopy } from "react-icons/rx";
@@ -28,6 +28,44 @@ export default function UserPanel() {
     const sanitizedUrls = url.map((u) =>
         u.replace(/[^\w-]/gi, "-").toLowerCase()
     );
+
+
+
+
+
+    const dummyData = [
+        ["id: 4098", "id: 1345", "id: 2222"],
+        ["id: 4598", "id: 3442", "id: 3333"],
+        ["id: 3453", "id: 3543", "id: 4444"],
+        ["id: 9898", "id: 1122", "id: 5555"],
+        ["id: 7788", "id: 2233", "id: 6666"],
+    ];
+    const maximumCycle = dummyData.length;
+    const maximumSlot = dummyData[0]?.length || 0;
+
+    const [cycleIndex, setCycleIndex] = useState(0); // vertical
+    const [slotIndex, setSlotIndex] = useState(0);   // horizontal
+
+
+
+
+    const handleLeft = () => {
+        if (slotIndex > 0) setSlotIndex(slotIndex - 1);
+    };
+
+    const handleRight = () => {
+        if (slotIndex < maximumSlot - 1) setSlotIndex(slotIndex + 1);
+    };
+
+    const handleUp = () => {
+        if (cycleIndex > 0) setCycleIndex(cycleIndex - 1);
+    };
+
+    const handleDown = () => {
+        if (cycleIndex < maximumCycle - 1) setCycleIndex(cycleIndex + 1);
+    };
+
+
 
     return (
         <div
@@ -93,7 +131,13 @@ export default function UserPanel() {
                         </div>
 
                         {/* Universe U3 Plus Section */}
-                        <div className="grid grid-cols-1 mt-10 rounded-2xl p-6 text-center" style={{ background: "linear-gradient(178deg, rgba(5, 53, 102, 1) 0%, rgba(96, 103, 55, 1) 100%)" }}>
+                        <div
+                            className="grid grid-cols-1 mt-10 rounded-2xl p-6 text-center"
+                            style={{
+                                background:
+                                    "linear-gradient(178deg, rgba(5, 53, 102, 1) 0%, rgba(96, 103, 55, 1) 100%)",
+                            }}
+                        >
                             <div className="mt-10">
                                 <span className="border-2 text-2xl px-12 py-2"> Detailed View</span>
                             </div>
@@ -101,26 +145,40 @@ export default function UserPanel() {
                             {/* Matrix View */}
                             <div className="flex flex-wrap justify-start items-center gap-0 mt-10 p-4">
                                 <div className="flex flex-col items-center justify-center mt-30">
-                                    <FaChevronUp className="text-3xl hover:text-4xl hover:text-blue-500" />
-                                    <div className="flex justify-center items-center gap-2">
+                                    <FaChevronUp
+                                        className="text-3xl hover:text-4xl hover:text-blue-500 cursor-pointer"
+                                        onClick={handleUp}
+                                    />
+                                    <div className="flex justify-center items-center gap-2 mt-2">
                                         <div>Position</div>
-                                        <div>1/5</div>
+                                        <div>
+                                            {cycleIndex + 1}/{dummyData.length}
+                                        </div>
                                     </div>
-                                    <FaChevronDown className="text-3xl hover:text-4xl hover:text-blue-500" />
+                                    <FaChevronDown
+                                        className="text-3xl hover:text-4xl hover:text-blue-500 cursor-pointer"
+                                        onClick={handleDown}
+                                    />
                                 </div>
 
                                 <div className="flex flex-col lg:flex-row justify-center gap-30 items-center ml-0 lg:ml-[-50px]">
                                     <div className="flex justify-center items-center gap-2">
-                                        <FaChevronLeft className="hover:text-blue-500 text-xl" />
-                                        <div className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm">1</div>
+                                        <FaChevronLeft
+                                            className="hover:text-blue-500 text-xl cursor-pointer"
+                                            onClick={handleLeft}
+                                        />
+                                        <div className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm">
+                                            {slotIndex + 1}
+                                        </div>
                                     </div>
 
                                     {/* User Card */}
                                     <div className="flex justify-center">
                                         <div className="flex flex-col items-center">
-                                            <button className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg">
-                                                {values[0]}
+                                            <button className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg px-4">
+                                                {dummyData[cycleIndex][slotIndex]}
                                             </button>
+
                                             {[...Array(2)].map((_, i) => (
                                                 <div key={i} className="flex justify-center gap-2">
                                                     {[...Array(5)].map((__, j) => (
@@ -128,10 +186,20 @@ export default function UserPanel() {
                                                     ))}
                                                 </div>
                                             ))}
+
                                             <div className="flex justify-center items-center gap-1">
                                                 {[...Array(5)].map((_, j) => (
-                                                    <button key={j} className={`h-[20px] w-[20px] rounded-full flex justify-center items-center cursor-pointer border border-black ${j % 2 === 0 ? "bg-yellow-500" : "bg-blue-400"} hover:opacity-80`} onClick={() => console.log(`Button ${j + 1} clicked`)}>
-                                                        {j % 2 === 0 ? <BsCaretUpFill className="text-black text-xl" /> : ""}
+                                                    <button
+                                                        key={j}
+                                                        className={`h-[20px] w-[20px] rounded-full flex justify-center items-center cursor-pointer border border-black ${j % 2 === 0 ? "bg-yellow-500" : "bg-blue-400"
+                                                            } hover:opacity-80`}
+                                                        onClick={() => console.log(`Button ${j + 1} clicked`)}
+                                                    >
+                                                        {j % 2 === 0 ? (
+                                                            <BsCaretUpFill className="text-black text-xl" />
+                                                        ) : (
+                                                            ""
+                                                        )}
                                                     </button>
                                                 ))}
                                             </div>
@@ -139,13 +207,18 @@ export default function UserPanel() {
                                     </div>
 
                                     <div className="flex justify-center items-center gap-2">
-                                        <div className="w-10 h-10 bg-[#24b6ca] text-3xl font-bold flex justify-center items-center rounded-sm">2</div>
-                                        <FaChevronRight className="hover:text-blue-500 text-xl" />
+                                        <div className="w-10 h-10 bg-[#24b6ca] text-3xl font-bold flex justify-center items-center rounded-sm">
+                                            {slotIndex + 2}
+                                        </div>
+                                        <FaChevronRight
+                                            className="hover:text-blue-500 text-xl cursor-pointer"
+                                            onClick={handleRight}
+                                        />
                                     </div>
-
                                 </div>
                             </div>
                         </div>
+
 
                         {/* Partners Table */}
                         <div className="flex flex-col mt-10 border-2 rounded-2xl p-6 text-center">

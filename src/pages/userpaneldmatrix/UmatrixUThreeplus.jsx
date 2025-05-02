@@ -263,7 +263,7 @@ import { FaChevronLeft } from "react-icons/fa6";
 export default function UserPanel() {
     const values = ["$40", "$80", "$160", "$320", "$640"];
     const sanitizedUrls = values.map(
-        (val) => `user-panel-home/universe/${val.replace(/\$/g, "").trim()}`
+        (val) => `user-panel-home/universe?plan=${val.replace(/\$/g, "").trim()}`
     );
 
     return (
