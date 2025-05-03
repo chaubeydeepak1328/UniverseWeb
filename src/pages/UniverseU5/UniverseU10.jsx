@@ -22,13 +22,7 @@ import Header from "../../components/Header";
 import LeftUserPannel from "../../components/LeftUserPannel";
 
 export default function UserPanel() {
-    const values = [1];
-    const url = ["user-panel-dmatrix1"];
-
-    const sanitizedUrls = url.map((u) =>
-        u.replace(/[^\w-]/gi, "-").toLowerCase()
-    );
-
+    
     const location = useLocation();
     const { id, slotVal, plan, slotsArr } = location.state || {};
 
