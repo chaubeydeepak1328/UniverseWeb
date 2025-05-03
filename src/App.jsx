@@ -35,7 +35,7 @@ import { createAppKit } from '@reown/appkit/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { projectId, metadata, networks, wagmiAdapter } from './config'
 import Umatrix4 from './pages/userpaneldmatrix/UmatrixU4';
-import UniverseU40 from './pages/UniverseU4/UniverseU40'; 
+import UniverseU40 from './pages/UniverseU4/UniverseU40';
 
 
 const queryClient = new QueryClient()
@@ -102,16 +102,16 @@ function App() {
           {/* dmatrix 10 */}
           <Route path='/user-panel-dmatrix1' element={<Dmatrix1 />} />
           {/* umatrix */}
-          <Route path='/user-panel-home/user-panel-umatrix5' element={<Umatrix1 />} />
-          <Route path='/user-panel-home/user-panel-umatrix4' element={<Umatrix4 />} />
-          <Route path='/user-panel-home/user-panel-umatrix-3plus' element={<UmatrixUThreeplus />} />
 
           {/* Universe U5 sub part */}
+          <Route path='/user-panel-home/user-panel-umatrix5' element={<Umatrix1 />} />
           <Route path='/user-panel-home/universe' element={<UniverseU10 />} />
 
-          {/* Universe U5 sub part */}
+          {/* Universe U4 sub part */}
+          <Route path='/user-panel-home/user-panel-umatrix4' element={<Umatrix4 />} />
           <Route path='/user-panel-home/UniverseU4' element={<UniverseU40 />} />
 
+          <Route path='/user-panel-home/user-panel-umatrix-3plus' element={<UmatrixUThreeplus />} />
         </Routes>
       </QueryClientProvider>
     </WagmiProvider>

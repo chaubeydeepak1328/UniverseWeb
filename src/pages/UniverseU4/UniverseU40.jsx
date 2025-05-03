@@ -34,11 +34,67 @@ export default function UserPanel() {
         ["$40", "$80", "$160", "$320", "$640", "$1280", "$2560", "$5120", "$10240", "$20480",],
         ["$40", "$80", "$160", "$320", "$640", "$1280", "$2560", "$5120", "$10240", "$20480",],
     ];
+
+    const matrixData = [
+        {
+            id: 1,
+            values: [
+                "$40",
+                "$80",
+                "$160",
+                "$320",
+                "$640",
+                "$1280",
+                "$2560",
+                "$5120",
+                "$10240",
+                "$20480",
+            ],
+
+            slotsPosition: [
+                ["1", "1", "0", "0"],
+                ["1", "0", "0", "0"],
+                ["1", "1", "1", "0"],
+                ["1", "0", "0", "0"],
+                ["1", "1", "1", "0"],
+                ["1", "1", "0", "0"],
+                ["1", "0", "0", "0"],
+                ["1", "1", "1", "0"],
+                ["0", "0", "0", "0"],
+                ["0", "0", "0", "0"],
+            ]
+        },
+        {
+            id: 2,
+            values: ["$40",
+                "$80",
+                "$160",
+                "$320",
+                "$640",
+                "$1280",
+                "$2560",
+                "$5120",
+                "$10240",
+                "$20480",],
+            slotsPosition: [
+                ["1", "1", "1", "0"],
+                ["1", "1", "1", "0"],
+                ["1", "1", "0", "0"],
+                ["1", "0", "0", "0"],
+                ["1", "1", "1", "1"],
+                ["1", "1", "0", "0"],
+                ["1", "0", "0", "0"],
+                ["1", "1", "1", "0"],
+                ["0", "0", "0", "0"],
+                ["0", "0", "0", "0"],
+            ]
+        },
+    ];
     const maximumCycle = dummyData.length; //position
     const maximumSlot = dummyData[0]?.length || 0; //slots
 
     const [cycleIndex, setCycleIndex] = useState(0); // vertical
-    const [slotIndex, setSlotIndex] = useState(slotVal - 1);   // horizontal
+    const [slotIndex, setSlotIndex] = useState(slotVal ? slotVal - 1 : 0);
 
 
 
@@ -163,7 +219,7 @@ export default function UserPanel() {
                                                 </div>
                                             ))}
                                             <div className="flex justify-center items-center gap-3">
-                                                {slotsArr.map((val, j) => (
+                                                {matrixData.find((val) => val.id == id).slotsPosition[slotIndex].map((val, j) => (
                                                     <button
                                                         key={j}
                                                         className={`h-[20px] w-[20px] rounded-full flex justify-center items-center cursor-pointer border border-black

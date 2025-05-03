@@ -217,7 +217,7 @@ export default function UserPanel() {
                     <div className="flex justify-center">
                       <div className="flex flex-col items-center">
                         <button
-                          onClick={() => navigate('/user-panel-home/universe', { state: { id: id, slotVal: 1, plan: values[0].replace(/\$/g, "").trim(), slotsArr: slotsPosition[0] } })}
+                          onClick={() => navigate('/user-panel-home/universe', { state: { id: id, slotVal: 1, plan: values[0].replace(/\$/g, "").trim() } })}
 
                           className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg">
                           {values[0]}
@@ -250,7 +250,10 @@ export default function UserPanel() {
                       {values.slice(1).map((value, index) => (
                         <div key={index + 1} className="flex flex-col items-center">
                           <button
-                            onClick={() => navigate('/user-panel-home/universe', { state: { id: id, slotVal: index + 2, plan: value.replace(/\$/g, "").trim(), slotsArr: slotsPosition[index + 1] } })}
+                            onClick={() => {
+                              navigate('/user-panel-home/universe', { state: { id: id, slotVal: index + 2, plan: value.replace(/\$/g, "").trim() } });
+                              console.log("id==========================================", id, "slotVal", index + 2, "plan", value.replace(/\$/g, "").trim())
+                            }}
                             className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg">
                             {value}
                           </button>

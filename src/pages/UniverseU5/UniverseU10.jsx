@@ -22,13 +22,12 @@ import Header from "../../components/Header";
 import LeftUserPannel from "../../components/LeftUserPannel";
 
 export default function UserPanel() {
-    
-    const location = useLocation();
-    const { id, slotVal, plan, slotsArr } = location.state || {};
 
-    useEffect(() => {
-        console.log("slotsArr", slotsArr);
-    }, [slotsArr]);
+    const location = useLocation();
+    const { id, slotVal, plan } = location.state || {};
+
+
+
 
 
 
@@ -41,13 +40,38 @@ export default function UserPanel() {
         ["$270", "$30", "$90", "$270", "$810"],
         ["$810", "$30", "$90", "$270", "$810"],
     ];
+
+
+    const matrixData = [
+        {
+            id: 1,
+            values: ["$10", "$30", "$90", "$270", "$810"],
+            slotsPosition: [
+                ["1", "1", "0", "0", "0"],
+                ["1", "0", "0", "0", "0"],
+                ["1", "1", "1", "0", "0"],
+                ["0", "0", "0", "0", "0"],
+                ["0", "0", "", "0", "0"],
+            ]
+        },
+        {
+            id: 2,
+            values: ["$10", "$30", "$90", "$270", "$810"],
+            slotsPosition: [
+                ["1", "1", "1", "0", "0"],
+                ["1", "1", "1", "0", "0"],
+                ["1", "1", "0", "0", "0"],
+                ["1", "0", "0", "0", "0"],
+                ["1", "1", "1", "1", "0"],
+            ]
+        },
+    ];
     const maximumCycle = dummyData.length; //position
     const maximumSlot = dummyData[0]?.length || 0; //slots
 
     const [cycleIndex, setCycleIndex] = useState(0); // vertical
-    const [slotIndex, setSlotIndex] = useState(slotVal - 1);   // horizontal
-
-
+    const [slotIndex, setSlotIndex] = useState(slotVal ? slotVal - 1 : 0);
+  
 
 
     const handleLeft = () => {
@@ -55,6 +79,7 @@ export default function UserPanel() {
     };
 
     const handleRight = () => {
+
         if (slotIndex < maximumSlot - 1) setSlotIndex(slotIndex + 1);
     };
 
@@ -195,7 +220,7 @@ export default function UserPanel() {
                                             ))}
 
                                             <div className="flex justify-center items-center gap-1">
-                                                {slotsArr.map((val, j) => (
+                                                {matrixData.find((val) => val.id == id).slotsPosition[slotIndex].map((val, j) => (
                                                     <button
                                                         key={j}
                                                         className={`h-[20px] w-[20px] rounded-full flex justify-center items-center cursor-pointer border border-black
