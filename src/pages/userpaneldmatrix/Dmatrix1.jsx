@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import universeLogo from "../../assets/images/universeLogo.png";
 import universeCoin from "../../assets/images/universeCoin.png";
 import { RxCopy } from "react-icons/rx";
@@ -15,7 +15,7 @@ import { PiLineVerticalLight } from "react-icons/pi";
 import { GiCircle } from "react-icons/gi";
 import { TfiReload } from "react-icons/tfi";
 import { LuUsers } from "react-icons/lu";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { PiUsersFourBold } from "react-icons/pi";
 import { GiSplitArrows } from "react-icons/gi";
 import { MdOutlineContactMail } from "react-icons/md";
@@ -25,6 +25,14 @@ import LeftUserPannel from "../../components/LeftUserPannel";
 import Header from "../../components/Header";
 
 export default function UserPanel() {
+
+  const location = useLocation();
+  const { slotNumber } = location.state || {};
+
+
+  useEffect(() => {
+    console.log("------->slot no", slotNumber)
+  }, [slotNumber])
 
 
   const dummyData = [
@@ -42,7 +50,7 @@ export default function UserPanel() {
 
 
 
-  const [slotIndex, setSlotIndex] = useState(0);
+  const [slotIndex, setSlotIndex] = useState(slotNumber ? slotNumber : 0);
   const [cycleIndex, setCycleIndex] = useState(0);
 
   const slot = dummyData[slotIndex];

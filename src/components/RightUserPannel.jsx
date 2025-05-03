@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { PiLineVerticalLight } from "react-icons/pi";
 import { GiCircle } from "react-icons/gi";
 import { TfiReload } from "react-icons/tfi";
@@ -18,6 +18,8 @@ const RightUserPannel = () => {
     const { address } = useAppKitAccount();
     const getU3Plus = useStore((state) => state.getU3Plus);
     const [lastSlot, setLastSlot] = useState()
+
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -162,9 +164,9 @@ const RightUserPannel = () => {
                         const circleClass = isLastActive && slot.users === 2 ? "text-white" : "";
 
                         return (
-                            <Link
+                            <button
                                 key={index}
-                                to="/user-panel-dmatrix1"
+                                onClick={() => navigate('/user-panel-dmatrix1', { state: { slotNumber: index } })}
                                 className="flex flex-col items-center"
                             >
                                 <div className="h-10 w-20 sm:w-24 md:w-28 lg:w-26 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg sm:text-xl">
@@ -203,7 +205,7 @@ const RightUserPannel = () => {
                                     <div>{slot.cycles}</div>
                                     <TfiReload className="text-pink-600 font-bold" />
                                 </div>
-                            </Link>
+                            </button>
                         );
                     })}
 
@@ -220,9 +222,9 @@ const RightUserPannel = () => {
                         const circleClass = isLastActive && slot.users === 2 ? "text-white" : "";
 
                         return (
-                            <Link
+                            <button
                                 key={slotIndex}
-                                to="/user-panel-dmatrix1"
+                                onClick={() => navigate('/user-panel-dmatrix1', { state: { slotNumber: slotIndex } })}
                                 className="flex flex-col items-center"
                             >
                                 <div className="h-10 w-20 sm:w-24 md:w-28 lg:w-26 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg sm:text-xl">
@@ -261,7 +263,7 @@ const RightUserPannel = () => {
                                     <div>{slot.cycles}</div>
                                     <TfiReload className="text-pink-600 font-bold" />
                                 </div>
-                            </Link>
+                            </button>
                         );
                     })}
 
@@ -276,9 +278,10 @@ const RightUserPannel = () => {
                         const circleClass = isLastActive && slot.users === 2 ? "text-white" : "";
 
                         return (
-                            <Link
+                            <button
                                 key={slotIndex}
-                                to="/user-panel-dmatrix1"
+
+                                onClick={() => navigate('/user-panel-dmatrix1', { state: { slotNumber: slotIndex } })}
                                 className="flex flex-col items-center"
                             >
                                 <div className="h-10 w-20 sm:w-24 md:w-28 lg:w-26 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg sm:text-xl">
@@ -323,7 +326,7 @@ const RightUserPannel = () => {
                                     <div>{slot.cycles}</div>
                                     <TfiReload className="text-pink-600 font-bold" />
                                 </div>
-                            </Link>
+                            </button>
                         );
                     })}
 

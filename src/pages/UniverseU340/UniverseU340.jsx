@@ -151,6 +151,10 @@ export default function UserPanel() {
                             <div className="mt-10">
                                 <span className="border-2 text-2xl px-12 py-2"> Detailed View</span>
                             </div>
+                            <div className="mt-10">
+                                <span className="border-2 text-2xl px-12 py-2">slot {slotIndex + 1}</span>
+                            </div>
+
 
                             {/* Matrix View */}
                             <div className="flex flex-wrap justify-start items-center gap-0 mt-10 p-4">

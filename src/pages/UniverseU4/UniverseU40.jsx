@@ -181,10 +181,17 @@ export default function UserPanel() {
                             <div className="mt-10">
                                 <span className="border-2 text-2xl px-12 py-2"> Detailed View</span>
                             </div>
+                            <div className="mt-10">
+                                <span className="border-2 text-2xl px-12 py-2">slot {slotIndex + 1}</span>
+                            </div>
+
 
                             {/* Matrix View */}
                             <div className="flex flex-wrap justify-start items-center gap-0 mt-10 p-4">
+
                                 <div className="flex flex-col items-center justify-center mt-30">
+
+
                                     <FaChevronUp onClick={handleUp} className="text-3xl hover:text-4xl hover:text-blue-500" />
                                     <div className="flex justify-center items-center gap-2">
                                         <div>Position</div>
