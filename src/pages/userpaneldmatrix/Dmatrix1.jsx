@@ -25,61 +25,47 @@ import LeftUserPannel from "../../components/LeftUserPannel";
 import Header from "../../components/Header";
 
 export default function UserPanel() {
-  const values = [1]; // Only one value
-  const url = ["user-panel-dmatrix1"]; // Corresponding URL
-  const [slotIndex, setSlotIndex] = useState(0);
-  const [cycleIndex, setCycleIndex] = useState(0);
-
-
-
-  // const { userId, userAddress, data } = state || {};
-
 
 
   const dummyData = [
-    {
-      slotId: 1,
-      cycles: [
-        { userId: "BH001", level: 1, users: 2, recycles: 1 },
-        { userId: "BH001", level: 1, users: 3, recycles: 2 }
-      ]
-    },
-    {
-      slotId: 2,
-      cycles: [
-        { userId: "BH002", level: 2, users: 1, recycles: 0 }
-      ]
-    }
+    { slotNo: 1, cycles: [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 0]] },
+    { slotNo: 2, cycles: [[1, 1, 1, 1]] },
+    { slotNo: 3, cycles: [[1, 1, 1, 0]] },
+    { slotNo: 4, cycles: [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 0, 0]] },
+    { slotNo: 5, cycles: [[1, 0, 0, 0]] },
+    { slotNo: 6, cycles: [[1, 1, 0, 0]] },
+    { slotNo: 7, cycles: [[1, 1, 1, 0]] },
+    { slotNo: 8, cycles: [[0, 0, 0, 0]] },
+    { slotNo: 9, cycles: [[0, 0, 0, 0]] },
+    { slotNo: 10, cycles: [[0, 0, 0, 0]] },
   ];
-  const currentSlot = dummyData[slotIndex];
-  const currentCycle = currentSlot.cycles[cycleIndex];
 
-  const nextSlot = () => {
-    if (slotIndex < dummyData.length - 1) {
-      setSlotIndex(slotIndex + 1);
-      setCycleIndex(0);
-    }
-  };
+
+
+  const [slotIndex, setSlotIndex] = useState(0);
+  const [cycleIndex, setCycleIndex] = useState(0);
+
+  const slot = dummyData[slotIndex];
+  const cycles = slot.cycles;
+  const currentCycle = cycles[cycleIndex];
 
   const prevSlot = () => {
-    if (slotIndex > 0) {
-      setSlotIndex(slotIndex - 1);
-      setCycleIndex(0);
-    }
+    setSlotIndex((prev) => (prev > 0 ? prev - 1 : prev));
+    setCycleIndex(0);
   };
 
-  const nextCycle = () => {
-    if (cycleIndex < currentSlot.cycles.length - 1) {
-      setCycleIndex(cycleIndex + 1);
-    }
+  const nextSlot = () => {
+    setSlotIndex((prev) => (prev < dummyData.length - 1 ? prev + 1 : prev));
+    setCycleIndex(0);
   };
 
   const prevCycle = () => {
-    if (cycleIndex > 0) {
-      setCycleIndex(cycleIndex - 1);
-    }
+    setCycleIndex((prev) => (prev > 0 ? prev - 1 : prev));
   };
 
+  const nextCycle = () => {
+    setCycleIndex((prev) => (prev < cycles.length - 1 ? prev + 1 : prev));
+  };
 
 
   return (
@@ -211,13 +197,21 @@ export default function UserPanel() {
               <div className="flex flex-wrap justify-start items-center gap-0 mt-10 p-4">
                 {/* Recycle Control */}
                 <div className="flex flex-col items-center justify-center mt-30">
-                  <FaChevronUp onClick={prevCycle} className="cursor-pointer text-3xl hover:text-4xl hover:text-blue-500" />
+                  <FaChevronUp
+                    onClick={prevCycle}
+                    className="cursor-pointer text-3xl hover:text-4xl hover:text-blue-500"
+                  />
                   <div className="flex justify-center items-center gap-2">
                     <div>RECYCLE</div>
                     <TfiReload className="text-xl text-pink-500" />
-                    <div>{currentCycle.recycles}/1</div>
+                    <div>
+                      {cycleIndex + 1}/{cycles.length}
+                    </div>
                   </div>
-                  <FaChevronDown onClick={nextCycle} className="cursor-pointer text-3xl hover:text-4xl hover:text-blue-500" />
+                  <FaChevronDown
+                    onClick={nextCycle}
+                    className="cursor-pointer text-3xl hover:text-4xl hover:text-blue-500"
+                  />
                 </div>
 
                 {/* Main ID Card with Navigation */}
@@ -228,17 +222,18 @@ export default function UserPanel() {
                       className="cursor-pointer hover:text-blue-500 hover:scale-200 transition-transform duration-300 text-xl"
                     />
                     <div className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm">
-                      {slotIndex + 1}
+                      {slot.slotNo}
                     </div>
                   </div>
 
                   {/* ID Card */}
                   <div className="flex flex-col items-center p-6 rounded-2xl transition-transform duration-300">
                     <div className="h-16 w-40 bg-gradient-to-br from-green-500 to-yellow-200 rounded-xl flex justify-center items-center text-white text-2xl font-bold">
-                      ID : {currentCycle.userId}
+                      {/* ID : S{slot.slotNo}-C{cycleIndex + 1} */}
+                      ID : 0
                     </div>
                     <div className="bg-[#24b6ca] w-30 h-8 ml-36 mt-[-10px] z-0 rounded-sm text-white flex justify-center items-center">
-                      slot  {currentCycle.level}
+                      slot {slotIndex + 1}
                     </div>
 
                     {/* Vertical Lines */}
@@ -257,23 +252,38 @@ export default function UserPanel() {
 
                     {/* Circles */}
                     <div className="flex justify-center gap-3 mt-2">
-                      {[...Array(4)].map((_, j) => (
-                        <GiCircle key={j} className="text-white text-xl size-8" />
+                      {currentCycle.map((status, j) => (
+                        j == 2 ? <GiCircle
+                          key={j}
+                          className="rounded-full text-xl size-8"
+                          style={
+                            status
+                              ? { background: 'linear-gradient(to bottom, white 50%, pink 50%)' }
+                              : { color: 'gray' }
+                          }
+                        />
+                          : j == 3 ? <GiCircle
+                            key={j}
+                            // className={status ? "bg-white rounded-2xl text-xl" : "text-gray-500 text-xl"}
+                            className={`text-xl rounded-full size-8 ${status ? "bg-green-300" : "text-gray-400"
+                              }`}
+                          /> : <GiCircle
+                            key={j}
+                            // className={status ? "bg-white rounded-2xl text-xl" : "text-gray-500 text-xl"}
+                            className={`text-xl rounded-full size-8 ${status ? "text-white bg-white" : "text-gray-400"
+                              }`}
+                          />
+
+
+
+
                       ))}
                     </div>
-
-                    {/* Stats */}
-                    {/* <div className="flex justify-center items-center gap-4 mt-4 text-white text-lg">
-                      <div>{currentCycle.users}</div>
-                      <LuUsers className="text-xl" />
-                      <div>{currentCycle.recycles}</div>
-                      <TfiReload className="text-pink-600 font-bold text-xl" />
-                    </div> */}
                   </div>
 
                   <div className="flex justify-center items-center gap-2">
                     <div className="w-10 h-10 bg-[#24b6ca] text-3xl font-bold flex justify-center items-center rounded-sm">
-                      {slotIndex + 2}
+                      {slotIndex + 2 <= dummyData.length ? slotIndex + 2 : "-"}
                     </div>
                     <FaChevronRight
                       onClick={nextSlot}
@@ -282,6 +292,9 @@ export default function UserPanel() {
                   </div>
                 </div>
               </div>
+
+
+
             </div>
 
             {/* Partners table */}
@@ -338,7 +351,7 @@ export default function UserPanel() {
           </div>
         </div>
       </div>
-    </div >
+    </div>
   );
 }
 

@@ -38,15 +38,15 @@ const RightUserPannel = () => {
         10, 20, 40, 80, 160, 320, 640, 1280, 2560, 5120,
     ].slice(0, lastSlot); // Adjust the number of values as needed
 
-    // Dynamic the page 
+    // Dynamic the page  
     const slotData = [
-        { users: 1, cycles: 2 },
-        { users: 1, cycles: 1 },
+        { users: 3, cycles: 2 }, //user should be between 0-3 if ine more user come then cycle complete  and  next cycle show no user
+        { users: 0, cycles: 1 }, // In each slots there are 4 users and can be infinite cycles
         { users: 3, cycles: 0 },
         { users: 2, cycles: 3 }, // Last active with 2 users
-        { users: 0, cycles: 0 },
-        { users: 0, cycles: 0 },
-        { users: 0, cycles: 0 },
+        { users: 1, cycles: 0 },
+        { users: 2, cycles: 0 },
+        { users: 3, cycles: 0 },
         { users: 0, cycles: 0 },
         { users: 0, cycles: 0 },
         { users: 0, cycles: 0 },
@@ -181,10 +181,19 @@ const RightUserPannel = () => {
                                     {[...Array(4)].map((_, j) => {
                                         const isFilled = j < slot.users; // Fill based on user count
                                         return (
-                                            <GiCircle
+                                            j == 2 ? <GiCircle
                                                 key={j}
-                                                className={isFilled ? "bg-white rounded-2xl" : "text-gray-500"}
+                                                className="rounded-full"
+                                                style={
+                                                    isFilled
+                                                        ? { background: 'linear-gradient(to bottom, white 50%, pink 50%)' }
+                                                        : { color: 'gray' }
+                                                }
                                             />
+                                                : <GiCircle
+                                                    key={j}
+                                                    className={isFilled ? "bg-white rounded-2xl" : "text-gray-500"}
+                                                />
                                         );
                                     })}
                                 </div>
@@ -230,10 +239,19 @@ const RightUserPannel = () => {
                                     {[...Array(4)].map((_, j) => {
                                         const isFilled = j < slot.users; // Fill based on user count
                                         return (
-                                            <GiCircle
+                                            j == 2 ? <GiCircle
                                                 key={j}
-                                                className={isFilled ? "bg-white rounded-2xl" : "text-gray-500"}
+                                                className="rounded-full"
+                                                style={
+                                                    isFilled
+                                                        ? { background: 'linear-gradient(to bottom, white 50%, pink 50%)' }
+                                                        : { color: 'gray' }
+                                                }
                                             />
+                                                : <GiCircle
+                                                    key={j}
+                                                    className={isFilled ? "bg-white rounded-2xl" : "text-gray-500"}
+                                                />
                                         );
                                     })}
                                 </div>
@@ -283,10 +301,19 @@ const RightUserPannel = () => {
                                     {[...Array(4)].map((_, j) => {
                                         const isFilled = j < slot.users; // Fill based on user count
                                         return (
-                                            <GiCircle
+                                            j == 2 ? <GiCircle
                                                 key={j}
-                                                className={isFilled ? "bg-white rounded-2xl" : "text-gray-500"}
+                                                className="rounded-full"
+                                                style={
+                                                    isFilled
+                                                        ? { background: 'linear-gradient(to bottom, white 50%, pink 50%)' }
+                                                        : { color: 'gray' }
+                                                }
                                             />
+                                                : <GiCircle
+                                                    key={j}
+                                                    className={isFilled ? "bg-white rounded-2xl" : "text-gray-500"}
+                                                />
                                         );
                                     })}
                                 </div>
