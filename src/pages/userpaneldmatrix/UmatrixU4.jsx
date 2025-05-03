@@ -220,7 +220,7 @@ export default function UserPanel() {
                                             </span>
                                             <span className="text-2xl md:text-xl font-bold text-blue-500">
                                                 {" "}
-                                                U4
+                                                U4 {">>>>"}
                                             </span>
                                         </div>
 

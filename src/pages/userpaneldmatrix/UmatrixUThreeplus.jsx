@@ -1,254 +1,10 @@
-// import React from "react";
-// import universeLogo from "../../assets/images/universeLogo.png";
-// import universeCoin from "../../assets/images/universeCoin.png";
-// import { RxCopy } from "react-icons/rx";
-// import { FaExternalLinkAlt, FaTelegram } from "react-icons/fa";
-// import { RiLogoutCircleRLine } from "react-icons/ri";
-// import { Link } from "react-router-dom";
-
-// export default function UserPanel() {
-//   const totalCirclesPerLevel = 5;
-
-//   // Adjust the level progress array to have only 3 entries
-//   const levelProgress = [5, 2, 3];  // Only 3 levels here
-
-//   return (
-//     <div
-//       className="rounded-3xl"
-//       style={{
-//         background: "linear-gradient(180deg, #000000, #25752D)",
-//       }}
-//     >
-//       <div className="max-w-6xl mx-auto p-4">
-//         {/* Header */}
-//         <div className="flex flex-col md:flex-row justify-between items-center mt-2 mx-4 md:mx-10">
-//           <Link to="/" className="rounded-3xl">
-//             <img src={universeLogo} alt="Logo" className="h-20 md:h-[100px]" />
-//           </Link>
-//           <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-sm md:text-xl text-white mt-4 md:mt-0">
-//             <div className="hover:text-blue-600">
-//               <a
-//                 href="https://t.me/ramauniverse"
-//                 target="_blank"
-//                 rel="noopener noreferrer"
-//                 className="flex justify-center items-center gap-2"
-//               >
-//                 <FaTelegram className="text-blue-500" />
-//                 <span>Official Channel</span>
-//               </a>
-//             </div>
-//             <div className="hover:text-red-600 flex items-center gap-2 cursor-pointer">
-//               <span>Logout</span>
-//               <RiLogoutCircleRLine className="text-red-500" />
-//             </div>
-//           </div>
-//         </div>
-
-//         {/* Panel */}
-//         <div className="flex flex-col lg:flex-row justify-between mt-10 mx-4 md:mx-10 gap-10">
-//           {/* Left Side */}
-//           <div
-//             className="flex flex-col rounded-2xl w-full lg:w-[350px] p-10 text-white text-center backdrop-blur-md shadow-xl h-[102vh]"
-//             style={{
-//               background:
-//                 "linear-gradient(180deg, rgba(11, 11, 142, 1) 0%, rgba(115, 118, 120, 1) 100%)",
-//             }}
-//           >
-//             <div className="flex justify-between items-center">
-//               <div className="text-6xl text-blue-500">
-//                 <img
-//                   src={universeCoin}
-//                   alt="universeCoin"
-//                   className="h-10 w-10"
-//                 />
-//               </div>
-//               <div className="text-3xl font-bold">Id</div>
-//             </div>
-//             <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
-//               RAMA 0.000
-//             </div>
-//             <div className="mt-2 h-10 flex items-center justify-center w-full lg:w-[250px] mx-auto">
-//               0xf3585...6347733
-//             </div>
-//             <div className="flex justify-between mt-2 px-2">
-//               <FaExternalLinkAlt className="hover:text-blue-700" />
-//               <RxCopy className="text-xl font-bold hover:text-blue-700" />
-//             </div>
-//             <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
-//               Ramestta Blockchain
-//             </div>
-//             <Link className="mt-2 h-10 flex items-center justify-center w-full lg:w-[250px] mx-auto hover:to-blue-700">
-//               https://ramestta.com
-//             </Link>
-//             <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
-//               Universe Contract
-//             </div>
-//             <div className="flex justify-between mt-2 px-2">
-//               <FaExternalLinkAlt className="hover:text-blue-700" />
-//               <span> 0xf3585...6347733</span>
-//               <RxCopy className="text-xl font-bold hover:text-blue-700" />
-//             </div>
-//           </div>
-
-//           {/* Right Side */}
-//           <div className="w-full">
-//             {/* Buttons */}
-//             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-//               <Link
-//                 to="/user-panel-home/upline-bonus"
-//                 className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl  text-black p-4"
-//                 style={{
-//                   background:
-//                     "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
-//                 }}
-//               >
-//                 <div>
-//                   <span className="text-lg md:text-2xl font-bold">
-//                     Partners Invited :
-//                   </span>
-//                   <br />
-//                   <span>Income : 0000000.00 RAMA</span>
-//                 </div>
-//               </Link>
-//               <Link
-//                 to="/user-panel-home/upline-bonus"
-//                 className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl  text-black p-4"
-//                 style={{
-//                   background:
-//                     "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
-//                 }}
-//               >
-//                 <div>
-//                   <span className="text-lg md:text-2xl font-bold">
-//                     Split Bonus
-//                   </span>
-//                   <br />
-//                   <span>Income : 0000000.00 RAMA</span>
-//                 </div>
-//               </Link>
-//               <Link
-//                 to="/user-panel-home/slot-activate"
-//                 className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl bg-blue-500 text-black p-4"
-//                 style={{
-//                   background:
-//                     "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
-//                 }}
-//               >
-//                 <div>
-//                   <span className="text-lg md:text-2xl font-bold">
-//                     Slot Activated
-//                   </span>
-//                   <br />
-//                   <span>Income : 0000000.00 RAMA</span>
-//                 </div>
-//               </Link>
-//               <div
-//                 className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl bg-blue-500 text-black p-4 cursor-pointer"
-//                 style={{
-//                   background:
-//                     "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
-//                 }}
-//               >
-//                 <div>
-//                   <span className="text-lg md:text-2xl font-bold">
-//                     Affiliated Link
-//                   </span>
-//                   <br />
-//                   <span>Click to Copy</span>
-//                 </div>
-//               </div>
-//             </div>
-
-//             {/* Level Progress UI */}
-//             <div className="grid grid-cols-1 mt-10 border-2 rounded-2xl p-6 text-center">
-//               <div>
-//                 <span className="text-4xl md:text-5xl text-[#EFB90A] font-extrabold">
-//                   Universe
-//                 </span>
-//                 <span className="text-2xl md:text-xl font-bold"> U3 Premium</span>
-//               </div>
-//               <div className="flex flex-col md:flex-row justify-center md:justify-start items-center mt-10 gap-4 md:gap-20 ml-0 md:ml-22">
-//                 <div className="text-white w-full md:w-36 text-center border-2  text-xl font-semibold py-2">
-//                   Id
-//                 </div>
-//                 <div className="text-3xl">Level Achieve</div>
-//               </div>
-//               <div className="mt-10 w-full">
-//                 {levelProgress.slice(0, 3).map((completedCircles, levelIndex) => (
-//                   <div
-//                     key={levelIndex}
-//                     className="flex flex-col sm:flex-row sm:items-center justify-start sm:justify-center gap-4 sm:gap-10 mb-6"
-//                   >
-//                     <div className="text-white w-full sm:w-36 text-center border-2 text-xl font-semibold py-2">
-//                       {levelIndex + 1}
-//                     </div>
-//                     <div className="flex justify-center sm:justify-start flex-wrap gap-3">
-//                       {[...Array(totalCirclesPerLevel)].map((_, i) => {
-//                         const isCompleted = i < completedCircles;
-//                         const isCurrent =
-//                           i === completedCircles &&
-//                           completedCircles < totalCirclesPerLevel;
-//                         return (
-//                           <div
-//                             key={i}
-//                             className={`w-10 h-10 rounded-full border-2 ${
-//                               isCompleted
-//                                 ? "bg-white border-yellow-500"
-//                                 : isCurrent
-//                                 ? "bg-yellow-500 border-white"
-//                                 : "bg-transparent border-gray-500"
-//                             }`}
-//                           ></div>
-//                         );
-//                       })}
-//                     </div>
-//                   </div>
-//                 ))}
-//               </div>
-//             </div>
-
-//             {/* Table */}
-//             <div className="flex flex-col mt-10 border-2 rounded-2xl p-6 text-center">
-//               <div className="text-3xl font-bold mb-5 text-start">Partners</div>
-//               <div className="overflow-x-auto">
-//                 <table className="w-full min-w-[600px] border-collapse">
-//                   <thead>
-//                     <tr>
-//                       <th className="p-2 border">Id</th>
-//                       <th className="p-2 border">Date</th>
-//                       <th className="p-2 border">Wallet</th>
-//                       <th className="p-2 border">Tx Hash</th>
-//                       <th className="p-2 border">Profit</th>
-//                     </tr>
-//                   </thead>
-//                   <tbody>
-//                     {[...Array(4)].map((_, i) => (
-//                       <tr key={i} className="border-t">
-//                         <td className="p-2 border">34</td>
-//                         <td className="p-2 border">2022-11-12 10:12:56</td>
-//                         <td className="p-2 border">0x4f0...98c0E</td>
-//                         <td className="p-2 border">0xc03...38624</td>
-//                         <td className="p-2 border">0.000 / $0.000</td>
-//                       </tr>
-//                     ))}
-//                   </tbody>
-//                 </table>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-import React from "react";
+import React, { useState } from "react";
 import universeLogo from "../../assets/images/universeLogo.png";
 import universeCoin from "../../assets/images/universeCoin.png";
 import { RxCopy } from "react-icons/rx";
 import { FaExternalLinkAlt, FaTelegram } from "react-icons/fa";
 import { RiLogoutCircleRLine } from "react-icons/ri";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PiLineVerticalLight } from "react-icons/pi";
 import { BsCaretUpFill } from "react-icons/bs";
 import { PiUsersFourBold } from "react-icons/pi";
@@ -257,14 +13,54 @@ import { MdOutlineContactMail } from "react-icons/md";
 import { FaCheckToSlot } from "react-icons/fa6";
 import { FaAngleRight } from "react-icons/fa6";
 import { FaChevronLeft } from "react-icons/fa6";
+import LeftUserPannel from "../../components/LeftUserPannel";
+import Header from "../../components/Header";
 
 
 
 export default function UserPanel() {
-    const values = ["$40", "$80", "$160", "$320", "$640"];
-    const sanitizedUrls = values.map(
-        (val) => `user-panel-home/universe?plan=${val.replace(/\$/g, "").trim()}`
-    );
+    const navigate = useNavigate();
+
+    const [currentIdIndex, setCurrentIdIndex] = useState(0);
+
+    const matrixData = [
+        {
+            id: 1,
+            values: ["$640", "$1280", "$2560", "$5120", "$10240"],
+            slotsPosition: [
+                ["1", "1", "0"],
+                ["1", "0", "0"],
+                ["1", "1", "1"],
+                ["0", "0", "0"],
+                ["0", "0", "0"],
+            ]
+        },
+        {
+            id: 2,
+            values: ["$640", "$1280", "$2560", "$5120", "$10240"],
+            slotsPosition: [
+                ["1", "1", "1"],
+                ["1", "1", "1"],
+                ["1", "1", "0"],
+                ["1", "0", "0"],
+                ["1", "1", "1"],
+            ]
+        },
+    ];
+
+
+    const { id, values, slotsPosition } = matrixData[currentIdIndex];
+
+    const next = () => {
+        if (currentIdIndex < matrixData.length - 1) setCurrentIdIndex(currentIdIndex + 1);
+    };
+
+    const prev = () => {
+        if (currentIdIndex > 0) setCurrentIdIndex(currentIdIndex - 1);
+    };
+
+
+
 
     return (
         <div
@@ -273,70 +69,12 @@ export default function UserPanel() {
         >
             <div className="max-w-6xl mx-auto p-4">
                 {/* Header */}
-                <div className="flex flex-col md:flex-row justify-between items-center mt-2 mx-4 md:mx-10">
-                    <Link to="/user-panel-home" className="rounded-3xl">
-                        <img src={universeLogo} alt="Logo" className="h-20 md:h-[100px]" />
-                    </Link>
-                    <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-sm md:text-xl text-white mt-4 md:mt-0">
-                        <a
-                            href="https://t.me/ramauniverse"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 hover:text-blue-600"
-                        >
-                            <FaTelegram className="text-blue-500" />
-                            <span>Official Channel</span>
-                        </a>
-                        <div className="hover:text-red-600 flex items-center gap-2 cursor-pointer">
-                            <span>Logout</span>
-                            <RiLogoutCircleRLine className="text-red-500" />
-                        </div>
-                    </div>
-                </div>
+                <Header />
 
                 {/* Panel */}
                 <div className="flex flex-col lg:flex-row justify-between mt-10 mx-4 md:mx-10 gap-10">
                     {/* Left Side */}
-                    <div
-                        className="flex flex-col rounded-2xl w-full lg:w-[350px] p-10 text-white text-center backdrop-blur-md shadow-xl h-[102vh]"
-                        style={{
-                            background:
-                                "linear-gradient(180deg, rgba(11, 11, 142, 1) 0%, rgba(115, 118, 120, 1) 100%)",
-                        }}
-                    >
-                        <div className="flex justify-between items-center">
-                            <img
-                                src={universeCoin}
-                                alt="universeCoin"
-                                className="h-10 w-10"
-                            />
-                            <div className="text-3xl font-bold">Id</div>
-                        </div>
-                        <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
-                            RAMA 0.000
-                        </div>
-                        <div className="mt-2 h-10 flex items-center justify-center w-full lg:w-[250px] mx-auto">
-                            0xf3585...6347733
-                        </div>
-                        <div className="flex justify-between mt-2 px-2">
-                            <FaExternalLinkAlt className="hover:text-blue-700" />
-                            <RxCopy className="text-xl font-bold hover:text-blue-700" />
-                        </div>
-                        <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
-                            Ramestta Blockchain
-                        </div>
-                        <Link className="mt-2 h-10 flex items-center justify-center w-full lg:w-[250px] mx-auto hover:text-blue-700">
-                            https://ramestta.com
-                        </Link>
-                        <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
-                            Universe Contract
-                        </div>
-                        <div className="flex justify-between mt-2 px-2">
-                            <FaExternalLinkAlt className="hover:text-blue-700" />
-                            <span>0xf3585...6347733</span>
-                            <RxCopy className="text-xl font-bold hover:text-blue-700" />
-                        </div>
-                    </div>
+                    <LeftUserPannel />
 
                     {/* Right Side */}
                     <div className="w-full">
@@ -439,7 +177,7 @@ export default function UserPanel() {
                             }}
                         >
                             <div className="flex justify-between items-center">
-                                <button onClick={""}><FaChevronLeft className="text-3xl hover:text-yellow-500" />
+                                <button className="cursor-pointer" onClick={prev} disabled={currentIdIndex === 0}><FaChevronLeft className="text-3xl hover:text-yellow-500" />
                                 </button>
                                 <div>
                                     <div className="flex justify-between items-center">
@@ -449,7 +187,7 @@ export default function UserPanel() {
                                             </span>
                                             <span className="text-2xl md:text-xl font-bold text-blue-500">
                                                 {" "}
-                                                U3 Premium
+                                                U3 Premium {">>>"}
                                             </span>
                                         </div>
 
@@ -472,15 +210,19 @@ export default function UserPanel() {
                                     {/* Levels */}
                                     {/* Levels */}
                                     <div className="flex flex-col items-center gap-4 mt-10">
+
+
+                                        <div className="mt-10">
+                                            <span className="border-2 text-2xl px-12 py-2"> Id {id} </span>
+                                        </div>
                                         {/* First Card - First Line */}
                                         <div className="flex justify-center">
                                             <div className="flex flex-col items-center">
-                                                <Link
+                                                <button onClick={() => navigate('/user-panel-home/user-panel-umatrix-3pre-details', { state: { id: id, slotVal: 1, plan: values[0].replace(/\$/g, "").trim() } })}
                                                     className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg"
-                                                    to={`/${sanitizedUrls[0]}`}
                                                 >
                                                     {values[0]}
-                                                </Link>
+                                                </button>
                                                 {[...Array(2)].map((_, i) => (
                                                     <div key={i} className="flex justify-center gap-7">
                                                         {[...Array(3)].map((__, j) => (
@@ -489,18 +231,14 @@ export default function UserPanel() {
                                                     </div>
                                                 ))}
                                                 <div className="flex justify-center items-center gap-6">
-                                                    {[...Array(3)].map((_, j) => (
+                                                    {slotsPosition[0].map((value, j) => (
                                                         <button
                                                             key={j}
-                                                            className={`h-[20px] w-[20px] rounded-full flex justify-center items-center cursor-pointer border border-black ${j % 2 === 0 ? "bg-yellow-500" : "bg-blue-400"
-                                                                } hover:opacity-80`}
-                                                            onClick={() => console.log(`Button ${j + 1} clicked`)}
+                                                            className={`h-[20px] w-[20px] rounded-full flex justify-center items-center cursor-pointer border border-black
+                                                                     ${value === "1" ? (j % 2 === 0 ? "bg-yellow-500" : "bg-blue-400") : ""} hover:opacity-80`}
                                                         >
-                                                            {" "}
-                                                            {j % 2 === 0 ? (
+                                                            {value === "1" && j % 2 === 0 && (
                                                                 <BsCaretUpFill className="text-black text-xl" />
-                                                            ) : (
-                                                                ""
                                                             )}
                                                         </button>
                                                     ))}
@@ -512,12 +250,17 @@ export default function UserPanel() {
                                         <div className="flex flex-wrap justify-center gap-4 my-10">
                                             {values.slice(1).map((value, index) => (
                                                 <div key={index + 1} className="flex flex-col items-center">
-                                                    <Link
+                                                    <button
+
+                                                        onClick={() => {
+                                                            navigate('/user-panel-home/user-panel-umatrix-3pre-details', { state: { id: id, slotVal: index + 2, plan: value.replace(/\$/g, "").trim() } });
+                                                            console.log("id==========================================", id, "slotVal", index + 2, "plan", value.replace(/\$/g, "").trim())
+                                                        }}
                                                         className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg"
-                                                        to={`/${sanitizedUrls[index + 1]}`}
+
                                                     >
                                                         {value}
-                                                    </Link>
+                                                    </button>
                                                     {[...Array(2)].map((_, i) => (
                                                         <div key={i} className="flex justify-center gap-7">
                                                             {[...Array(3)].map((__, j) => (
@@ -526,20 +269,14 @@ export default function UserPanel() {
                                                         </div>
                                                     ))}
                                                     <div className="flex justify-center items-center gap-6">
-                                                        {[...Array(3)].map((_, j) => (
+                                                        {slotsPosition[index + 1].map((val, j) => (
                                                             <button
                                                                 key={j}
-                                                                className={`h-[20px] w-[20px] rounded-full flex justify-center items-center cursor-pointer border border-black ${j % 2 === 0 ? "bg-yellow-500" : "bg-blue-400"
-                                                                    } hover:opacity-80`}
-                                                                onClick={() =>
-                                                                    console.log(`Button ${j + 1} clicked`)
-                                                                }
+                                                                className={`h-[20px] w-[20px] rounded-full flex justify-center items-center cursor-pointer border border-black
+                                                                           ${val === "1" ? (j % 2 === 0 ? "bg-yellow-500" : "bg-blue-400") : ""} hover:opacity-80`}
                                                             >
-                                                                {" "}
-                                                                {j % 2 === 0 ? (
+                                                                {val === "1" && j % 2 === 0 && (
                                                                     <BsCaretUpFill className="text-black text-xl" />
-                                                                ) : (
-                                                                    ""
                                                                 )}
                                                             </button>
                                                         ))}
@@ -548,8 +285,13 @@ export default function UserPanel() {
                                             ))}
                                         </div>
                                     </div>
+
+
+
+                                    {/* Levels */}
+                                    {/* Levels */}
                                 </div>
-                                <button onClick={""}><FaAngleRight className="text-4xl hover:text-yellow-500" />
+                                <button className="cursor-pointer" onClick={next} disabled={currentIdIndex === matrixData.length - 1}><FaAngleRight className="text-4xl hover:text-yellow-500" />
                                 </button>
                             </div>
                         </div>

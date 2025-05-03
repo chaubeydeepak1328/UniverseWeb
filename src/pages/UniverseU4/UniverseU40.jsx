@@ -21,11 +21,7 @@ import LeftUserPannel from "../../components/LeftUserPannel";
 
 export default function UserPanel() {
     const location = useLocation();
-    const { id, slotVal, plan, slotsArr } = location.state || {};
-
-    useEffect(() => {
-        console.log("slotsArr", slotsArr);
-    }, [slotsArr]);
+    const { id, slotVal, plan } = location.state || {};
 
     const dummyData = [
         ["$40", "$80", "$160", "$320", "$640", "$1280", "$2560", "$5120", "$10240", "$20480",],

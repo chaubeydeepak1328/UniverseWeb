@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import universeLogo from "../../assets/images/universeLogo.png";
 import universeCoin from "../../assets/images/universeCoin.png";
 import { RxCopy } from "react-icons/rx";
@@ -13,17 +13,75 @@ import { FaChevronDown, FaCheckToSlot } from "react-icons/fa6";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import { PiLineVerticalLight, PiUsersFourBold } from "react-icons/pi";
 import { GiSplitArrows } from "react-icons/gi";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { MdOutlineContactMail } from "react-icons/md";
 import { BsCaretUpFill } from "react-icons/bs";
+import Header from "../../components/Header";
+import LeftUserPannel from "../../components/LeftUserPannel";
 
 export default function UserPanel() {
-    const values = [1];
-    const url = ["user-panel-dmatrix1"];
 
-    const sanitizedUrls = url.map((u) =>
-        u.replace(/[^\w-]/gi, "-").toLowerCase()
-    );
+    const location = useLocation();
+    const { id, slotVal, plan } = location.state || {};
+
+    const dummyData = [
+        ["$640", "$1280", "$2560", "$5120", "$10240"],
+        ["$640", "$1280", "$2560", "$5120", "$10240"],
+        ["$640", "$1280", "$2560", "$5120", "$10240"],
+        ["$640", "$1280", "$2560", "$5120", "$10240"],
+        ["$640", "$1280", "$2560", "$5120", "$10240"],
+    ];
+
+    const matrixData = [
+        {
+            id: 1,
+            values: ["$640", "$1280", "$2560", "$5120", "$10240"],
+            slotsPosition: [
+                ["1", "1", "0"],
+                ["1", "0", "0"],
+                ["1", "1", "1"],
+                ["0", "0", "0"],
+                ["0", "0", "0"],
+            ]
+        },
+        {
+            id: 2,
+            values: ["$640", "$1280", "$2560", "$5120", "$10240"],
+            slotsPosition: [
+                ["1", "1", "1"],
+                ["1", "1", "1"],
+                ["1", "1", "0"],
+                ["1", "0", "0"],
+                ["1", "1", "1"],
+            ]
+        },
+    ];
+
+    const maximumCycle = dummyData.length; //position
+    const maximumSlot = dummyData[0]?.length || 0; //slots
+
+    const [cycleIndex, setCycleIndex] = useState(0); // vertical
+    const [slotIndex, setSlotIndex] = useState(slotVal ? slotVal - 1 : 0);
+
+
+
+
+    const handleLeft = () => {
+        if (slotIndex > 0) setSlotIndex(slotIndex - 1);
+    };
+
+    const handleRight = () => {
+        if (slotIndex < maximumSlot - 1) setSlotIndex(slotIndex + 1);
+    };
+
+    const handleUp = () => {
+        if (cycleIndex > 0) setCycleIndex(cycleIndex - 1);
+    };
+
+    const handleDown = () => {
+        if (cycleIndex < maximumCycle - 1) setCycleIndex(cycleIndex + 1);
+    };
+
 
     return (
         <div
@@ -32,72 +90,12 @@ export default function UserPanel() {
         >
             <div className="max-w-6xl mx-auto p-4">
                 {/* Top Header */}
-                <div className="flex flex-col md:flex-row justify-between items-center mt-2 mx-4 md:mx-10">
-                    <Link to="/user-panel-home" className="rounded-3xl">
-                        <img src={universeLogo} alt="Logo" className="h-20 md:h-[100px]" />
-                    </Link>
-                    <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-sm md:text-xl text-white mt-4 md:mt-0">
-                        <div className="hover:text-blue-600">
-                            <a
-                                href="https://t.me/ramauniverse"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex justify-center items-center gap-2"
-                            >
-                                <FaTelegram className="text-blue-500" />
-                                <span>Official Channel</span>
-                            </a>
-                        </div>
-                        <div className="hover:text-red-600 flex items-center gap-2 cursor-pointer">
-                            <span>Logout</span>
-                            <RiLogoutCircleRLine className="text-red-500" />
-                        </div>
-                    </div>
-                </div>
+                <Header />
 
                 {/* Main Panel */}
                 <div className="flex flex-col lg:flex-row justify-between mt-10 mx-4 md:mx-10 gap-10">
                     {/* Left Side Card */}
-                    <div
-                        className="flex flex-col rounded-2xl w-full lg:w-[350px] p-10 text-white text-center backdrop-blur-md shadow-xl h-[102vh]"
-                        style={{
-                            background:
-                                "linear-gradient(180deg, rgba(11, 11, 142, 1) 0%, rgba(115, 118, 120, 1) 100%)",
-                        }}
-                    >
-                        <div className="flex justify-between items-center">
-                            <img
-                                src={universeCoin}
-                                alt="universeCoin"
-                                className="h-10 w-10"
-                            />
-                            <div className="text-3xl font-bold">Id</div>
-                        </div>
-                        <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
-                            RAMA 0.000
-                        </div>
-                        <div className="mt-2 h-10 flex items-center justify-center w-full lg:w-[250px] mx-auto">
-                            0xf3585...6347733
-                        </div>
-                        <div className="flex justify-between mt-2 px-2">
-                            <FaExternalLinkAlt className="hover:text-blue-700" />
-                            <RxCopy className="text-xl font-bold hover:text-blue-700" />
-                        </div>
-                        <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
-                            Ramestta Blockchain
-                        </div>
-                        <Link className="mt-2 h-10 flex items-center justify-center w-full lg:w-[250px] mx-auto hover:text-blue-700">
-                            https://ramestta.com
-                        </Link>
-                        <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
-                            Universe Contract
-                        </div>
-                        <div className="flex justify-between mt-2 px-2">
-                            <FaExternalLinkAlt className="hover:text-blue-700" />
-                            <span> 0xf3585...6347733</span>
-                            <RxCopy className="text-xl font-bold hover:text-blue-700" />
-                        </div>
-                    </div>
+                    <LeftUserPannel />
 
                     {/* Right Side Content */}
                     <div className="w-full">
@@ -157,26 +155,26 @@ export default function UserPanel() {
                             {/* Matrix View */}
                             <div className="flex flex-wrap justify-start items-center gap-0 mt-10 p-4">
                                 <div className="flex flex-col items-center justify-center mt-30">
-                                    <FaChevronUp className="text-3xl hover:text-4xl hover:text-blue-500" />
+                                    <FaChevronUp onClick={handleUp} className="text-3xl hover:text-4xl hover:text-blue-500" />
                                     <div className="flex justify-center items-center gap-2">
                                         <div>Position</div>
-                                        <div>1/5</div>
+                                        {cycleIndex + 1}/{dummyData.length}
                                     </div>
-                                    <FaChevronDown className="text-3xl hover:text-4xl hover:text-blue-500" />
+                                    <FaChevronDown onClick={handleDown} className="text-3xl hover:text-4xl hover:text-blue-500" />
                                 </div>
 
                                 <div className="flex flex-col lg:flex-row justify-center gap-30 items-center ml-0 lg:ml-[-50px]">
                                     <div className="flex justify-center items-center gap-2">
-                                        <FaChevronLeft className="hover:text-blue-500 text-xl" />
+                                        <FaChevronLeft onClick={handleLeft} className="hover:text-blue-500 text-xl" />
                                         <div className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm">1</div>
                                     </div>
 
                                     {/* User Card */}
                                     <div className="flex justify-center">
                                         <div className="flex flex-col items-center">
-                                            <Link className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg" to={`/${sanitizedUrls[0]}`}>
-                                                {values[0]}
-                                            </Link>
+                                            <button className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg" >
+                                                {dummyData[cycleIndex][slotIndex]}
+                                            </button>
                                             {[...Array(2)].map((_, i) => (
                                                 <div key={i} className="flex justify-center gap-4">
                                                     {[...Array(3)].map((__, j) => (
@@ -185,9 +183,15 @@ export default function UserPanel() {
                                                 </div>
                                             ))}
                                             <div className="flex justify-center items-center gap-3">
-                                                {[...Array(3)].map((_, j) => (
-                                                    <button key={j} className={`h-[20px] w-[20px] rounded-full flex justify-center items-center cursor-pointer border border-black ${j % 2 === 0 ? "bg-yellow-500" : "bg-blue-400"} hover:opacity-80`} onClick={() => console.log(`Button ${j + 1} clicked`)}>
-                                                        {j % 2 === 0 ? <BsCaretUpFill className="text-black text-xl" /> : ""}
+                                                {matrixData.find((val) => val.id == id).slotsPosition[slotIndex].map((val, j) => (
+                                                    <button
+                                                        key={j}
+                                                        className={`h-[20px] w-[20px] rounded-full flex justify-center items-center cursor-pointer border border-black
+                                                                                                                                                               ${val === "1" ? (j % 2 === 0 ? "bg-yellow-500" : "bg-blue-400") : ""} hover:opacity-80`}
+                                                    >
+                                                        {val === "1" && j % 2 === 0 && (
+                                                            <BsCaretUpFill className="text-black text-xl" />
+                                                        )}
                                                     </button>
                                                 ))}
                                             </div>
@@ -196,7 +200,7 @@ export default function UserPanel() {
 
                                     <div className="flex justify-center items-center gap-2">
                                         <div className="w-10 h-10 bg-[#24b6ca] text-3xl font-bold flex justify-center items-center rounded-sm">2</div>
-                                        <FaChevronRight className="hover:text-blue-500 text-xl" />
+                                        <FaChevronRight onClick={handleRight} className="hover:text-blue-500 text-xl" />
                                     </div>
 
                                 </div>

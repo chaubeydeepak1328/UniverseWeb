@@ -36,6 +36,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { projectId, metadata, networks, wagmiAdapter } from './config'
 import Umatrix4 from './pages/userpaneldmatrix/UmatrixU4';
 import UniverseU40 from './pages/UniverseU4/UniverseU40';
+import UniverseU340 from './pages/UniverseU340/UniverseU340';
 
 
 const queryClient = new QueryClient()
@@ -92,16 +93,17 @@ function App() {
           <Route path='/express-login' element={<ExpressLogin />} />
           <Route path='/buy-token' element={<BuyToken />} />
           <Route path='/sell-token' element={<SellToken />} />
-          <Route path="/user-panel-home" element={<UserPanel />} />
           <Route path='/d-matrix' element={<DMatrix />} />
           <Route path='/user-panel-home/team' element={<Team />} />
           <Route path='/user-panel-home/partners' element={<Partners />} />
           <Route path='/user-panel-home/upline-bonus' element={<UplineBonus />} />
           <Route path='/user-panel-home/split-bonus' element={<SplitBonus />} />
           <Route path='/user-panel-home/slot-activate' element={<Activate />} />
-          {/* dmatrix 10 */}
+
+
+          {/* U3 Plus */}
+          <Route path="/user-panel-home" element={<UserPanel />} />
           <Route path='/user-panel-dmatrix1' element={<Dmatrix1 />} />
-          {/* umatrix */}
 
           {/* Universe U5 sub part */}
           <Route path='/user-panel-home/user-panel-umatrix5' element={<Umatrix1 />} />
@@ -111,7 +113,11 @@ function App() {
           <Route path='/user-panel-home/user-panel-umatrix4' element={<Umatrix4 />} />
           <Route path='/user-panel-home/UniverseU4' element={<UniverseU40 />} />
 
+
+          {/* Universe U3 premium */}
           <Route path='/user-panel-home/user-panel-umatrix-3plus' element={<UmatrixUThreeplus />} />
+          <Route path='/user-panel-home/user-panel-umatrix-3pre-details' element={<UniverseU340 />} />
+
         </Routes>
       </QueryClientProvider>
     </WagmiProvider>
