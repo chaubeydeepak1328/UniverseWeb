@@ -86,7 +86,7 @@ export default function UserPanel() {
             ]
         },
     ];
-    const maximumCycle = dummyData.length; //position
+    const maximumCycle = 4; //position
     const maximumSlot = dummyData[0]?.length || 0; //slots
 
     const [cycleIndex, setCycleIndex] = useState(0); // vertical
@@ -196,7 +196,7 @@ export default function UserPanel() {
                                     <div className="flex justify-center items-center gap-2">
                                         <div>Position</div>
                                         <div>
-                                            {cycleIndex + 1}/{dummyData.length}
+                                            {cycleIndex + 1}/{'4'}
                                         </div>
                                     </div>
                                     <FaChevronDown onClick={handleDown} className="text-3xl hover:text-4xl hover:text-blue-500" />
@@ -205,7 +205,7 @@ export default function UserPanel() {
                                 <div className="flex flex-col lg:flex-row justify-center gap-30 items-center ml-0 lg:ml-[-50px]">
                                     <div className="flex justify-center items-center gap-2">
                                         <FaChevronLeft onClick={handleLeft} className="hover:text-blue-500 text-xl" />
-                                        <div className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm">1</div>
+                                        <div className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm">{slotIndex + 1}</div>
                                     </div>
 
                                     {/* User Card */}
@@ -238,7 +238,7 @@ export default function UserPanel() {
                                     </div>
 
                                     <div className="flex justify-center items-center gap-2">
-                                        <div className="w-10 h-10 bg-[#24b6ca] text-3xl font-bold flex justify-center items-center rounded-sm">2</div>
+                                        <div className="w-10 h-10 bg-[#24b6ca] text-3xl font-bold flex justify-center items-center rounded-sm">{slotIndex == 9 ? "0" : slotIndex + 2}</div>
                                         <FaChevronRight onClick={handleRight} className="hover:text-blue-500 text-xl" />
                                     </div>
 

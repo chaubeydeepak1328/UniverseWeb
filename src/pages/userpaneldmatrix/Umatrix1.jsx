@@ -219,7 +219,7 @@ export default function UserPanel() {
                         <button
                           onClick={() => navigate('/user-panel-home/universe', { state: { id: id, slotVal: 1, plan: values[0].replace(/\$/g, "").trim() } })}
 
-                          className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg">
+                          className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg cursor-pointer">
                           {values[0]}
                         </button>
                         {[...Array(2)].map((_, i) => (
@@ -254,7 +254,7 @@ export default function UserPanel() {
                               navigate('/user-panel-home/universe', { state: { id: id, slotVal: index + 2, plan: value.replace(/\$/g, "").trim() } });
                               console.log("id==========================================", id, "slotVal", index + 2, "plan", value.replace(/\$/g, "").trim())
                             }}
-                            className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg">
+                            className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg cursor-pointer">
                             {value}
                           </button>
                           {[...Array(2)].map((_, i) => (

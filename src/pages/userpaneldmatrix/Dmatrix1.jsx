@@ -316,11 +316,13 @@ export default function UserPanel() {
                 <table className="w-full min-w-[600px] border-collapse">
                   <thead>
                     <tr className="">
-                      <th className="p-2 border">Id</th>
-                      <th className="p-2 border">Date</th>
-                      <th className="p-2 border">Wallet</th>
-                      <th className="p-2 border">Tx Hash</th>
-                      <th className="p-2 border">Profit</th>
+                      <th className="p-2 border">Sno</th>
+                      <th className="p-2 border">USD</th>
+                      <th className="p-2 border">Rama</th>
+                      <th className="p-2 border">Date and Time</th>
+                      <th className="p-2 border">status</th>
+                      <th className="p-2 border">Regenerate</th>
+                      <th className="p-2 border">Net Profit</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -330,11 +332,6 @@ export default function UserPanel() {
                       <td className="p-2 border">0x4f0...98c0E</td>
                       <td className="p-2 border">0xc03...38624</td>
                       <td className="p-2 border">0.000 / $0.000</td>
-                    </tr>
-                    <tr className="border-t">
-                      <td className="p-2 border">34</td>
-                      <td className="p-2 border">2022-11-12 10:12:56</td>
-                      <td className="p-2 border">0x4f0...98c0E</td>
                       <td className="p-2 border">0xc03...38624</td>
                       <td className="p-2 border">0.000 / $0.000</td>
                     </tr>
@@ -344,11 +341,24 @@ export default function UserPanel() {
                       <td className="p-2 border">0x4f0...98c0E</td>
                       <td className="p-2 border">0xc03...38624</td>
                       <td className="p-2 border">0.000 / $0.000</td>
+                      <td className="p-2 border">0xc03...38624</td>
+                      <td className="p-2 border">0.000 / $0.000</td>
                     </tr>
                     <tr className="border-t">
                       <td className="p-2 border">34</td>
                       <td className="p-2 border">2022-11-12 10:12:56</td>
                       <td className="p-2 border">0x4f0...98c0E</td>
+                      <td className="p-2 border">0xc03...38624</td>
+                      <td className="p-2 border">0.000 / $0.000</td>
+                      <td className="p-2 border">0xc03...38624</td>
+                      <td className="p-2 border">0.000 / $0.000</td>
+                    </tr>
+                    <tr className="border-t">
+                      <td className="p-2 border">34</td>
+                      <td className="p-2 border">2022-11-12 10:12:56</td>
+                      <td className="p-2 border">0x4f0...98c0E</td>
+                      <td className="p-2 border">0xc03...38624</td>
+                      <td className="p-2 border">0.000 / $0.000</td>
                       <td className="p-2 border">0xc03...38624</td>
                       <td className="p-2 border">0.000 / $0.000</td>
                     </tr>
@@ -356,6 +366,8 @@ export default function UserPanel() {
                 </table>
               </div>
             </div>
+
+
           </div>
         </div>
       </div>

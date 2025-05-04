@@ -219,7 +219,7 @@ export default function UserPanel() {
                                         <div className="flex justify-center">
                                             <div className="flex flex-col items-center">
                                                 <button onClick={() => navigate('/user-panel-home/user-panel-umatrix-3pre-details', { state: { id: id, slotVal: 1, plan: values[0].replace(/\$/g, "").trim() } })}
-                                                    className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg"
+                                                    className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg cursor-pointer"
                                                 >
                                                     {values[0]}
                                                 </button>
@@ -256,7 +256,7 @@ export default function UserPanel() {
                                                             navigate('/user-panel-home/user-panel-umatrix-3pre-details', { state: { id: id, slotVal: index + 2, plan: value.replace(/\$/g, "").trim() } });
                                                             console.log("id==========================================", id, "slotVal", index + 2, "plan", value.replace(/\$/g, "").trim())
                                                         }}
-                                                        className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg"
+                                                        className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg cursor-pointer"
 
                                                     >
                                                         {value}
