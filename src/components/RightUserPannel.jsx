@@ -188,7 +188,7 @@ const RightUserPannel = () => {
                                                 className="rounded-full"
                                                 style={
                                                     isFilled
-                                                        ? { background: 'linear-gradient(to bottom, white 50%, pink 50%)' }
+                                                        ? { background: 'linear-gradient(to bottom, white 50%, #ff66d9 50%)' }
                                                         : { color: 'gray' }
                                                 }
                                             />
@@ -246,7 +246,7 @@ const RightUserPannel = () => {
                                                 className="rounded-full"
                                                 style={
                                                     isFilled
-                                                        ? { background: 'linear-gradient(to bottom, white 50%, pink 50%)' }
+                                                        ? { background: 'linear-gradient(to bottom, white 50%, #ff66d9 50%)' }
                                                         : { color: 'gray' }
                                                 }
                                             />
@@ -309,7 +309,7 @@ const RightUserPannel = () => {
                                                 className="rounded-full"
                                                 style={
                                                     isFilled
-                                                        ? { background: 'linear-gradient(to bottom, white 50%, pink 50%)' }
+                                                        ? { background: 'linear-gradient(to bottom, white 50%, #ff66d9 50%)' }
                                                         : { color: 'gray' }
                                                 }
                                             />

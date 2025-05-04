@@ -76,6 +76,7 @@ export default function UserPanel() {
   };
 
 
+
   return (
     <div
       className="bg-black min-h-screen rounded-3xl"
@@ -266,7 +267,7 @@ export default function UserPanel() {
                           className="rounded-full text-xl size-8"
                           style={
                             status
-                              ? { background: 'linear-gradient(to bottom, white 50%, pink 50%)' }
+                              ? { background: 'linear-gradient(to bottom, white 50%, #ff66d9 50%)' }
                               : { color: 'gray' }
                           }
                         />

@@ -115,8 +115,8 @@ function App() {
 
 
           {/* Universe U3 premium */}
-          <Route path='/user-panel-home/user-panel-umatrix-3pre-details' element={<UniverseU340 />} />
           <Route path='/user-panel-home/user-panel-umatrix-3plus' element={<UmatrixUThreeplus />} />
+          <Route path='/user-panel-home/user-panel-umatrix-3pre-details' element={<UniverseU340 />} />
 
         </Routes>
       </QueryClientProvider>

@@ -1,5 +1,5 @@
 import React from 'react'
-import universeLogo from "../assets/images/universeLogo.png";
+import universeLogo from "../assets/images/Universe_dahboard_Loogo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useDisconnect } from '@reown/appkit/react';
 import { FaTelegram } from "react-icons/fa";

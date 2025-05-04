@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import universeLogo from "../../assets/images/universeLogo.png";
 import universeCoin from "../../assets/images/universeCoin.png";
 import { RxCopy } from "react-icons/rx";
@@ -82,6 +82,17 @@ export default function UserPanel() {
         if (cycleIndex < maximumCycle - 1) setCycleIndex(cycleIndex + 1);
     };
 
+
+    useEffect(() => {
+        handlePositionClick(cycleIndex)
+    }, [cycleIndex])
+
+    const [selectedPos, setSeletedPos] = useState(-1);
+
+    const handlePositionClick = (index) => {
+        setSeletedPos(index);
+        console.log("Selected Position:", selectedPos);
+    }
 
     return (
         <div
@@ -189,9 +200,12 @@ export default function UserPanel() {
                                             <div className="flex justify-center items-center gap-3">
                                                 {matrixData.find((val) => val.id == id).slotsPosition[slotIndex].map((val, j) => (
                                                     <button
+                                                        onClick={() => handlePositionClick(j)}
                                                         key={j}
                                                         className={`h-[20px] w-[20px] rounded-full flex justify-center items-center cursor-pointer border border-black
-                                                                                                                                                               ${val === "1" ? (j % 2 === 0 ? "bg-yellow-500" : "bg-blue-400") : ""} hover:opacity-80`}
+                                                         ${j === selectedPos
+                                                                ? "ring-2 ring-green-500 shadow-[0_0_20px_3px_rgba(34,197,94,0.7)]"
+                                                                : ""}    ${val === "1" ? (j % 2 === 0 ? "bg-yellow-500" : "bg-blue-400") : ""} hover:opacity-80`}
                                                     >
                                                         {val === "1" && j % 2 === 0 && (
                                                             <BsCaretUpFill className="text-black text-xl" />
