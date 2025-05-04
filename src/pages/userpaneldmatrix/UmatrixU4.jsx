@@ -312,6 +312,40 @@ export default function UserPanel() {
                                                 </div>
                                             ))}
                                         </div>
+
+
+                                        <div className="p-6 ">
+                                            <h2 className="text-2xl font-bold mb-6 text-ehite text-center">Total Matrix Summary</h2>
+
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                                                {/* Box */}
+                                                {[
+                                                    { title: 'Receives', usd: '$23', rama: 145 },
+                                                    { title: 'Upgrade', usd: '$23', rama: 145 },
+                                                    { title: 'Generate', usd: '$23', rama: 145 },
+                                                    { title: 'Net Profit', usd: '$23', rama: 145 },
+                                                    { title: 'Generated ID', totalId: 12 },
+                                                ].map((item, index) => (
+
+                                                    item?.title !== 'Generated ID' ?
+                                                        <div key={index} className="bg-white p-5 rounded-2xl shadow hover:shadow-lg transition">
+                                                            <h3 className="text-lg font-semibold text-blue-600 mb-2">{item.title}</h3>
+                                                            <div className="text-gray-700 space-y-1">
+                                                                <p><span className="font-medium">USD:</span> {item.usd}</p>
+                                                                <p><span className="font-medium">Rama:</span> {item.rama}</p>
+                                                            </div>
+                                                        </div> : <div key={index} className="bg-white p-5 rounded-2xl shadow hover:shadow-lg transition">
+                                                            <h3 className="text-lg font-semibold text-blue-600 mb-2">{item.title}</h3>
+                                                            <div className="text-gray-700 space-y-1">
+                                                                <p><span className="font-medium">Total ID :</span> {item.totalId}</p>
+
+                                                            </div>
+                                                        </div>
+                                                ))}
+
+                                            </div>
+                                        </div>
                                     </div>
 
                                     {/* Levels */}
