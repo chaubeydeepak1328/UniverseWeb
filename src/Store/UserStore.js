@@ -1,86 +1,5 @@
-// import { create } from 'zustand';
-// import contractABI from '../Provider/ABI.json';
-// import Web3 from 'web3';
-
-
-
-
-
-// const INFURA_URL = "https://blockchain2.ramestta.com"
-// const web3 = new Web3(INFURA_URL);
-
-// const contractAddress = "0xa6e74cae22C51c35C89A9941243869a99af442AE";
-// const contract = new web3.eth.Contract(contractABI, contractAddress);
-
-
-
-
-
-// export const useStore = create((set) => ({
-//     transactions: [],
-//     addTransaction: (tx) => set((state) => ({ transactions: [...state.transactions, tx] })),
-
-//     registerUser: async (sponsorAddress, address, isConnected) => {
-//         try {
-//             console.log("====================", sponsorAddress);
-
-//             if (!isConnected) {
-//                 alert("Please Connect Wallet First");
-//                 return;
-//             }
-//             if (!sponsorAddress) {
-//                 alert("Please Provide Sponser Wallet Address");
-//                 return;
-//             }
-
-//             const valueInWei = web3.utils.toWei('0.02', 'ether');
-
-
-//             const estimatedGas = await contract.methods.register(sponsorAddress).estimateGas({
-//                 from: address,
-//                 value: valueInWei
-//             });
-
-//             const gasPrice = await web3.eth.getGasPrice();
-
-//             const tx = await contract.methods.register(sponsorAddress)
-//                 .send({
-//                     from: address,
-//                     value: valueInWei,
-//                     gas: estimatedGas,
-//                     gasPrice: gasPrice
-//                 });
-
-//             get().addTransaction(tx);
-
-//             console.log('Transaction Hash:', tx.transactionHash);
-//             alert(`Transaction successful! Hash: ${tx.transactionHash}`);
-
-//             return tx;
-
-//         } catch (error) {
-//             console.error("Transaction Error:", error);
-//             alert(`Transaction failed: ${error.message}`);
-//             throw error;
-//         }
-//     }
-// }));
-
-
-
 import { create } from 'zustand';
 import Web3 from 'web3';
-
-
-// const Contract = {
-//     "U5": "0xEE2cFEE128dC97A45C32D629E0DD262c23546B84",
-//     "U4": "0x04d85a366c0B4be7c22AFC94f3Df5775190baF4d",
-//     "U3prem": "0x65C05fda54d11B61Bf28d2F2993E39439CF15294",
-//     "U3plus": "0xaC621ACF9B4F80fe2071B49747BCD35272d722b2",
-//     "UIncome": "0xa6e74cae22C51c35C89A9941243869a99af442AE",
-//     "UserMang": "0xBCce2Ff6c1Fe17392364c7B675B6Da7F52377C06",
-//     "PriceConv": "0x4edcF03Fba12114bdEA9EbD02690C9bf083dBCeD",
-// }
 
 
 const Contract = {
@@ -122,9 +41,15 @@ const web3 = new Web3(INFURA_URL);
 
 export const useStore = create((set) => ({
 
-    // walletAddress: null,
-    // setWalletAddress: (address) => set({ walletAddress: address }),
+    // User Wallet Info
 
+    // UserwalletAddress: '',
+    // setUserWalletAddress: (address) => set({ UserwalletAddress: address }),
+
+
+
+
+    // Smart Contract Data
 
 
     getAllusers: async (userId) => {

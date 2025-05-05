@@ -1,7 +1,3 @@
-
-
-
-
 import React, { useEffect, useState } from "react";
 import universeLogo from "../assets/images/universeLogo.png";
 import { LuUserRound } from "react-icons/lu";
@@ -18,6 +14,7 @@ import {
 import { useSearchParams } from 'react-router-dom';
 
 import { useStore } from '../Store/UserStore';
+import { setWalletAddress } from "../util/helpers";
 
 export default function Login() {
   const getAllusers = useStore((state) => state.getAllusers);
@@ -27,7 +24,6 @@ export default function Login() {
   const { open } = useAppKit(); // This triggers wallet connection
   const { address, isConnected } = useAppKitAccount();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
 
   const [inputData, setInputData] = useState('');
 
@@ -48,6 +44,7 @@ export default function Login() {
     const checkUserAfterConnect = async () => {
       if (walletPrompted && isConnected && address) {
         try {
+          setWalletAddress(address)
           const user = await IsUserExist(address);
           console.log("this is User=========>", user?.userId?.toString(), user)
 
@@ -81,6 +78,7 @@ export default function Login() {
       console.log("User Address:", userAddress); // Log the fetched users to the console
 
       if (userAddress) {
+        setWalletAddress(userAddress)
         navigate('/user-panel-home', { state: { userId: inputData, userAddress } });
       }
     } else {
@@ -90,16 +88,6 @@ export default function Login() {
   }
 
 
-
-  useEffect(() => {
-    const walletAdd = searchParams.get('walletAdd');
-
-    // If found in URL, set state and store it
-    if (walletAdd) {
-      // setReferalAddress(walletAdd);
-      localStorage.setItem('walletAdd', walletAdd);
-    }
-  }, [searchParams]);
   return (
     <div className="min-h-screen bg-gradient-to-b from-black to-green-800">
       <ToastContainer />
