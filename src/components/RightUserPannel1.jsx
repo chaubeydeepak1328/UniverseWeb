@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useStore } from '../Store/UserStore';
 import { useAppKitAccount } from '@reown/appkit/react';
+import { ToastContainer, toast } from 'react-toastify';
+
+import '../App.css'
 
 const RightUserPannel1 = () => {
     const { address, isConnected } = useAppKitAccount()
@@ -54,6 +57,12 @@ const RightUserPannel1 = () => {
     }
 
 
+    const staticReferal = "0x43e76a14e75ae2DE6c8D8799112f11e5E62b767d"
+
+
+
+
+
 
     // className = "w-full px-6 py-8 bg-white rounded-xl shadow-lg max-w-md mx-auto h-fit" 
     return (
@@ -62,21 +71,78 @@ const RightUserPannel1 = () => {
                 background:
                     "linear-gradient(100deg, rgba(5, 53, 102, 1) 0%, rgba(169, 190, 10, 1) 100%)",
             }}>
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Register Now</h2>
+            <h2 className="text-2xl font-bold text-white mb-6 text-center">Register Now</h2>
 
             <div className="space-y-4">
-                <label htmlFor="walletAddress" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="walletAddress" className="block text-sm font-medium text-white">
                     Referral Address
                 </label>
-                <input
-                    type="text"
-                    id="walletAddress"
-                    value={sponsorAddress}
-                    onChange={(e) => setSponsorAddress(e.target.value)}
-                    placeholder="Enter referral address"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-black"
-                />
+
+                <div className='relative'>
+                    <input
+                        type="text"
+                        id="walletAddress"
+                        value={sponsorAddress}
+                        onChange={(e) => setSponsorAddress(e.target.value)}
+                        placeholder="Enter referral address"
+                        className="w-full h-13 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-white pr-16 walletAddress"
+                    />
+
+                    <button className='absolute right-1 top-1/2 -translate-y-1/2 p-2 border-1 rounded-xl bg-green-400 cursor-pointer' onClick={async () => {
+                        try {
+                            const text = await navigator.clipboard.readText();
+                            setSponsorAddress(text);
+                            toast.success("Address copied to clipboard!", {
+                                position: "top-right",
+                                autoClose: 2000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                            });
+                        } catch (err) {
+                            toast.failed("Failed to paste from clipboard", {
+                                position: "top-right",
+                                autoClose: 2000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                            });
+                        }
+                    }} >paste</button>
+                </div>
                 <p className="text-sm text-white">{message}</p>
+
+
+
+                <label htmlFor="walletAddress" className="block text-sm font-medium text-white">
+                    Dont't have Refferal ? <button className='p-2 bg-warning cursor-pointer' onClick={() => {
+                        navigator.clipboard.writeText(staticReferal)
+                            .then(() =>
+                                toast.success("Referral address copied!", {
+                                    position: "top-right",
+                                    autoClose: 2000,
+                                    hideProgressBar: false,
+                                    closeOnClick: true,
+                                    pauseOnHover: true,
+                                    draggable: true,
+                                    progress: undefined,
+                                }))
+                            .catch(() => toast.failed("Copy failed", {
+                                position: "top-right",
+                                autoClose: 2000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                            }));
+                    }}>Copy Referal</button>
+                    <p>{staticReferal.slice(1, 7)} .... {staticReferal.slice(-6)}</p>
+                </label>
 
 
 

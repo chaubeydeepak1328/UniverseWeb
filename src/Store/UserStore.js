@@ -143,9 +143,9 @@ export const useStore = create((set) => ({
         }
     },
 
-    IsUserExist: async (walletAdd1) => {
+    IsUserExist: async (walletAdd) => {
         try {
-            const walletAdd = "0x25fB86046a1ccfa490a21Dbb9BA08E2803a45B8b";
+            // const walletAdd = "0x25fB86046a1ccfa490a21Dbb9BA08E2803a45B8b";
             if (!walletAdd) {
                 throw new Error("Invalid wallet address");
             }
@@ -178,8 +178,8 @@ export const useStore = create((set) => ({
         }
     },
 
-    getU3Plus: async (walletAdd1) => {
-        const walletAdd = "0x25fB86046a1ccfa490a21Dbb9BA08E2803a45B8b";
+    getU3Plus: async (walletAdd) => {
+        // const walletAdd = "0x25fB86046a1ccfa490a21Dbb9BA08E2803a45B8b";
 
         try {
             if (!walletAdd) {
@@ -207,7 +207,7 @@ export const useStore = create((set) => ({
             const contract = new web3.eth.Contract(abi, contractAddress);
             console.log("====================", sponsorAddress, contractAddress);
 
-            
+
             const balanceWei = await web3.eth.getBalance(address); // address = user's wallet
             const balanceEth = web3.utils.fromWei(balanceWei, 'ether');
 
