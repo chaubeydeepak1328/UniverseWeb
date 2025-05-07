@@ -14,7 +14,6 @@ import {
 import { useSearchParams } from 'react-router-dom';
 
 import { useStore } from '../Store/UserStore';
-import { setWalletAddress } from "../util/helpers";
 
 export default function Login() {
   const getAllusers = useStore((state) => state.getAllusers);
@@ -44,9 +43,22 @@ export default function Login() {
     const checkUserAfterConnect = async () => {
       if (walletPrompted && isConnected && address) {
         try {
-          setWalletAddress(address)
           const user = await IsUserExist(address);
           console.log("this is User=========>", user?.userId?.toString(), user)
+
+
+
+          // Store in localStorage
+          localStorage.setItem(
+            "userData",
+            JSON.stringify({
+              userId: user?.userId?.toString() || null,
+              userAddress: user?.walletAdd,
+              data: user || null,
+            })
+          );
+
+          // Storing to the local storage end
 
           navigate('/user-panel-home', {
             state: {
@@ -78,8 +90,28 @@ export default function Login() {
       console.log("User Address:", userAddress); // Log the fetched users to the console
 
       if (userAddress) {
-        setWalletAddress(userAddress)
-        navigate('/user-panel-home', { state: { userId: inputData, userAddress } });
+
+
+        // navigate('/user-panel-home', { state: { userId: inputData, userAddress } });
+
+
+        // Store in localStorage
+        localStorage.setItem(
+          "userData",
+          JSON.stringify({
+            userId: inputData || null,
+            userAddress: userAddress,
+            data: null,
+          })
+        );
+
+
+        // navigate('/user-panel-home', { state: { userId: inputData, userAddress } });
+
+
+
+
+        navigate('/user-panel-home');
       }
     } else {
       // alert("Please enter a valid user ID.");

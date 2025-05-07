@@ -12,15 +12,21 @@ import { RxCopy } from "react-icons/rx";
 
 import { useStore } from '../Store/UserStore';
 import { useAppKitAccount } from '@reown/appkit/react';
-import { getWalletAddress } from '../util/helpers';
 
 
 const RightUserPannel = () => {
-    const address = getWalletAddress()
+
+
+
+    const [address, setAddress] = useState(JSON.parse(localStorage.getItem("userData")).userAddress);
 
     useEffect(() => {
-        console.log('================+==============', address)
-    }, [])
+        console.log('Address:', address);
+    }, [address]);
+
+
+
+
     const getU3Plus = useStore((state) => state.getU3Plus);
     const [lastSlot, setLastSlot] = useState()
 

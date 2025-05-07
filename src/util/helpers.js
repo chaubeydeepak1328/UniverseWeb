@@ -1,12 +1,12 @@
 export const removeAddress = () => {
-    localStorage.removeItem('walletAdd');
+    localStorage.removeItem('userData');
 };
 
-export const setWalletAddress = (address) => {
-    localStorage.setItem('walletAdd', address);
-};
+// export const setWalletAddress = (address) => {
+//     localStorage.setItem('walletAdd', address);
+// };
 
 
-export const getWalletAddress = () => {
-    return localStorage.getItem('walletAdd');
-}
+// export const getWalletAddress = () => {
+//     return localStorage.getItem('walletAdd');
+// }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import universeCoin from "../assets/images/universeCoin.png";
 import { RxCopy } from "react-icons/rx";
@@ -14,8 +14,24 @@ import Header from "../components/Header";
 import { ToastContainer, toast } from 'react-toastify';
 
 export default function UserPanel() {
-  const { state } = useLocation();
-  const { userId, userAddress, data } = state || {};
+
+  const [userId, setUserId] = useState(null);
+  const [userAddress, setUserAddress] = useState(null);
+  const [data, setData] = useState(null);
+
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("userData");
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      setUserId(parsedUser.userId);
+      setUserAddress(parsedUser.userAddress);
+      setData(parsedUser.data);
+    }
+  }, []);
+
+  // const { state } = useLocation();
+  // const { userId, userAddress, data } = state || {};
 
   console.log("User ID:", userId, userAddress, data);
 
