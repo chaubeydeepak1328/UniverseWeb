@@ -156,7 +156,7 @@ export default function Login() {
             <p className="text-sm sm:text-lg">Join if you are not yet with us:</p>
             <div className="mt-2 flex items-center justify-center gap-2 text-sm sm:text-lg cursor-pointer hover:underline">
               <LuUserRound className="text-xl sm:text-2xl" />
-              Check in Binance Smart Chain
+              Check in RamaScan
             </div>
           </div>
         </div>

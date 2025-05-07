@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import FeaturesCard from "../components/FeaturesCard";
 import About from "../components/About";
 import EpicJourney from "../components/EpicJourney";
@@ -9,11 +9,71 @@ import Footer from "../components/Footer";
 import universeLogo from "../assets/images/universeLogo.png";
 import { CiYoutube } from "react-icons/ci";
 import { FiLink } from "react-icons/fi"; import { TbLogin } from "react-icons/tb";
+import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
+import { useStore } from "../Store/UserStore";
 
 
 
 
 export default function Home() {
+
+  const { open } = useAppKit();
+  const IsUserExist = useStore((state) => state.IsUserExist);
+
+  const { address, isConnected } = useAppKitAccount();
+
+  const navigate = useNavigate();
+
+
+
+  const [joinClicked, setJoinClicked] = useState(false);
+
+
+  useEffect(() => {
+    const checkUser = async () => {
+      if (isConnected && address) {
+        const user = await IsUserExist(address); // Await here
+        navigate('/user-panel-home', {
+          state: {
+            userId: user?.userId?.toString() || null,
+            userAddress: user?.walletAdd,
+            data: user || null,
+          }
+        });
+      }
+    };
+
+    checkUser();
+  }, [joinClicked, address, isConnected]);
+
+
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+    if (!address && !isConnected) {
+      try {
+        await open(); // Trigger wallet connection
+
+        setJoinClicked(true);
+      } catch (err) {
+        console.error('Wallet connect error:', err);
+      }
+    } else {
+      const user = await IsUserExist(address);
+      navigate('/user-panel-home', {
+        state: {
+          userId: user?.userId?.toString() || null,
+          userAddress: user?.walletAdd, data: user || null,
+        }
+      });
+    }
+  };
+
+  const handleJoin = async (e) => {
+    e.preventDefault();
+    await handleClick(e);
+  };
+
   return (
     <div>
       {/* Hero Section */}
@@ -45,7 +105,7 @@ export default function Home() {
               className="h-14 w-64 flex justify-center items-center gap-2 bg-gradient-to-r from-green-500 via-blue-500 to-purple-500 text-white text-lg font-semibold rounded-xl shadow-xl border border-transparent hover:border-white hover:scale-105 transition-all duration-300 ease-in-out"
             > <FiLink className="text-2xl" />
 
-              <div>Join Now</div>
+              <div>Login</div>
             </Link>
             <div className="flex justify-center items-center h-14 w-64 bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 rounded-lg shadow-lg hover:scale-105 transition-all duration-300 ease-in-out">
               <Link
@@ -53,16 +113,17 @@ export default function Home() {
                 className="px-6 py-3 text-white text-lg font-semibold flex justify-center items-center gap-2 "
               >
                 <CiYoutube className="text-3xl" />
-                <div>Watch Video</div>
+                <div>Watch In Telegram</div>
               </Link>
             </div>
-            <Link
-              to="/express-login"
+            <button
+              // to="/express-login"
+              onClick={handleJoin}
               className="h-14 w-64 flex justify-center items-center ga-2 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white text-lg font-semibold rounded-xl shadow-xl border border-transparent hover:border-white hover:scale-105 transition-all duration-300 ease-in-out"
             >
               <TbLogin className="text-3xl" />
-              Login
-            </Link>
+              Join Now
+            </button>
           </div>
 
           {/* Tagline */}
@@ -80,12 +141,12 @@ export default function Home() {
       </div>
 
       {/* Remaining Sections */}
-      <About />
+      {/* <About />
       <FeaturesCard />
       <EpicJourney />
       <UniversResult />
-      <Comission />
-      <Footer />
+      <Comission /> */}
+      {/* <Footer /> */}
     </div>
   );
 }

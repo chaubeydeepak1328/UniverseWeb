@@ -21,10 +21,14 @@ const RightUserPannel1 = () => {
     const [message, setMessage] = useState('');
 
     const handleValidation = () => {
-        if (sponsorAddress.length === 0) {
+        if (!sponsorAddress.length === 0) {
+
+            setMessage('Valid Sponser address! You can proceed with registration.');
+
+        } else {
             setMessage('Please enter a valid address');
             return;
-        } else { setMessage('Valid Sponser address! You can proceed with registration.'); }
+        }
         // Example validation logic
         // const isValid = sponsorAddress.length > 0; // Check if the address is not empty
         setIsValidser(true);
