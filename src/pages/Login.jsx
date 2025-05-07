@@ -14,10 +14,14 @@ import {
 import { useSearchParams } from 'react-router-dom';
 
 import { useStore } from '../Store/UserStore';
+import { Spinner } from "../util/helpers";
 
 export default function Login() {
   const getAllusers = useStore((state) => state.getAllusers);
   const IsUserExist = useStore((state) => state.IsUserExist);
+
+  const [authLoading, setAuthLoading] = useState(false)
+  const [viewLoading, setViewLoading] = useState(false)
 
 
   const { open } = useAppKit(); // This triggers wallet connection
@@ -31,11 +35,14 @@ export default function Login() {
 
   const handleClick = async (e) => {
     e.preventDefault();
+    setAuthLoading(true)
     try {
       await open(); // Trigger wallet connection
       setWalletPrompted(true);
     } catch (err) {
       console.error('Wallet connect error:', err);
+      setAuthLoading(false)
+      return;
     }
   };
 
@@ -59,7 +66,7 @@ export default function Login() {
           );
 
           // Storing to the local storage end
-
+          setAuthLoading(false)
           navigate('/user-panel-home', {
             state: {
               userId: user?.userId?.toString() || null,
@@ -67,9 +74,11 @@ export default function Login() {
             }
           });
         } catch (err) {
+          setAuthLoading(false)
           console.error("Error checking user:", err);
           toast.error("Failed to verify user.");
         } finally {
+          setAuthLoading(false)
           setWalletPrompted(false); // Reset to prevent re-trigger
         }
       }
@@ -81,6 +90,7 @@ export default function Login() {
 
   const handleUserIdClick = async (e) => {
     e.preventDefault(); // prevent navigation
+    setViewLoading(true)
 
     if (inputData) {
       // Perform any action with the input data, like navigating to a user panel
@@ -115,6 +125,7 @@ export default function Login() {
       }
     } else {
       // alert("Please enter a valid user ID.");
+      setViewLoading(false)
       toast("Please enter a valid user ID.")
     }
   }
@@ -155,7 +166,9 @@ export default function Login() {
                 "linear-gradient(262deg, rgba(32, 173, 29, 1) 0%, rgba(239, 185, 10, 1) 50%)",
             }}
           >
-            Authorization
+
+            {authLoading ? <Spinner loading={authLoading} /> : "Authorization"}
+
           </button>
 
           {/* ID Input Section */}
@@ -180,7 +193,7 @@ export default function Login() {
                 "linear-gradient(262deg, rgba(32, 173, 29, 1) 0%, rgba(239, 185, 10, 1) 50%)",
             }}
           >
-            Viewing
+            {viewLoading ? <Spinner loading={viewLoading} /> : "Viewing"}
           </button>
 
           {/* Join Info */}
