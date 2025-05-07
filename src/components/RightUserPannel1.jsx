@@ -9,6 +9,10 @@ import '../App.css'
 const RightUserPannel1 = () => {
     const { address, isConnected } = useAppKitAccount()
     const registerUser = useStore((state) => state.registerUser);
+    const IsUserExist = useStore((state) => state.IsUserExist);
+    const getCurrentRamaPrice = useStore((state) => state.getCurrentRamaPrice)
+
+    const [UserData, setUserData] = useState();
 
     useEffect(() => {
         console.log("Address:", address);
@@ -20,10 +24,26 @@ const RightUserPannel1 = () => {
     const [isValidser, setIsValidser] = useState(false);
     const [message, setMessage] = useState('');
 
-    const handleValidation = () => {
-        if (!sponsorAddress.length === 0) {
+    const handleValidation = async () => {
 
-            setMessage('Valid Sponser address! You can proceed with registration.');
+        const udtoRama = await getCurrentRamaPrice();
+        console.log("=======!::::", udtoRama);
+        if (sponsorAddress.length !== 0) {
+
+            const sponserExist = await IsUserExist(sponsorAddress);
+
+            console.log(`this is sponser-->`, sponserExist.isexist)
+
+            if (sponserExist.isexist) {
+
+                setUserData(sponserExist)
+
+                setMessage(`✅Valid Sponser address! You can Conitnue for registration`);
+            } else {
+                setMessage("Invalid sponser Address");
+                return;
+            }
+
 
         } else {
             setMessage('Please enter a valid address');
@@ -139,20 +159,34 @@ const RightUserPannel1 = () => {
                         type="text"
                         id="walletAddress"
                         value={sponsorAddress}
-                        onChange={(e) => setSponsorAddress(e.target.value)}
+                        disabled={isValidser}
+                        onChange={(e) => {
+                            setSponsorAddress(e.target.value);
+                            setMessage('')
+                        }}
                         placeholder="Enter referral address"
                         className="w-full h-13 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-white pr-16 walletAddress"
                     />
 
-                    <button className='absolute right-1 top-1/2 -translate-y-1/2 p-2 border-1 rounded-xl bg-green-400 cursor-pointer' onClick={handlePast} >paste</button>
+                    {!isValidser ? <button className='absolute right-1 top-1/2 -translate-y-1/2 p-2 border-1 rounded-xl bg-green-400 cursor-pointer' onClick={handlePast} >paste</button> : ""}
                 </div>
 
                 {message ? <p className={`text-sm p-2 ${(
-                    message === "Valid Sponser address! You can proceed with registration." ||
-                    message === "Registration successful!"
+                    message.startsWith("✅Valid Sponser address!") ||
+                    message.startsWith("Registration successful!")
                 ) ? "text-green-400 bg-black" : "text-red-600 bg-black"}`}>
                     {message}
                 </p> : ""}
+
+                <div className='w-100 flex gap-2 justify-center'>
+                    {message && (
+                        <div className='flex gap-2 justify-center'>
+                            <h2 >id: {UserData.userId}</h2> <h2 >Required Rama : {UserData.userId}</h2> <h2 >Available Rama : {UserData.userId}</h2>
+                        </div>
+                    )}
+                </div>
+
+
 
 
 

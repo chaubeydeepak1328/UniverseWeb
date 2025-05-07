@@ -9,7 +9,7 @@ const Contract = {
     "U3plus": "0xA55D00833bc101604d1627fbdE6269876B3228DD",
     "UIncome": "0x34019Db97158bEc799d5F920669D8CCA75200ac6",
     "UserMang": "0x006a31610340F29EB70c1E35444f72524C0648F6",
-    "PriceConv": "0x63a5dC720E8B71Fb61035bf33a72e4d0C0D640d5",
+    "PriceConv": "0x2D39290e904D28B059249c58284e70c9E6E4B7a5",
 }
 
 const fetchContractAbi = async (contractName) => {
@@ -51,6 +51,21 @@ export const useStore = create((set) => ({
 
     // Smart Contract Data
 
+    getCurrentRamaPrice: async () => {
+        try {
+            const { abi, contractAddress } = await fetchContractAbi("PriceConv");
+
+
+            const contract = new web3.eth.Contract(abi, contractAddress);
+            const userAddress = await contract.methods.usdToRama(20).call();
+
+            console.log("Users:", userAddress);
+            return userAddress.toString();
+        } catch (error) {
+
+        }
+    },
+
 
     getAllusers: async (userId) => {
         try {
@@ -83,6 +98,7 @@ export const useStore = create((set) => ({
             if (isExist) {
 
                 const user = await contract.methods.getUser(walletAdd).call();
+                console.log(user)
                 return {
                     isexist: true,
                     walletAdd: walletAdd,
