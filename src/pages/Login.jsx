@@ -89,46 +89,52 @@ export default function Login() {
 
 
   const handleUserIdClick = async (e) => {
-    e.preventDefault(); // prevent navigation
-    setViewLoading(true)
+    e.preventDefault(); // Prevent navigation
+    setViewLoading(true);
 
     if (inputData) {
       // Perform any action with the input data, like navigating to a user panel
       console.log("User ID entered:", inputData);
 
-      const userAddress = await getAllusers(inputData)
-      console.log("User Address:", userAddress); // Log the fetched users to the console
+      try {
 
-      if (userAddress) {
+        const UserInfo = await getAllusers(parseInt(inputData) - 1);
+        console.log("UserInfo:", UserInfo); // Log the fetched users to the console
 
+        if (UserInfo && UserInfo.userAddress && UserInfo.userAddress.toString()) {
+          // Convert all relevant data fields to strings if they are BigInt
+          const dataToStore = {
+            userId: UserInfo.userId || inputData,
+            userAddress: UserInfo.userAddress.toString(), // Ensure userAddress is a string
+            data: {
+              ...UserInfo,
+              userAddress: UserInfo.userAddress.toString(), // Convert if any BigInt in UserInfo
+              sponserAdd: UserInfo.sponserAdd.toString(),
+              regTime: UserInfo.regTime.toString(),
+              directReferral: UserInfo.directReferral.toString(),
+            },
+          };
 
-        // navigate('/user-panel-home', { state: { userId: inputData, userAddress } });
+          // Store user data in localStorage
+          localStorage.setItem("userData", JSON.stringify(dataToStore));
 
-
-        // Store in localStorage
-        localStorage.setItem(
-          "userData",
-          JSON.stringify({
-            userId: inputData || null,
-            userAddress: userAddress,
-            data: null,
-          })
-        );
-
-
-        // navigate('/user-panel-home', { state: { userId: inputData, userAddress } });
-
-
-
-
-        navigate('/user-panel-home');
+          // Navigate to user panel home page
+          navigate('/user-panel-home');
+        } else {
+          setViewLoading(false);
+          toast("Please enter a valid user ID.");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        setViewLoading(false);
+        toast("An error occurred while fetching user data.");
       }
     } else {
-      // alert("Please enter a valid user ID.");
-      setViewLoading(false)
-      toast("Please enter a valid user ID.")
+      setViewLoading(false);
+      toast("Please enter a valid user ID.");
     }
-  }
+  };
+
 
 
   return (

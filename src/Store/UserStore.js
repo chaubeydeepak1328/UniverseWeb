@@ -55,17 +55,48 @@ export const useStore = create((set) => ({
 
     getCurrentRamaPrice: async () => {
         try {
-            const { abi, contractAddress } = await fetchContractAbi("PriceConv");
 
 
-            const contract = new web3.eth.Contract(abi, contractAddress);
-            const userAddress = await contract.methods.usdToRama(20).call();
+            const [priceConv, u3plus, u5] = await Promise.all([
+                fetchContractAbi("PriceConv"),
+                fetchContractAbi("U3plus"),
+                fetchContractAbi("U5")
+            ]);
+
+            const contract1 = new web3.eth.Contract(priceConv.abi, priceConv.contractAddress);
+            const contract2 = new web3.eth.Contract(u3plus.abi, u3plus.contractAddress);
+            const contract3 = new web3.eth.Contract(u5.abi, u5.contractAddress);
+
+
+            // U3 Transaction 
+
+
+            // u5 Transaction
+
+            const userAddress = await contract1.methods.usdToRama(20).call();
 
             console.log("Users:", userAddress);
             return userAddress.toString();
         } catch (error) {
 
         }
+    },
+
+    homePannelInfo: async ({ address }) => {
+        const { abi, contractAddress } = await fetchContractAbi("UserMang");
+        const contract = new web3.eth.Contract(abi, contractAddress);
+        const slotLevel = await contract.methods.getUsersSlotLevel(address).call();
+
+
+        if (slotLevel) {
+            const user = await contract.methods.getUser(address).call();
+
+            return {
+                InvitedPartner: user.directReferrals,
+                slotActivated: slotLevel
+            }
+        }
+
     },
 
 
@@ -76,8 +107,28 @@ export const useStore = create((set) => ({
             const contract = new web3.eth.Contract(abi, contractAddress);
             const userAddress = await contract.methods.allUsers(userId).call();
 
-            console.log("Users:", userAddress); // Log the fetched users to the console
-            return userAddress.toString();
+            if (userAddress) {
+
+                const userInfo = await contract.methods.getUser(userAddress).call();
+                console.log(userInfo);
+
+                if (userInfo) {
+                    const sponserId = await contract.methods.getUserIDByAddress(userInfo.sponsor).call();
+
+                    console.log("sponser Id", sponserId)
+                    const data = {
+                        userAddress: userAddress.toString(),
+                        userId: userInfo.id.toString(),
+                        sponserAdd: userInfo.sponsor.toString(),
+                        sponserId: sponserId.toString(),
+                        regTime: userInfo.registrationTime,
+                        directReferral: userInfo.directReferrals,
+                    }
+                    return data;
+                }
+
+            }
+
         } catch (error) {
             console.error("Error:", error);
             alert(`user Id Exist ${error.message}`);

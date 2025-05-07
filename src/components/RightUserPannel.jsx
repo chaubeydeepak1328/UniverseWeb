@@ -12,6 +12,7 @@ import { RxCopy } from "react-icons/rx";
 
 import { useStore } from '../Store/UserStore';
 import { useAppKitAccount } from '@reown/appkit/react';
+import DashboardInfo from './DashboardInfo';
 
 
 const RightUserPannel = () => {
@@ -47,10 +48,14 @@ const RightUserPannel = () => {
         fetchData();
     }, [lastSlot]);
 
+    // const values = [
+    //     10, 20, 40, 80, 160, 320, 640, 1280, 2560, 5120,
+    // ].slice(0, lastSlot); // Adjust the number of values as needed
+
+
     const values = [
         10, 20, 40, 80, 160, 320, 640, 1280, 2560, 5120,
-    ].slice(0, lastSlot); // Adjust the number of values as needed
-
+    ];
     // Dynamic the page  
     const slotData = [
         { users: 3, cycles: 2 }, //user should be between 0-3 if ine more user come then cycle complete  and  next cycle show no user
@@ -71,7 +76,7 @@ const RightUserPannel = () => {
 
     return (
         <div className="w-full">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Link
                     to="/user-panel-home/upline-bonus"
                     className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl  text-black p-4"
@@ -148,7 +153,9 @@ const RightUserPannel = () => {
                         <div><RxCopy className="text-3xl  hover:text-[#f9ad13]" /></div>
                     </div>
                 </div>
-            </div>
+            </div> */}
+
+            <DashboardInfo/>
 
             {/* Universe U3 Plus Section */}
             <div
