@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import universeCoin from "../assets/images/universeCoin.png";
 import { RxCopy } from "react-icons/rx";
@@ -18,6 +18,9 @@ export default function UserPanel() {
   const { userId, userAddress, data } = state || {};
 
   console.log("User ID:", userId, userAddress, data);
+
+
+  const [RamaValueUsd, setRamaValueUsd] = useState("345");
 
 
 
@@ -70,6 +73,10 @@ export default function UserPanel() {
               </div>
               <div className="text-3xl font-bold">Id :{userId ? userId : "N/A"}</div>
             </div>
+            <div className="w-full flex justify-end mt-2">
+              <p className="text-2xl text-green-500">${RamaValueUsd}</p>
+            </div>
+
             <div className="bg-[#34c759] w-full rounded-sm mt-5 h-10 flex items-center justify-center lg:w-[260px] mx-auto">
               RAMA 0.000
             </div>

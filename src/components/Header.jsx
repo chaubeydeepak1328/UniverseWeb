@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDisconnect } from '@reown/appkit/react';
 import { FaTelegram } from "react-icons/fa";
 import { RiLogoutCircleRLine } from "react-icons/ri";
+import { removeAddress } from '../util/helpers';
 
 
 
@@ -15,6 +16,7 @@ const Header = () => {
     const handleDisconnect = async () => {
         try {
             await disconnect();
+            removeAddress()
             navigate('/user-login');
 
         } catch (error) {

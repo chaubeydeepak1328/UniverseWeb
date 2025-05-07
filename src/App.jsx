@@ -37,6 +37,7 @@ import { projectId, metadata, networks, wagmiAdapter } from './config'
 import Umatrix4 from './pages/userpaneldmatrix/UmatrixU4';
 import UniverseU40 from './pages/UniverseU4/UniverseU40';
 import UniverseU340 from './pages/UniverseU340/UniverseU340';
+import Referral from './pages/Referral';
 
 
 const queryClient = new QueryClient()
@@ -114,9 +115,16 @@ function App() {
           <Route path='/user-panel-home/UniverseU4' element={<UniverseU40 />} />
 
 
+
+
+
           {/* Universe U3 premium */}
           <Route path='/user-panel-home/user-panel-umatrix-3plus' element={<UmatrixUThreeplus />} />
           <Route path='/user-panel-home/user-panel-umatrix-3pre-details' element={<UniverseU340 />} />
+
+
+          {/* For Refferd User */}
+          <Route path='/user-panel-home/:customId' element={<Referral />} />
 
         </Routes>
       </QueryClientProvider>
