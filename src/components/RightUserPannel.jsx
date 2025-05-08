@@ -21,6 +21,11 @@ const RightUserPannel = () => {
 
     const [address, setAddress] = useState(JSON.parse(localStorage.getItem("userData")).userAddress);
 
+    const [u3Data, setU3Data] = useState();
+
+
+    const [slotData, setSloatData] = useState([]);
+
     useEffect(() => {
         console.log('Address:', address);
     }, [address]);
@@ -29,7 +34,7 @@ const RightUserPannel = () => {
 
 
     const getU3Plus = useStore((state) => state.getU3Plus);
-    const [lastSlot, setLastSlot] = useState()
+
 
     const navigate = useNavigate();
 
@@ -37,16 +42,19 @@ const RightUserPannel = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const lastSlot = await getU3Plus(address);
-                console.log("lastSlot:", lastSlot);
-                setLastSlot(lastSlot)
+                const response = await getU3Plus(address);
+                console.log("response:", response);
+
+                setU3Data(response)
+                setSloatData(response.slotinfo)
+                // setLastSlot(lastSlot)
             } catch (error) {
                 console.error("Error fetching U3Plus:", error);
             }
         };
 
         fetchData();
-    }, [lastSlot]);
+    }, []);
 
     // const values = [
     //     10, 20, 40, 80, 160, 320, 640, 1280, 2560, 5120,
@@ -57,18 +65,18 @@ const RightUserPannel = () => {
         10, 20, 40, 80, 160, 320, 640, 1280, 2560, 5120,
     ];
     // Dynamic the page  
-    const slotData = [
-        { users: 3, cycles: 2 }, //user should be between 0-3 if ine more user come then cycle complete  and  next cycle show no user
-        { users: 0, cycles: 1 }, // In each slots there are 4 users and can be infinite cycles
-        { users: 3, cycles: 0 },
-        { users: 2, cycles: 3 }, // Last active with 2 users
-        { users: 1, cycles: 0 },
-        { users: 2, cycles: 0 },
-        { users: 3, cycles: 0 },
-        { users: 0, cycles: 0 },
-        { users: 0, cycles: 0 },
-        { users: 0, cycles: 0 },
-    ];
+    // const slotData = [
+    //     { users: 3, cycles: 2 }, //user should be between 0-3 if ine more user come then cycle complete  and  next cycle show no user
+    //     { users: 0, cycles: 1 }, // In each slots there are 4 users and can be infinite cycles
+    //     { users: 3, cycles: 0 },
+    //     { users: 2, cycles: 3 }, // Last active with 2 users
+    //     { users: 1, cycles: 0 },
+    //     { users: 2, cycles: 0 },
+    //     { users: 3, cycles: 0 },
+    //     { users: 0, cycles: 0 },
+    //     { users: 0, cycles: 0 },
+    //     { users: 0, cycles: 0 },
+    // ];
 
     // Determine last active slot with users > 0
     const lastActiveIndex = slotData.reduce((acc, curr, idx) => curr.users > 0 ? idx : acc, -1);
@@ -155,7 +163,7 @@ const RightUserPannel = () => {
                 </div>
             </div> */}
 
-            <DashboardInfo/>
+            <DashboardInfo />
 
             {/* Universe U3 Plus Section */}
             <div
@@ -179,7 +187,7 @@ const RightUserPannel = () => {
                     {values.slice(0, 1).map((value, index) => {
                         const slot = slotData[index];
                         const isLastActive = index === lastActiveIndex;
-                        const circleClass = isLastActive && slot.users === 2 ? "text-white" : "";
+                        const circleClass = isLastActive && slot?.users === 2 ? "text-white" : "";
 
                         return (
                             <button
@@ -199,14 +207,14 @@ const RightUserPannel = () => {
                                 ))}
                                 <div className="flex justify-center gap-2">
                                     {[...Array(4)].map((_, j) => {
-                                        const isFilled = j < slot.users; // Fill based on user count
+                                        const isFilled = j < slot?.users; // Fill based on user count
                                         return (
                                             j == 2 ? <GiCircle
                                                 key={j}
                                                 className="rounded-full"
                                                 style={
                                                     isFilled
-                                                        ? { background: 'linear-gradient(to bottom, white 50%, #ff66d9 50%)' }
+                                                        ? { background: 'white' }
                                                         : { color: 'gray' }
                                                 }
                                             />
@@ -218,9 +226,9 @@ const RightUserPannel = () => {
                                     })}
                                 </div>
                                 <div className="flex justify-center items-center gap-2 mt-2">
-                                    <div>{slot.users}</div>
+                                    <div>{slot?.users}</div>
                                     <LuUsers />
-                                    <div>{slot.cycles}</div>
+                                    <div>{slot?.cycles}</div>
                                     <TfiReload className="text-pink-600 font-bold" />
                                 </div>
                             </button>
@@ -237,7 +245,7 @@ const RightUserPannel = () => {
                         const slot = slotData[slotIndex];
                         {/* console.log(slot, "slot") */ }
                         const isLastActive = slotIndex === lastActiveIndex;
-                        const circleClass = isLastActive && slot.users === 2 ? "text-white" : "";
+                        const circleClass = isLastActive && slot?.users === 2 ? "text-white" : "";
 
                         return (
                             <button
@@ -257,7 +265,7 @@ const RightUserPannel = () => {
                                 ))}
                                 <div className="flex justify-center gap-2">
                                     {[...Array(4)].map((_, j) => {
-                                        const isFilled = j < slot.users; // Fill based on user count
+                                        const isFilled = j < slot?.users; // Fill based on user count
                                         return (
                                             j == 2 ? <GiCircle
                                                 key={j}
@@ -276,9 +284,9 @@ const RightUserPannel = () => {
                                     })}
                                 </div>
                                 <div className="flex justify-center items-center gap-2 mt-2">
-                                    <div>{slot.users}</div>
+                                    <div>{slot?.users}</div>
                                     <LuUsers />
-                                    <div>{slot.cycles}</div>
+                                    <div>{slot?.cycles}</div>
                                     <TfiReload className="text-pink-600 font-bold" />
                                 </div>
                             </button>
@@ -293,7 +301,7 @@ const RightUserPannel = () => {
                         const slotIndex = index + 6;
                         const slot = slotData[slotIndex];
                         const isLastActive = slotIndex === lastActiveIndex;
-                        const circleClass = isLastActive && slot.users === 2 ? "text-white" : "";
+                        const circleClass = isLastActive && slot?.users === 2 ? "text-white" : "";
 
                         return (
                             <button
@@ -320,7 +328,7 @@ const RightUserPannel = () => {
 
                                 <div className="flex justify-center gap-2">
                                     {[...Array(4)].map((_, j) => {
-                                        const isFilled = j < slot.users; // Fill based on user count
+                                        const isFilled = j < slot?.users; // Fill based on user count
                                         return (
                                             j == 2 ? <GiCircle
                                                 key={j}
@@ -339,9 +347,9 @@ const RightUserPannel = () => {
                                     })}
                                 </div>
                                 <div className="flex justify-center items-center gap-2 mt-2">
-                                    <div>{slot.users}</div>
+                                    <div>{slot?.users}</div>
                                     <LuUsers />
-                                    <div>{slot.cycles}</div>
+                                    <div>{slot?.cycles}</div>
                                     <TfiReload className="text-pink-600 font-bold" />
                                 </div>
                             </button>

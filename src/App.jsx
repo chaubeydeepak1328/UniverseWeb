@@ -124,7 +124,7 @@ function App() {
 
 
           {/* For Refferd User */}
-          <Route path='/user-panel-home/:customId' element={<Referral />} />
+          <Route path='/referral/:customId' element={<Referral />} />
 
         </Routes>
       </QueryClientProvider>

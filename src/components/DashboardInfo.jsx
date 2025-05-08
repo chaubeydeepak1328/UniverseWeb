@@ -6,25 +6,28 @@ import { PiUsersFourBold } from 'react-icons/pi'
 import { RxCopy } from 'react-icons/rx'
 import { Link } from 'react-router-dom'
 import { useStore } from '../Store/UserStore'
+import { ToastContainer, toast } from 'react-toastify';
 
 const DashboardInfo = () => {
 
+    const homePannelInfo = useStore((state) => state.homePannelInfo)
+
+
     const [address, setAddress] = useState(JSON.parse(localStorage.getItem("userData")).userAddress);
+    const [userId, setUserId] = useState(JSON.parse(localStorage.getItem("userData")).userId);
     const [ActivatedSlot, setActivatedSlot] = useState();
     const [InvitedPartners, setInvitedPartners] = useState();
 
 
-    const homePannelInfo = useStore((state) => state.homePannelInfo)
 
     useEffect(() => {
+
+        console.log("=========================================================")
         const DahPannelInfo = async () => {
-            const storedUser = localStorage.getItem("userData");
-            if (!storedUser) return;
 
-            const parsedUser = JSON.parse(storedUser);
-            setAddress(parsedUser.userAddress);
+            const data = await homePannelInfo(address);
 
-            const data = await homePannelInfo(parsedUser.userAddress);
+            console.log("=========================================================", data)
             if (data) {
                 setActivatedSlot(data.slotActivated);
                 setInvitedPartners(data.InvitedPartner);
@@ -36,6 +39,22 @@ const DashboardInfo = () => {
 
         DahPannelInfo();
     }, []);
+
+
+    const handleCopy = (address) => {
+        if (address) {
+            navigator.clipboard.writeText(address);
+            toast.success("Address copied to clipboard!", {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
+    };
 
 
 
@@ -54,7 +73,7 @@ const DashboardInfo = () => {
                     <div> <PiUsersFourBold className="text-6xl text-[#f9ad13]" />
                     </div>
                     <div className="">
-                        <div className="text-lg md:text-2xl font-bold">
+                        <div className="text-lg md:text-xl font-bold">
                             Partners Invited :{InvitedPartners}
                         </div>
                         <span>Income : 0000000.00 RAMA</span>
@@ -72,7 +91,7 @@ const DashboardInfo = () => {
                 <div className="flex justify-center items-center gap-6">
                     <div><GiSplitArrows className="text-5xl text-[#f9ad13]" /></div>
                     <div>
-                        <span className="text-lg md:text-2xl font-bold">
+                        <span className="text-lg md:text-xl font-bold">
                             Split Bonus
                         </span>
                         <br />
@@ -91,7 +110,7 @@ const DashboardInfo = () => {
                 <div className="flex justify-center items-center gap-6">
                     <div><FaCheckToSlot className="text-5xl text-[#f9ad13]" /></div>
                     <div>
-                        <span className="text-lg md:text-2xl font-bold">
+                        <span className="text-lg md:text-xl font-bold">
                             Slot Activated : {ActivatedSlot}
                         </span>
                         <br />
@@ -109,13 +128,13 @@ const DashboardInfo = () => {
                 <div className="flex justify-center items-center gap-6">
                     <div><MdOutlineContactMail className="text-5xl text-[#f9ad13]" /></div>
                     <div>
-                        <span className="text-lg md:text-2xl font-bold">
+                        <span className="text-lg md:text-xl font-bold">
                             Affiliated Link
                         </span>
                         <br />
                         <span>Click to Copy</span>
                     </div>
-                    <div><RxCopy className="text-3xl  hover:text-[#f9ad13]" /></div>
+                    <div><RxCopy onClick={() => handleCopy(`${window.location.origin}/referral/${userId}`)} className="text-3xl  hover:text-[#f9ad13]" /></div>
                 </div>
             </div>
         </div>

@@ -82,19 +82,26 @@ export const useStore = create((set) => ({
         }
     },
 
-    homePannelInfo: async ({ address }) => {
-        const { abi, contractAddress } = await fetchContractAbi("UserMang");
-        const contract = new web3.eth.Contract(abi, contractAddress);
-        const slotLevel = await contract.methods.getUsersSlotLevel(address).call();
+    homePannelInfo: async (address) => {
+        try {
+            const { abi, contractAddress } = await fetchContractAbi("UserMang");
+            const contract = new web3.eth.Contract(abi, contractAddress);
+            const slotLevel = await contract.methods.getUsersSlotLevel(address).call();
+            console.log("slotlevel================", slotLevel)
 
 
-        if (slotLevel) {
-            const user = await contract.methods.getUser(address).call();
+            if (slotLevel) {
+                const user = await contract.methods.getUser(address).call();
 
-            return {
-                InvitedPartner: user.directReferrals,
-                slotActivated: slotLevel
+                return {
+                    InvitedPartner: user.directReferrals.length,
+                    slotActivated: slotLevel
+                }
             }
+        } catch (error) {
+            console.error("Error:", error);
+            alert(`user Id Exist ${error.message}`);
+            throw error;
         }
 
     },
@@ -173,25 +180,61 @@ export const useStore = create((set) => ({
     },
 
     getU3Plus: async (walletAdd) => {
-        // const walletAdd = "0x25fB86046a1ccfa490a21Dbb9BA08E2803a45B8b";
-
         try {
             if (!walletAdd) {
                 throw new Error("Invalid wallet address");
             }
-            const { abi, contractAddress } = await fetchContractAbi("UserMang");
 
+            const { abi, contractAddress } = await fetchContractAbi("UserMang");
             const contract = new web3.eth.Contract(abi, contractAddress);
+
+            // Activated slot
             const lastSloat = await contract.methods.getUsersSlotLevel(walletAdd).call();
 
-            // const 
+            const slotInfoArray = [];
 
-            return lastSloat.toString();
+            if (lastSloat) {
+                // Loop through each slot level and get the info
+                // for (let i = 1; i <= Number(lastSloat); i++) {
+                //     const slot = await contract.methods.getUserSlot(walletAdd, 0, i).call();
+                //     const totalPositions = slot.positions.length;
+                //     console.log("Slot response for level", i, slot , totalPositions);
+                //     const cycles = Math.floor(totalPositions / 4);
+                //     const users = totalPositions % 4;
+
+                //     slotInfoArray.push({ users, cycles });
+                // }
+
+                for (let i = 1; i <= Number(lastSloat); i++) {
+                    const slot = await contract.methods.getUserSlot(walletAdd, 0, i).call();
+
+                    if (!slot || !slot.positions) {
+                        console.warn(`Invalid slot data at level ${i}`, slot);
+                        slotInfoArray.push({ users: 0, cycles: 0 });
+                        continue;
+                    }
+
+                    const zeroAddress = "0x0000000000000000000000000000000000000000";
+                    const totalPositions = slot.positions.filter(addr => addr !== zeroAddress).length;
+                    const cycles = Math.floor(totalPositions / 4);
+                    const users = totalPositions % 4;
+
+                    slotInfoArray.push({ users, cycles });
+                }
+
+
+                return {
+                    lastSlot: lastSloat,
+                    slotinfo: slotInfoArray,
+                };
+            }
+
         } catch (error) {
             console.error("Error:", error);
             alert(`Error checking user: ${error.message}`);
         }
     },
+
 
     registerUser: async (sponsorAddress, address) => {
         try {
@@ -301,4 +344,3 @@ export const useStore = create((set) => ({
         }
     }
 }));
-
