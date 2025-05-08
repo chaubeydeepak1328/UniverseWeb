@@ -21,10 +21,15 @@ const RightUserPannel = () => {
 
     const [address, setAddress] = useState(JSON.parse(localStorage.getItem("userData")).userAddress);
 
+
+
     const [u3Data, setU3Data] = useState();
-
-
     const [slotData, setSloatData] = useState([]);
+    const [genId, setGenId] = useState();
+
+
+
+
 
     useEffect(() => {
         console.log('Address:', address);
@@ -34,7 +39,7 @@ const RightUserPannel = () => {
 
 
     const getU3Plus = useStore((state) => state.getU3Plus);
-
+    const generatedId = useStore((state) => state.generatedId);
 
     const navigate = useNavigate();
 
@@ -47,7 +52,11 @@ const RightUserPannel = () => {
 
                 setU3Data(response)
                 setSloatData(response.slotinfo)
-                // setLastSlot(lastSlot)
+
+
+                const response1 = await generatedId(address)
+                setGenId(response1)
+                console.log("generatedId:", response1);
             } catch (error) {
                 console.error("Error fetching U3Plus:", error);
             }
@@ -363,21 +372,21 @@ const RightUserPannel = () => {
             {["U5", "U4", "U3 Premium"].map((name, idx) => {
                 // Map each name to its unique URL
                 const urlMap = {
-                    U5: "user-panel-umatrix5",
-                    U4: "user-panel-umatrix4",
+                    "U5": "user-panel-umatrix5",
+                    "U4": "user-panel-umatrix4",
                     "U3 Premium": "user-panel-umatrix-3plus",
                 };
 
                 // Map each name to its unique value
                 const idMap = {
-                    U5: "1",
-                    U4: "4",
-                    "U3 Premium": "30",
+                    "U5": genId?.u5gen?.length ?? 0,
+                    "U4": genId?.u4gen?.length ?? 0,
+                    "U3 Premium": genId?.u3genprem?.length ?? 0,
                 };
 
                 const EarnedRama = {
-                    U5: "2",
-                    U4: "6",
+                    "U5": "2",
+                    "U4": "6",
                     "U3 Premium": "4",
                 };
 
