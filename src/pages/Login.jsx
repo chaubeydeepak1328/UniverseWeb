@@ -36,14 +36,25 @@ export default function Login() {
   const handleClick = async (e) => {
     e.preventDefault();
     setAuthLoading(true)
-    try {
-      await open(); // Trigger wallet connection
-      setWalletPrompted(true);
-    } catch (err) {
-      console.error('Wallet connect error:', err);
+
+
+    if (address && isConnected) {
       setAuthLoading(false)
-      return;
+      navigate('/user-panel-home');
     }
+    else {
+      try {
+        await open(); // Trigger wallet connection
+        setWalletPrompted(true);
+      } catch (err) {
+        console.error('Wallet connect error:', err);
+        setAuthLoading(false)
+        return;
+      }
+    }
+
+
+
   };
 
   useEffect(() => {
@@ -54,14 +65,17 @@ export default function Login() {
           console.log("this is User=========>", user?.userId?.toString(), user)
 
 
+          const safeUser = {
+            ...user,
+            regTime: user.regTime?.toString(), // convert BigInt to string
+          };
 
-          // Store in localStorage
           localStorage.setItem(
             "userData",
             JSON.stringify({
-              userId: user?.userId?.toString() || null,
-              userAddress: user?.walletAdd,
-              data: user || null,
+              userId: safeUser?.userId || null,
+              userAddress: safeUser?.walletAdd,
+              data: safeUser,
             })
           );
 

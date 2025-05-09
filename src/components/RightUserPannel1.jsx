@@ -18,6 +18,7 @@ const RightUserPannel1 = () => {
     useEffect(() => {
         if (hash) {
             console.log("Transaction hash:", hash);
+            setMessage('Registration successful!');
         }
     }, [hash])
 
@@ -97,8 +98,6 @@ const RightUserPannel1 = () => {
                 console.log("trxResponse", trxResponse)
                 setTrxData(trxResponse);
 
-
-                setMessage('Registration successful!');
                 setSponsorAddress('');
                 setIsValidser(false);
             } catch (error) {

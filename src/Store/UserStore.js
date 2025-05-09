@@ -334,7 +334,7 @@ export const useStore = create((set) => ({
 
                     const zeroAddress = "0x0000000000000000000000000000000000000000";
                     const totalPositions = slot.positions.filter(addr => addr !== zeroAddress).length;
-                    const cycles = (parseInt(currentCycle) - 1)
+                    const cycles = (parseInt(currentCycle))
                     const users = totalPositions % 4;
 
                     slotInfoArray.push({ users, cycles });
