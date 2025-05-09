@@ -10,7 +10,10 @@ import { useTransaction } from '../config/register';
 
 const RightUserPannel1 = () => {
 
-    const { handleSendTx, hash } = useTransaction();
+    const [trxData, setTrxData] = useState();
+
+    const { handleSendTx, hash } = useTransaction(trxData !== null && trxData);
+
 
     useEffect(() => {
         if (hash) {
@@ -18,8 +21,18 @@ const RightUserPannel1 = () => {
         }
     }, [hash])
 
+
+    useEffect(() => {
+        if (trxData) {
+            handleSendTx(trxData);
+        }
+    }, [trxData]);
+
+
+
+
     const { address, isConnected } = useAppKitAccount()
-    // const registerUser = useStore((state) => state.registerUser);
+    const registerUser = useStore((state) => state.registerUser);
     const IsUserExist = useStore((state) => state.IsUserExist);
     const getCurrentRamaPrice = useStore((state) => state.getCurrentRamaPrice)
 
@@ -80,8 +93,11 @@ const RightUserPannel1 = () => {
                 }
 
                 console.log('Registering with address:', sponsorAddress);
-                // await registerUser(sponsorAddress, address);
-                handleSendTx();
+                const trxResponse = await registerUser(sponsorAddress, address);
+                console.log("trxResponse", trxResponse)
+                setTrxData(trxResponse);
+
+
                 setMessage('Registration successful!');
                 setSponsorAddress('');
                 setIsValidser(false);

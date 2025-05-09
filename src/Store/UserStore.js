@@ -235,8 +235,15 @@ export const useStore = create((set) => ({
             console.log("Wallet Balance in ETH:", balanceEth);
 
             // Get USD → RAMA value
-            const valueInUSD = 20 * 1000000; // 20 USD in micro USD
+            const valueInUSD = 20 * 1e6; // 20 USD in micro USD
             const ramaAmount = await priceContract.methods.usdToRama(valueInUSD).call();
+
+            console.log("value in RAMA is", parseFloat(ramaAmount) / parseFloat(1e18));
+
+            // const maybeWei = "20000000000000000";
+            const inEth = web3.utils.fromWei(ramaAmount, 'ether');
+            console.log("Converted to ETH:", inEth);
+
 
             // Prepare transaction
             const trxData = contract.methods.register(sponsorAddress).encodeABI();
@@ -247,7 +254,7 @@ export const useStore = create((set) => ({
                 gasLimit = await web3.eth.estimateGas({
                     from: userAddress,
                     to: UIncome.contractAddress,
-                    value: ramaAmount,
+                    value: BigInt(ramaAmount),
                     data: trxData,
                 });
             } catch (error) {
@@ -271,19 +278,19 @@ export const useStore = create((set) => ({
             };
 
             // Send transaction
-            web3.eth
-                .sendTransaction(tx)
-                .on("transactionHash", (hash) => {
-                    console.log("✅ Transaction Hash:", hash);
-                })
-                .on("receipt", (receipt) => {
-                    console.log("🎉 Transaction Receipt:", receipt);
-                    alert(`Transaction successful! Hash: ${receipt.transactionHash}`);
-                })
-                .on("error", (err) => {
-                    console.error("❌ Transaction failed:", err);
-                    alert(`Transaction failed: ${err.message}`);
-                });
+            // web3.eth
+            //     .sendTransaction(tx)
+            //     .on("transactionHash", (hash) => {
+            //         console.log("✅ Transaction Hash:", hash);
+            //     })
+            //     .on("receipt", (receipt) => {
+            //         console.log("🎉 Transaction Receipt:", receipt);
+            //         alert(`Transaction successful! Hash: ${receipt.transactionHash}`);
+            //     })
+            //     .on("error", (err) => {
+            //         console.error("❌ Transaction failed:", err);
+            //         alert(`Transaction failed: ${err.message}`);
+            //     });
 
             return tx;
 
