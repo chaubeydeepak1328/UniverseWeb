@@ -139,7 +139,7 @@ const LeftUserPannel = () => {
                 Sponser Address
             </div>
             <div className="text-xl font-bold">
-                {data?.sponserAdd ? data?.sponserAdd?.slice(0, 7) + "..." + data?.sponserAdd?.slice(-7) : "Not Available"} {`(id 34)`}
+                {data?.sponserAdd ? data?.sponserAdd?.slice(0, 7) + "..." + data?.sponserAdd?.slice(-7) : "Not Available"} {`(id: ${data?.sponserId})`}
             </div>
             <div className="flex justify-between  mt-2 px-2">
                 <FaExternalLinkAlt className="hover:text-blue-700 cursor-pointer" />

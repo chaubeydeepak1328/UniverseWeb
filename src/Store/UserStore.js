@@ -31,6 +31,17 @@ const fetchContractAbi = async (contractName) => {
 
 
 
+export const trxHashInfo = async () => {
+
+    const hashVal = "0x2456943f6eccd2c4e1e903c825cf02ceaaf6dcfdb8e7b76e9529b77b7332e8c8"
+    const response = await fetch(`https://latest-backendapi.ramascan.com/api/v2/transactions/${hashVal}`);
+    const data = await response.json();
+    console.log(data)
+
+    return data.status;
+}
+
+
 
 const INFURA_URL = "https://blockchain2.ramestta.com"
 const web3 = new Web3(INFURA_URL);
@@ -190,13 +201,18 @@ export const useStore = create((set) => ({
 
                 const user = await contract.methods.getUser(walletAdd).call();
                 console.log(user)
-                return {
-                    isexist: true,
-                    walletAdd: walletAdd,
-                    userId: user.id.toString(),
-                    sponserAdd: user.sponsor,
-                    regTime: user.registrationTime,
-                    directReferral: user.directReferrals,
+                if (user) {
+
+                    const sponserId = await contract.methods.getUserIDByAddress(user.sponsor).call();
+                    return {
+                        isexist: true,
+                        walletAdd: walletAdd,
+                        userId: user.id.toString(),
+                        sponserId: sponserId.toString(),
+                        sponserAdd: user.sponsor,
+                        regTime: user.registrationTime,
+                        directReferral: user.directReferrals,
+                    }
                 }
             }
             return {
@@ -209,9 +225,6 @@ export const useStore = create((set) => ({
             throw error;
         }
     },
-
-
-
 
     registerUser: async (sponsorAddress, userAddress) => {
         try {
@@ -301,8 +314,6 @@ export const useStore = create((set) => ({
         }
     },
 
-
-
     getU3Plus: async (walletAdd) => {
         try {
             if (!walletAdd) {
@@ -370,42 +381,46 @@ export const useStore = create((set) => ({
             // ];
 
 
-            const { abi, contractAddress } = await fetchContractAbi("UserMang");
-            const contract = new web3.eth.Contract(abi, contractAddress);
+            // const { abi, contractAddress } = await fetchContractAbi("UserMang");
+            // const contract = new web3.eth.Contract(abi, contractAddress);
 
-            // Activated slot
-            const lastSloat = await contract.methods.getUsersSlotLevel(walletAdd).call();
+            // // Activated slot
+            // const lastSloat = await contract.methods.getUsersSlotLevel(walletAdd).call();
 
-            const slotInfoArray = [];
+            // const slotInfoArray = [];
 
-            if (lastSloat) {
+            // if (lastSloat) {
 
-                for (let i = 1; i <= Number(lastSloat); i++) {
-                    const slot = await contract.methods.getUserSlot(walletAdd, 0, i).call();
+            //     for (let i = 1; i <= Number(lastSloat); i++) {
+            //         const slot = await contract.methods.getUserSlot(walletAdd, 0, i).call();
 
-                    if (!slot || !slot.positions) {
-                        console.warn(`Invalid slot data at level ${i}`, slot);
-                        slotInfoArray.push({ users: 0, cycles: 0 });
-                        continue;
-                    }
+            //         if (!slot || !slot.positions) {
+            //             console.warn(`Invalid slot data at level ${i}`, slot);
+            //             slotInfoArray.push({ users: 0, cycles: 0 });
+            //             continue;
+            //         }
 
-                    // wallet address ,same matrix,slotLeve/current slot  current cycle for each slot
-                    const currentCycle = await contract.methods.getCurrentCycle(walletAdd, 0, i).call();
+            //         // wallet address ,same matrix,slotLeve/current slot  current cycle for each slot
+            //         const currentCycle = await contract.methods.getCurrentCycle(walletAdd, 0, i).call();
 
-                    const zeroAddress = "0x0000000000000000000000000000000000000000";
-                    const totalPositions = slot.positions.filter(addr => addr !== zeroAddress).length;
-                    const cycles = (parseInt(currentCycle) - 1)
-                    const users = totalPositions % 4;
+            //         const zeroAddress = "0x0000000000000000000000000000000000000000";
+            //         const totalPositions = slot.positions.filter(addr => addr !== zeroAddress).length;
+            //         const cycles = (parseInt(currentCycle) - 1)
+            //         const users = totalPositions % 4;
 
-                    slotInfoArray.push({ users, cycles });
-                }
+            //         slotInfoArray.push({ users, cycles });
+            //     }
 
 
-                return {
-                    lastSlot: lastSloat,
-                    slotinfo: slotInfoArray,
-                };
-            }
+            //     return {
+            //         lastSlot: lastSloat,
+            //         slotinfo: slotInfoArray,
+            //     };
+            // }
+
+
+
+            // const tx = await web3.eth.getTransaction()
 
 
         } catch (error) {
@@ -413,4 +428,5 @@ export const useStore = create((set) => ({
             alert(`Error checking user: ${error.message}`);
         }
     },
+
 }));

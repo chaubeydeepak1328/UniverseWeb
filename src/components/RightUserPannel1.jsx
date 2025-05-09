@@ -7,6 +7,7 @@ import { FaRegCopy } from "react-icons/fa";
 
 import '../App.css'
 import { useTransaction } from '../config/register';
+import TransactionModal from './TransactionModal';
 
 const RightUserPannel1 = () => {
 
@@ -18,6 +19,9 @@ const RightUserPannel1 = () => {
     useEffect(() => {
         if (hash) {
             console.log("Transaction hash:", hash);
+
+
+            // trxHashInfo
             setMessage('Registration successful!');
         }
     }, [hash])
@@ -165,15 +169,35 @@ const RightUserPannel1 = () => {
 
 
 
+    // for Moal 
+
+    const [showModal, setShowModal] = useState(true);
+
+    const dummyHash = '0x123456789abcdef0987654321fedcba987654321';
+    const dummyUserWallet = '0xUserWallet1234567890abcdef';
+    const dummySponsorWallet = '0xSponsorWalletabcdef098765';
+
+
+
+
 
 
     // className = "w-full px-6 py-8 bg-white rounded-xl shadow-lg max-w-md mx-auto h-fit" 
     return (
-        <div className="grid grid-cols-1 mt-10 border-[#3C71A9] border-2  p-6 text-center w-full px-6 py-8 bg-white rounded-xl shadow-lg max-w-md  text-white mx-auto h-fit"
+        <div className="relative grid grid-cols-1 mt-10 border-[#3C71A9] border-2  p-6 text-center w-full px-6 py-8 bg-white rounded-xl shadow-lg max-w-md  text-white mx-auto h-fit"
             style={{
                 background:
                     "linear-gradient(100deg, rgba(5, 53, 102, 1) 0%, rgba(169, 190, 10, 1) 100%)",
             }}>
+            {/* <div className='absolute'>
+                <TransactionModal
+                    isOpen={showModal}
+                    hash={dummyHash}
+                    userWallet={dummyUserWallet}
+                    sponsorWallet={dummySponsorWallet}
+                />
+            </div> */}
+
             <h2 className="text-2xl font-bold text-white mb-6 text-center">Register Now</h2>
 
             <div className="space-y-4">
