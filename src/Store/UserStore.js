@@ -4,7 +4,7 @@ import Web3 from 'web3';
 
 const Contract = {
     "U3plus": "0x3Fb1113FFA45319F42608e94eE03ed68740E8Da6",
-    "UIncome": "0x3AA8Dc47E57b4699C2Bb422E320E94e4b5158510",
+    "UIncome": "0xe99d6BEB132d780DdA86208f3efc47270413463A",
     "U3prem": "0x5268362bCE89c9a73f298614e847cA8fDeAcB725",
     "U4": "0x4a6AD84A4FffD8fBEF84cBE95Fd01AC2953B47f6",
     "U5": "0x8b78CC614B8b379a43BeEdC48Fe2Aa1B08B8Fe7d",
@@ -215,6 +215,10 @@ export const useStore = create((set) => ({
 
     registerUser: async (sponsorAddress, userAddress) => {
         try {
+
+
+
+            console.log("sponsorAddress, userAddress", sponsorAddress, userAddress)
             const [UIncome, PriceConvs] = await Promise.all([
                 fetchContractAbi("UIncome"),
                 fetchContractAbi("PriceConv"),
@@ -255,6 +259,7 @@ export const useStore = create((set) => ({
             console.log("Estimated Gas:", gasLimit);
             const gasCost = web3.utils.fromWei((BigInt(gasLimit) * BigInt(gasPrice)).toString(), "ether");
             console.log("Estimated Gas Cost in ETH:", gasCost);
+
 
             const tx = {
                 from: userAddress,
