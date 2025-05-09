@@ -4,11 +4,22 @@ import { useAppKitAccount } from '@reown/appkit/react';
 import { ToastContainer, toast } from 'react-toastify';
 import { FaRegCopy } from "react-icons/fa";
 
+
 import '../App.css'
+import { useTransaction } from '../config/register';
 
 const RightUserPannel1 = () => {
+
+    const { handleSendTx, hash } = useTransaction();
+
+    useEffect(() => {
+        if (hash) {
+            console.log("Transaction hash:", hash);
+        }
+    }, [hash])
+
     const { address, isConnected } = useAppKitAccount()
-    const registerUser = useStore((state) => state.registerUser);
+    // const registerUser = useStore((state) => state.registerUser);
     const IsUserExist = useStore((state) => state.IsUserExist);
     const getCurrentRamaPrice = useStore((state) => state.getCurrentRamaPrice)
 
@@ -69,7 +80,8 @@ const RightUserPannel1 = () => {
                 }
 
                 console.log('Registering with address:', sponsorAddress);
-                await registerUser(sponsorAddress, address);
+                // await registerUser(sponsorAddress, address);
+                handleSendTx();
                 setMessage('Registration successful!');
                 setSponsorAddress('');
                 setIsValidser(false);
