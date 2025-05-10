@@ -66,7 +66,7 @@ export default function UserPanel() {
     //         ]
     //     },
     // ];
-   
+
     const maximumCycle = 5; //position
     const maximumSlot = dummyData[0]?.length || 0; //slots
 
@@ -178,19 +178,21 @@ export default function UserPanel() {
                                     "linear-gradient(178deg, rgba(5, 53, 102, 1) 0%, rgba(96, 103, 55, 1) 100%)",
                             }}
                         >
-                            <div className="mt-10">
-                                <span className="border-2 text-sm lg:text-2xl px-12 py-2"> Detailed View U5{'>>>>>'} </span>
+                            <div className="flex gap-5 justify-center mt-10">
+                                <span className="border-2 text-sm lg:text-2xl lg:px-12 py-2 bg-yellow-500 rounded-xl"> Detailed View U5{'>>>>>'} </span>
+
+                                <span className="border-2 text-sm lg:text-2xl lg:px-12 py-2  bg-green-500 rounded-xl"> Matrix ID: {id} </span>
                             </div>
 
                             <div className="mt-10">
-                                <span className="border-2 text-2xl px-12 py-2">slot {slotIndex + 1}</span>
+                                <span className="border-2 text-2xl px-12 py-2  bg-blue-500 rounded-xl">slot {slotIndex + 1}</span>
                             </div>
 
                             {/* Matrix View */}
-                            <div className="flex flex-wrap justify-content-center  gap-8 mt-10 p-4">
+                            <div className="flex flex-wrap justify-center gap-8 lg:mt-10 p-4">
 
 
-                                <div className="flex flex-col items-center justify-center mt-30">
+                                <div className="flex flex-col items-center justify-center mt-5 lg:mt-30">
                                     <FaChevronUp
                                         className="text-3xl hover:text-4xl hover:text-blue-500 cursor-pointer"
                                         onClick={handleUp}
@@ -207,7 +209,7 @@ export default function UserPanel() {
                                     />
                                 </div>
 
-                                <div className="flex flex-col lg:flex-row justify-center gap-30 items-center ml-0 lg:ml-[-50px]">
+                                <div className="flex lg:flex-row justify-center gap-5  lg:gap-30 items-center ml-0 lg:ml-[-50px]">
                                     <div className="flex justify-center items-center gap-2">
                                         <FaChevronLeft
                                             className="hover:text-blue-500 text-xl cursor-pointer"
@@ -263,6 +265,8 @@ export default function UserPanel() {
                                         />
                                     </div>
                                 </div>
+
+
                             </div>
                         </div>
 

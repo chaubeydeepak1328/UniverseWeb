@@ -260,7 +260,7 @@ export default function UserPanel() {
 
 
                     <div className="mt-10">
-                      <span className="border-2 text-2xl px-12 py-2"> Id {id ? id : "0"} </span>
+                      <span className="border-2 text-2xl px-12 py-2">Matrix ID {id ? id : "0"} </span>
                     </div>
 
                     {/* First Card */}

@@ -466,6 +466,7 @@ export const useStore = create((set) => ({
     //         alert(`Error checking: ${error.message}`);
     //     }
     // },
+
     getU5info: async (address) => {
         try {
             const { abi, contractAddress } = await fetchContractAbi("U5");
@@ -506,7 +507,44 @@ export const useStore = create((set) => ({
             console.error("Error:", error);
             alert(`Error checking: ${error.message}`);
         }
+    },
+
+    getU5Boxinfo: async (address, matrixID) => {
+
+        const { abi, contractAddress } = await fetchContractAbi("U5");
+        const contract = new web3.eth.Contract(abi, contractAddress);
+
+        const info = await contract.methods.userMatrices(address, matrixID).call();
+
+
+        if (info) {
+
+            const slotCount = 5;
+            const posCount = 6;
+
+            let totalChunks = 0;
+
+
+            for (let i = 0; i <= slotCount; i++) {
+
+                for (let j = i; j <= posCount; i++) {
+
+
+                    const chunkcount = await contract.methods.getchunksCount(matrixID, i, j).call();
+
+                    totalChunks += chunkcount;
+
+                }
+            }
+
+            return totalChunks;
+
+
+        }
+
     }
+
+
 
 
 
