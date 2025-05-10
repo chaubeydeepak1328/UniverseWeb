@@ -429,6 +429,43 @@ export const useStore = create((set) => ({
         }
     },
 
+    // getU5info: async (address) => {
+    //     try {
+    //         const { abi, contractAddress } = await fetchContractAbi("U5");
+    //         const contract = new web3.eth.Contract(abi, contractAddress);
+
+    //         const genMatrices = await contract.methods.getGeneratedMatrices(address).call();
+
+    //         const slotIndex = 5; // slots 0 to 4
+    //         const values = ["$10", "$30", "$90", "$270", "$810"];
+
+    //         const result = [];
+
+    //         for (let i = 0; i < genMatrices.length; i++) {
+    //             const matrixId = parseInt(genMatrices[i]);
+    //             const slotsPosition = [];
+
+    //             for (let j = 0; j < slotIndex; j++) {
+    //                 const slotPositions = await contract.methods.getU5MatrixPositions(matrixId, j).call();
+    //                 const filledSlots = slotPositions.isFilledPositions.map(pos => (pos === true ? "1" : pos === false ? "0" : ""));
+    //                 slotsPosition.push(filledSlots);
+    //             }
+
+    //             result.push({
+    //                 id: matrixId,
+    //                 values: values,
+    //                 slotsPosition: slotsPosition
+    //             });
+    //         }
+
+    //         console.log("Slot Data Matrix (U5):", result);
+    //         return result;
+
+    //     } catch (error) {
+    //         console.error("Error:", error);
+    //         alert(`Error checking: ${error.message}`);
+    //     }
+    // },
     getU5info: async (address) => {
         try {
             const { abi, contractAddress } = await fetchContractAbi("U5");
@@ -436,27 +473,31 @@ export const useStore = create((set) => ({
 
             const genMatrices = await contract.methods.getGeneratedMatrices(address).call();
 
-            const slotIndex = 5; // slots 0 to 4
+            const slotIndex = 5;
             const values = ["$10", "$30", "$90", "$270", "$810"];
 
-            const result = [];
+            const result = await Promise.all(
+                genMatrices.map(async (matrixIdStr) => {
+                    const matrixId = parseInt(matrixIdStr);
 
-            for (let i = 0; i < genMatrices.length; i++) {
-                const matrixId = parseInt(genMatrices[i]);
-                const slotsPosition = [];
+                    // Prepare parallel calls for all 5 slots for current matrixId
+                    const slotPromises = Array.from({ length: slotIndex }, (_, j) =>
+                        contract.methods.getU5MatrixPositions(matrixId, j).call()
+                    );
 
-                for (let j = 0; j < slotIndex; j++) {
-                    const slotPositions = await contract.methods.getU5MatrixPositions(matrixId, j).call();
-                    const filledSlots = slotPositions.isFilledPositions.map(pos => (pos === true ? "1" : pos === false ? "0" : ""));
-                    slotsPosition.push(filledSlots);
-                }
+                    const slotResults = await Promise.all(slotPromises);
 
-                result.push({
-                    id: matrixId,
-                    values: values,
-                    slotsPosition: slotsPosition
-                });
-            }
+                    const slotsPosition = slotResults.map(slotPositions =>
+                        slotPositions.isFilledPositions.map(pos => (pos === true ? "1" : pos === false ? "0" : ""))
+                    );
+
+                    return {
+                        id: matrixId,
+                        values: values,
+                        slotsPosition: slotsPosition
+                    };
+                })
+            );
 
             console.log("Slot Data Matrix (U5):", result);
             return result;
@@ -465,7 +506,7 @@ export const useStore = create((set) => ({
             console.error("Error:", error);
             alert(`Error checking: ${error.message}`);
         }
-    },
+    }
 
 
 
