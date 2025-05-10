@@ -6,14 +6,15 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { IoMdLogOut } from "react-icons/io";
 import { FaTelegram } from "react-icons/fa";
+import DashboardInfo from "./DashboardInfo";
 
 export default function Partners() {
   const values = [0.005, 0.001, 0.003, 0.003, 0.002, 0.004, 0.002];
   return (
     <div className=" px-4"
-    style={{
-      background: "linear-gradient(180deg, #000000, #25752D)",
-    }}
+      style={{
+        background: "linear-gradient(180deg, #000000, #25752D)",
+      }}
     >
       <div className="max-w-6xl  h-auto m-auto p-4">
         <div className="flex flex-col md:flex-row justify-between items-center  mx-4 md:mx-10">
@@ -25,7 +26,7 @@ export default function Partners() {
             />
           </Link>
           <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-sm md:text-xl text-white  md:mt-0">
-            <div className="flex justify-center items-center gap-4"> <FaTelegram className="text-blue-500"/> Official Channel</div> 
+            <div className="flex justify-center items-center gap-4"> <FaTelegram className="text-blue-500" /> Official Channel</div>
             <div className="flex gap-1 items-center ">
               <div>Logout</div> <IoMdLogOut className="text-red-500" />
             </div>
@@ -79,71 +80,7 @@ export default function Partners() {
 
           {/* Right Part */}
           <div className="w-full">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <Link
-                            to="/user-panel-home/upline-bonus"
-                            className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl  text-black p-4"
-                            style={{
-                              background:
-                                "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
-                            }}
-                          >
-                            <div>
-                              <span className="text-lg md:text-2xl font-bold">
-                                Partners Invited :
-                              </span>
-                              <br />
-                              <span>Income : 0000000.00 RAMA</span>
-                            </div>
-                          </Link>
-                          <Link
-                            to="/user-panel-home/upline-bonus"
-                            className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl  text-black p-4"
-                            style={{
-                              background:
-                                "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
-                            }}
-                          >
-                            <div>
-                              <span className="text-lg md:text-2xl font-bold">
-                                Split Bonus
-                              </span>
-                              <br />
-                              <span>Income : 0000000.00 RAMA</span>
-                            </div>
-                          </Link>
-                          <Link
-                            to="/user-panel-home/slot-activate"
-                            className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl bg-blue-500 text-black p-4"
-                            style={{
-                              background:
-                                "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
-                            }}
-                          >
-                            <div>
-                              <span className="text-lg md:text-2xl font-bold">
-                                Slot Activated
-                              </span>
-                              <br />
-                              <span>Income : 0000000.00 RAMA</span>
-                            </div>
-                          </Link>
-                          <div
-                            className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl bg-blue-500 text-black p-4 cursor-pointer"
-                            style={{
-                              background:
-                                "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
-                            }}
-                          >
-                            <div>
-                              <span className="text-lg md:text-2xl font-bold">
-                                Affiliated Link
-                              </span>
-                              <br />
-                              <span>Click to Copy</span>
-                            </div>
-                          </div>
-            </div>
+            <DashboardInfo />
 
             {/* Partners table */}
             <div className="flex flex-col mt-10 border-blue-500 border-2 rounded-2xl p-6 text-center">

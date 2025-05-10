@@ -20,6 +20,7 @@ import { MdOutlineContactMail } from "react-icons/md";
 import { BsCaretUpFill } from "react-icons/bs";
 import Header from "../../components/Header";
 import LeftUserPannel from "../../components/LeftUserPannel";
+import DashboardInfo from "../../components/DashboardInfo";
 
 export default function UserPanel() {
 
@@ -123,52 +124,8 @@ export default function UserPanel() {
 
                     {/* Right Side Content */}
                     <div className="w-full">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {/* Card List */}
-                            <Link to="/user-panel-home/upline-bonus" className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl text-black p-4" style={{ background: "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)" }}>
-                                <div className="flex justify-center items-center gap-6">
-                                    <PiUsersFourBold className="text-6xl text-[#f9ad13]" />
-                                    <div>
-                                        <div className="text-lg md:text-2xl font-bold">Partners Invited :</div>
-                                        <span>Income : 0000000.00 RAMA</span>
-                                    </div>
-                                </div>
-                            </Link>
 
-                            <Link to="/user-panel-home/split-bonus" className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl text-black p-4" style={{ background: "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)" }}>
-                                <div className="flex justify-center items-center gap-6">
-                                    <GiSplitArrows className="text-5xl text-[#f9ad13]" />
-                                    <div>
-                                        <span className="text-lg md:text-2xl font-bold">Split Bonus</span>
-                                        <br />
-                                        <span>Income : 0000000.00 RAMA</span>
-                                    </div>
-                                </div>
-                            </Link>
-
-                            <Link to="/user-panel-home/slot-activate" className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl text-black p-4" style={{ background: "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)" }}>
-                                <div className="flex justify-center items-center gap-6">
-                                    <FaCheckToSlot className="text-5xl text-[#f9ad13]" />
-                                    <div>
-                                        <span className="text-lg md:text-2xl font-bold">Slot Activated</span>
-                                        <br />
-                                        <span>Income : 0000000.00 RAMA</span>
-                                    </div>
-                                </div>
-                            </Link>
-
-                            <div className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl text-black p-4 cursor-pointer" style={{ background: "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)" }}>
-                                <div className="flex justify-center items-center gap-6">
-                                    <MdOutlineContactMail className="text-5xl text-[#f9ad13]" />
-                                    <div>
-                                        <span className="text-lg md:text-2xl font-bold">Affiliated Link</span>
-                                        <br />
-                                        <span>Click to Copy</span>
-                                    </div>
-                                    <RxCopy className="text-3xl hover:text-[#f9ad13]" />
-                                </div>
-                            </div>
-                        </div>
+                        <DashboardInfo />
 
                         {/* Universe U3 Plus Section */}
                         <div

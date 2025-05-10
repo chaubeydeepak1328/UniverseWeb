@@ -13,6 +13,7 @@ import { MdOutlineContactMail } from "react-icons/md";
 import { FaCheckToSlot } from "react-icons/fa6";
 import LeftUserPannel from "./LeftUserPannel";
 import Header from "./Header";
+import DashboardInfo from "./DashboardInfo";
 
 
 
@@ -28,91 +29,14 @@ export default function UplineBonus() {
         >
             <div className="max-w-6xl  h-auto m-auto p-4">
                 {/* Top Header */}
-                <Header/>
+                <Header />
                 <div className="flex flex-col lg:flex-row justify-between mt-10 mx-4 md:mx-10 gap-10">
                     {/* left part */}
-                     <LeftUserPannel />
+                    <LeftUserPannel />
 
                     {/* Right Part */}
                     <div className="w-full">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <Link
-                                to="/user-panel-home/upline-bonus"
-                                className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl  text-black p-4"
-                                style={{
-                                    background:
-                                        "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
-                                }}
-                            >
-                                <div className="flex justify-center items-center gap-6">
-                                    <div> <PiUsersFourBold className="text-6xl text-[#f9ad13]" />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-lg md:text-2xl font-bold">
-                                            Partners Invited :
-                                        </div>
-                                        <span>Income : 0000000.00 RAMA</span>
-                                    </div>
-                                </div>
-                            </Link>
-                            <Link
-                                to="/user-panel-home/split-bonus"
-                                className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl  text-black p-4"
-                                style={{
-                                    background:
-                                        "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
-                                }}
-                            >
-                                <div className="flex justify-center items-center gap-6">
-                                    <div><GiSplitArrows className="text-5xl text-[#f9ad13]" /></div>
-                                    <div>
-                                        <span className="text-lg md:text-2xl font-bold">
-                                            Split Bonus
-                                        </span>
-                                        <br />
-                                        <span>Income : 0000000.00 RAMA</span>
-                                    </div>
-                                </div>
-                            </Link>
-                            <Link
-                                to="/user-panel-home/slot-activate"
-                                className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl bg-blue-500 text-black p-4"
-                                style={{
-                                    background:
-                                        "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
-                                }}
-                            >
-                                <div className="flex justify-center items-center gap-6">
-                                    <div><FaCheckToSlot className="text-5xl text-[#f9ad13]" /></div>
-                                    <div>
-                                        <span className="text-lg md:text-2xl font-bold">
-                                            Slot Activated
-                                        </span>
-                                        <br />
-                                        <span>Income : 0000000.00 RAMA</span>
-                                    </div>
-                                </div>
-                            </Link>
-                            <div
-                                className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl bg-blue-500 text-black p-4 cursor-pointer"
-                                style={{
-                                    background:
-                                        "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
-                                }}
-                            >
-                                <div className="flex justify-center items-center gap-6">
-                                    <div><MdOutlineContactMail className="text-5xl text-[#f9ad13]" /></div>
-                                    <div>
-                                        <span className="text-lg md:text-2xl font-bold">
-                                            Affiliated Link
-                                        </span>
-                                        <br />
-                                        <span>Click to Copy</span>
-                                    </div>
-                                    <div><RxCopy className="text-3xl  hover:text-[#f9ad13]" /></div>
-                                </div>
-                            </div>
-                        </div>
+                        <DashboardInfo />
 
                         {/* Partners table */}
                         <div className="flex flex-col mt-10  border-1 rounded-2xl p-6 text-center"

@@ -15,6 +15,7 @@ import { FaAngleRight } from "react-icons/fa6";
 import { FaChevronLeft } from "react-icons/fa6";
 import Header from "../../components/Header";
 import LeftUserPannel from "../../components/LeftUserPannel";
+import DashboardInfo from "../../components/DashboardInfo";
 
 
 
@@ -112,94 +113,9 @@ export default function UserPanel() {
                     {/* Right Side */}
                     <div className="w-full">
                         {/* Buttons */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <Link
-                                to="/user-panel-home/upline-bonus"
-                                className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl  text-black p-4"
-                                style={{
-                                    background:
-                                        "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
-                                }}
-                            >
-                                <div className="flex justify-center items-center gap-6">
-                                    <div>
-                                        {" "}
-                                        <PiUsersFourBold className="text-6xl text-[#f9ad13]" />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-lg md:text-2xl font-bold">
-                                            Partners Invited :
-                                        </div>
-                                        <span>Income : 0000000.00 RAMA</span>
-                                    </div>
-                                </div>
-                            </Link>
-                            <Link
-                                to="/user-panel-home/split-bonus"
-                                className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl  text-black p-4"
-                                style={{
-                                    background:
-                                        "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
-                                }}
-                            >
-                                <div className="flex justify-center items-center gap-6">
-                                    <div>
-                                        <GiSplitArrows className="text-5xl text-[#f9ad13]" />
-                                    </div>
-                                    <div>
-                                        <span className="text-lg md:text-2xl font-bold">
-                                            Split Bonus
-                                        </span>
-                                        <br />
-                                        <span>Income : 0000000.00 RAMA</span>
-                                    </div>
-                                </div>
-                            </Link>
-                            <Link
-                                to="/user-panel-home/slot-activate"
-                                className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl bg-blue-500 text-black p-4"
-                                style={{
-                                    background:
-                                        "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
-                                }}
-                            >
-                                <div className="flex justify-center items-center gap-6">
-                                    <div>
-                                        <FaCheckToSlot className="text-5xl text-[#f9ad13]" />
-                                    </div>
-                                    <div>
-                                        <span className="text-lg md:text-2xl font-bold">
-                                            Slot Activated
-                                        </span>
-                                        <br />
-                                        <span>Income : 0000000.00 RAMA</span>
-                                    </div>
-                                </div>
-                            </Link>
-                            <div
-                                className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl bg-blue-500 text-black p-4 cursor-pointer"
-                                style={{
-                                    background:
-                                        "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
-                                }}
-                            >
-                                <div className="flex justify-center items-center gap-6">
-                                    <div>
-                                        <MdOutlineContactMail className="text-5xl text-[#f9ad13]" />
-                                    </div>
-                                    <div>
-                                        <span className="text-lg md:text-2xl font-bold">
-                                            Affiliated Link
-                                        </span>
-                                        <br />
-                                        <span>Click to Copy</span>
-                                    </div>
-                                    <div>
-                                        <RxCopy className="text-3xl  hover:text-[#f9ad13]" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
+
+                        <DashboardInfo />
 
                         {/* Universe U5 Section */}
                         <div
@@ -213,7 +129,7 @@ export default function UserPanel() {
                                 <button className="cursor-pointer" onClick={prev} disabled={currentIdIndex === 0} ><FaChevronLeft className="text-3xl hover:text-yellow-500" />
                                 </button>
                                 <div>
-                                    <div className="flex justify-between items-center">
+                                    <div className="flex flex-wrap justify-between items-center ">
                                         <div>
                                             <span className="text-4xl md:text-5xl text-[#EFB90A] font-extrabold">
                                                 Universe
@@ -243,8 +159,8 @@ export default function UserPanel() {
                                     {/* Levels */}
                                     {/* Levels */}
                                     <div className="flex flex-col items-center gap-4 mt-10">
-                                        <div className="mt-10">
-                                            <span className="border-2 text-2xl px-12 py-2"> Id {id} </span>
+                                        <div className="my-10">
+                                            <span className="border-2 rounded-xl bg-yellow-500 mb-4 text-2xl px-12 py-2"> Id {id} </span>
                                         </div>
                                         {/* First Card - First Line */}
                                         <div className="flex justify-center">
@@ -314,38 +230,7 @@ export default function UserPanel() {
                                         </div>
 
 
-                                        <div className="p-6 ">
-                                            <h2 className="text-2xl font-bold mb-6 text-ehite text-center">Total Matrix Summary</h2>
-
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                                                {/* Box */}
-                                                {[
-                                                    { title: 'Receives', usd: '$23', rama: 145 },
-                                                    { title: 'Upgrade', usd: '$23', rama: 145 },
-                                                    { title: 'Generate', usd: '$23', rama: 145 },
-                                                    { title: 'Net Profit', usd: '$23', rama: 145 },
-                                                    { title: 'Generated ID', totalId: 12 },
-                                                ].map((item, index) => (
-
-                                                    item?.title !== 'Generated ID' ?
-                                                        <div key={index} className="bg-white p-5 rounded-2xl shadow hover:shadow-lg transition">
-                                                            <h3 className="text-lg font-semibold text-blue-600 mb-2">{item.title}</h3>
-                                                            <div className="text-gray-700 space-y-1">
-                                                                <p><span className="font-medium">USD:</span> {item.usd}</p>
-                                                                <p><span className="font-medium">Rama:</span> {item.rama}</p>
-                                                            </div>
-                                                        </div> : <div key={index} className="bg-white p-5 rounded-2xl shadow hover:shadow-lg transition">
-                                                            <h3 className="text-lg font-semibold text-blue-600 mb-2">{item.title}</h3>
-                                                            <div className="text-gray-700 space-y-1">
-                                                                <p><span className="font-medium">Total ID :</span> {item.totalId}</p>
-
-                                                            </div>
-                                                        </div>
-                                                ))}
-
-                                            </div>
-                                        </div>
+                                    
                                     </div>
 
                                     {/* Levels */}

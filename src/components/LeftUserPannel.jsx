@@ -104,6 +104,8 @@ const LeftUserPannel = () => {
                     "linear-gradient(180deg, rgba(11, 11, 142, 1) 0%, rgba(115, 118, 120, 1) 100%)",
             }}
         >
+
+
             <div className="flex justify-between items-center">
                 <div className="text-6xl text-blue-500">
                     {/* <RiBitCoinLine /> */}

@@ -18,6 +18,7 @@ import { MdOutlineContactMail } from "react-icons/md";
 import { BsCaretUpFill } from "react-icons/bs";
 import Header from "../../components/Header";
 import LeftUserPannel from "../../components/LeftUserPannel";
+import DashboardInfo from "../../components/DashboardInfo";
 
 export default function UserPanel() {
     const location = useLocation();
@@ -142,67 +143,22 @@ export default function UserPanel() {
 
                     {/* Right Side Content */}
                     <div className="w-full">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {/* Card List */}
-                            <Link to="/user-panel-home/upline-bonus" className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl text-black p-4" style={{ background: "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)" }}>
-                                <div className="flex justify-center items-center gap-6">
-                                    <PiUsersFourBold className="text-6xl text-[#f9ad13]" />
-                                    <div>
-                                        <div className="text-lg md:text-2xl font-bold">Partners Invited :</div>
-                                        <span>Income : 0000000.00 RAMA</span>
-                                    </div>
-                                </div>
-                            </Link>
-
-                            <Link to="/user-panel-home/split-bonus" className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl text-black p-4" style={{ background: "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)" }}>
-                                <div className="flex justify-center items-center gap-6">
-                                    <GiSplitArrows className="text-5xl text-[#f9ad13]" />
-                                    <div>
-                                        <span className="text-lg md:text-2xl font-bold">Split Bonus</span>
-                                        <br />
-                                        <span>Income : 0000000.00 RAMA</span>
-                                    </div>
-                                </div>
-                            </Link>
-
-                            <Link to="/user-panel-home/slot-activate" className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl text-black p-4" style={{ background: "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)" }}>
-                                <div className="flex justify-center items-center gap-6">
-                                    <FaCheckToSlot className="text-5xl text-[#f9ad13]" />
-                                    <div>
-                                        <span className="text-lg md:text-2xl font-bold">Slot Activated</span>
-                                        <br />
-                                        <span>Income : 0000000.00 RAMA</span>
-                                    </div>
-                                </div>
-                            </Link>
-
-                            <div className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl text-black p-4 cursor-pointer" style={{ background: "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)" }}>
-                                <div className="flex justify-center items-center gap-6">
-                                    <MdOutlineContactMail className="text-5xl text-[#f9ad13]" />
-                                    <div>
-                                        <span className="text-lg md:text-2xl font-bold">Affiliated Link</span>
-                                        <br />
-                                        <span>Click to Copy</span>
-                                    </div>
-                                    <RxCopy className="text-3xl hover:text-[#f9ad13]" />
-                                </div>
-                            </div>
-                        </div>
+                        <DashboardInfo />
 
                         {/* Universe U3 Plus Section */}
                         <div className="grid grid-cols-1 mt-10 rounded-2xl p-6 text-center" style={{ background: "linear-gradient(178deg, rgba(5, 53, 102, 1) 0%, rgba(96, 103, 55, 1) 100%)" }}>
                             <div className="mt-10">
-                                <span className="border-2 text-2xl px-12 py-2"> Detailed View</span>
+                                <span className="border-2 text-2xl px-12 py-2 bg-yellow-500 rounded-2xl"> Detailed View</span>
                             </div>
                             <div className="mt-10">
-                                <span className="border-2 text-2xl px-12 py-2">slot {slotIndex + 1}</span>
+                                <span className="border-2 text-2xl px-12 py-2 bg-blue-500 rounded-2xl">slot {slotIndex + 1}</span>
                             </div>
 
 
                             {/* Matrix View */}
-                            <div className="flex flex-wrap justify-start items-center gap-0 mt-10 p-4">
+                            <div className="flex flex-wrap justify-center items-center gap-10 lg:mt-10 p-4">
 
-                                <div className="flex flex-col items-center justify-center mt-30">
+                                <div className="flex flex-col items-center justify-center mt-10 lg:mt-30">
 
 
                                     <FaChevronUp onClick={handleUp} className="text-3xl hover:text-4xl hover:text-blue-500" />
@@ -215,7 +171,7 @@ export default function UserPanel() {
                                     <FaChevronDown onClick={handleDown} className="text-3xl hover:text-4xl hover:text-blue-500" />
                                 </div>
 
-                                <div className="flex flex-col lg:flex-row justify-center gap-30 items-center ml-0 lg:ml-[-50px]">
+                                <div className="flex justify-center gap-6 lg:gap-30 items-center ml-0 lg:ml-[-50px]">
                                     <div className="flex justify-center items-center gap-2">
                                         <FaChevronLeft onClick={handleLeft} className="hover:text-blue-500 text-xl" />
                                         <div className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm">{slotIndex + 1}</div>
