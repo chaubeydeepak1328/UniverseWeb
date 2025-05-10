@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import universeLogo from "../../assets/images/universeLogo.png";
 import universeCoin from "../../assets/images/universeCoin.png";
 import { RxCopy } from "react-icons/rx";
@@ -15,6 +15,7 @@ import { FaChevronLeft } from "react-icons/fa6";
 import { FaAngleRight } from "react-icons/fa6";
 import LeftUserPannel from "../../components/LeftUserPannel";
 import Header from "../../components/Header";
+import { useStore } from "../../Store/UserStore";
 
 
 
@@ -22,43 +23,88 @@ export default function UserPanel() {
 
   const navigate = useNavigate();
 
+  const [address, setAddress] = useState(JSON.parse(localStorage.getItem("userData")).userAddress);
+
+
+  const getU5info = useStore((state) => state.getU5info)
+
+
+
+
+  const dummyData = [
+    {
+      id: "N/a",
+      values: ["$10", "$30", "$90", "$270", "$810"],
+      slotsPosition: [
+        ["0", "0", "0", "0", "0"],
+        ["0", "0", "0", "0", "0"],
+        ["0", "0", "0", "0", "0"],
+        ["0", "0", "0", "0", "0"],
+        ["0", "0", "0", "0", "0"],
+      ]
+    },
+    // {
+    //   id: 2,
+    //   values: ["$10", "$30", "$90", "$270", "$810"],
+    //   slotsPosition: [
+    //     ["0", "0", "0", "0", "0"],
+    //     ["0", "0", "0", "0", "0"],
+    //     ["0", "0", "0", "0", "0"],
+    //     ["0", "0", "0", "0", "0"],
+    //     ["0", "0", "0", "0", "0"],
+    //   ]
+    // },
+  ];
 
 
   const [currentIdIndex, setCurrentIdIndex] = useState(0);
 
-  const matrixData = [
-    {
-      id: 1,
-      values: ["$10", "$30", "$90", "$270", "$810"],
-      slotsPosition: [
-        ["1", "1", "0", "0", "0"],
-        ["1", "0", "0", "0", "0"],
-        ["1", "1", "1", "0", "0"],
-        ["0", "0", "0", "0", "0"],
-        ["0", "0", "", "0", "0"],
-      ]
-    },
-    {
-      id: 2,
-      values: ["$10", "$30", "$90", "$270", "$810"],
-      slotsPosition: [
-        ["1", "1", "1", "0", "0"],
-        ["1", "1", "1", "0", "0"],
-        ["1", "1", "0", "0", "0"],
-        ["1", "0", "0", "0", "0"],
-        ["1", "1", "1", "1", "0"],
-      ]
-    },
-  ];
 
-  const { id, values, slotsPosition } = matrixData[currentIdIndex];
+  const [matrixData, setMatrixData] = useState(dummyData);
+
+
+  useEffect(() => {
+    const fetchU5 = async () => {
+      try {
+        const response = await getU5info(address);
+        console.log("==========U5 response---->", response);
+        if (response) {
+          setMatrixData(response); // Make sure this is an array
+        }
+      } catch (err) {
+        console.error("Error fetching U5 info:", err);
+      }
+    };
+
+    if (address) {
+      fetchU5();
+    }
+  }, [address]);
+
+
+
+
+  const currentMatrix = matrixData?.[currentIdIndex];
+  const id = currentMatrix?.id;
+  const values = currentMatrix?.values || [];
+  const slotsPosition = currentMatrix?.slotsPosition || [];
+
+
+
+  const [currentCount, setCurrentCount] = useState(0);
+
 
   const next = () => {
-    if (currentIdIndex < matrixData.length - 1) setCurrentIdIndex(currentIdIndex + 1);
+    if (currentIdIndex < matrixData?.length - 1) setCurrentIdIndex(currentIdIndex + 1);
+
+    if (currentCount < matrixData?.length - 1) setCurrentCount(currentCount + 1);
   };
 
   const prev = () => {
     if (currentIdIndex > 0) setCurrentIdIndex(currentIdIndex - 1);
+
+    if (currentCount > 0) setCurrentCount(currentCount - 1);
+
   };
 
 
@@ -172,6 +218,10 @@ export default function UserPanel() {
               <div className="flex items-center justify-between">
                 <button className="cursor-pointer" onClick={prev} disabled={currentIdIndex === 0}><FaChevronLeft className="text-3xl hover:text-yellow-500" />
                 </button>
+
+                <div className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm">
+                  {currentCount + 1}
+                </div>
                 <div>
                   <div className="flex flex-wrap gap-y-4 justify-between">
                     <div>
@@ -210,14 +260,21 @@ export default function UserPanel() {
 
 
                     <div className="mt-10">
-                      <span className="border-2 text-2xl px-12 py-2"> Id {id} </span>
+                      <span className="border-2 text-2xl px-12 py-2"> Id {id ? id : "0"} </span>
                     </div>
 
                     {/* First Card */}
                     <div className="flex justify-center">
                       <div className="flex flex-col items-center">
                         <button
-                          onClick={() => navigate('/user-panel-home/universe', { state: { id: id, slotVal: 1, plan: values[0].replace(/\$/g, "").trim() } })}
+                          onClick={() => {
+                            if (id == "N/a") {
+                              alert("data is Loading ")
+
+                            } else {
+                              navigate('/user-panel-home/universe', { state: { id: id, slotVal: 1, matrixData: matrixData, plan: values[0].replace(/\$/g, "").trim() } })
+                            }
+                          }}
 
                           className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg cursor-pointer">
                           {values[0]}
@@ -230,7 +287,7 @@ export default function UserPanel() {
                           </div>
                         ))}
                         <div className="flex justify-center items-center gap-1">
-                          {slotsPosition[0].map((value, j) => (
+                          {slotsPosition[0]?.map((value, j) => (
                             <button
                               key={j}
                               className={`h-[20px] w-[20px] rounded-full flex justify-center items-center cursor-pointer border border-black
@@ -251,7 +308,14 @@ export default function UserPanel() {
                         <div key={index + 1} className="flex flex-col items-center">
                           <button
                             onClick={() => {
-                              navigate('/user-panel-home/universe', { state: { id: id, slotVal: index + 2, plan: value.replace(/\$/g, "").trim() } });
+
+                              if (id == "N/a") {
+                                alert("data is Loading ")
+
+                              } else {
+                                // navigate('/user-panel-home/universe', { state: { id: id, slotVal: 1, matrixData: matrixData, plan: values[0].replace(/\$/g, "").trim() } })
+                                navigate('/user-panel-home/universe', { state: { id: id, slotVal: index + 2, matrixData: matrixData, plan: value.replace(/\$/g, "").trim() } });
+                              }
                               console.log("id==========================================", id, "slotVal", index + 2, "plan", value.replace(/\$/g, "").trim())
                             }}
                             className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg cursor-pointer">
@@ -285,7 +349,12 @@ export default function UserPanel() {
                   {/* Levels */}
                   {/* Levels */}
                 </div>
-                <button className="cursor-pointer" onClick={next} disabled={currentIdIndex === matrixData.length - 1}><FaAngleRight className="text-4xl hover:text-yellow-500" />
+
+                <div className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm">
+                  {currentCount == 4 ? "0" : currentCount + 2}
+                </div>
+
+                <button className="cursor-pointer" onClick={next} disabled={currentIdIndex === matrixData?.length - 1}><FaAngleRight className="text-4xl hover:text-yellow-500" />
                 </button>
               </div>
 
