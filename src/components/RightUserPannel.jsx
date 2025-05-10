@@ -14,7 +14,8 @@ import { useStore } from '../Store/UserStore';
 import { useAppKitAccount } from '@reown/appkit/react';
 import DashboardInfo from './DashboardInfo';
 
-import cart from '../assets/images/cart.png'
+import cart from '../assets/images/cart.png';
+import { TbUniverse } from "react-icons/tb";
 
 
 const RightUserPannel = () => {
@@ -111,7 +112,7 @@ const RightUserPannel = () => {
                     <span className="text-4xl md:text-5xl text-[#EFB90A] font-extrabold">
                         Universe
                     </span>{" "}
-                    <span className="text-2xl md:text-xl font-bold text-blue-500">
+                    <span className="text-2xl md:text-xl font-bold text-white">
                         U3 Plus {'>>>>'}
                     </span>
                 </div>
@@ -331,6 +332,13 @@ const RightUserPannel = () => {
                     "U3 Premium": "user-panel-umatrix-3plus",
                 };
 
+                const MatrixName = {
+                    "U5": "Enter Universe U5",
+                    "U4": "Enter Universe U4",
+                    "U3 Premium": "Enter universe u3 premium",
+                };
+
+
                 // Map each name to its unique value
                 const idMap = {
                     "U5": genId?.u5gen?.length ?? 0,
@@ -357,13 +365,13 @@ const RightUserPannel = () => {
                             <span className="text-4xl md:text-5xl text-[#EFB90A] font-extrabold">
                                 Universe
                             </span>{" "}
-                            <span className="text-2xl md:text-xl font-bold text-blue-500">
+                            <span className="text-2xl md:text-xl font-bold text-white">
                                 {name} {name == "U5" ? ">>>>>" : name == "U3 Premium" ? ">>>" : ">>>>"}
                             </span>
                             <br />
-                            <span className="text-2xl md:text-xl font-bold">{EarnedRama[name]} RAMA</span>
+                            {/* <span className="text-2xl md:text-xl font-bold">{EarnedRama[name]} RAMA</span> */}
                         </div>
-                        <div className="flex flex-col items-center mt-4">
+                        {/* <div className="flex flex-col items-center mt-4">
                             <Link
                                 to={urlMap[name]}
                                 className="h-10 w-30 rounded-sm flex justify-center items-center text-white text-lg md:text-xl"
@@ -377,7 +385,7 @@ const RightUserPannel = () => {
                             <div className="bg-white h-6 w-20 text-black font-bold mt-0">
                                 No of Id
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* Box for Dynamic Data */}
 
@@ -393,22 +401,44 @@ const RightUserPannel = () => {
                                     { title: 'Generated', usd: '$23', rama: 145 },
                                     { title: 'Net Profit', usd: '$23', rama: 145 },
                                     { title: "Generated ID's", totalId: 12 },
+                                    { title: 'view Matrix', usd: '$23', rama: 145 },
                                 ].map((item, index) => (
 
-                                    item?.title !== "Generated ID's" ?
-                                        <div key={index} className="bg-yellow-500 p-5 rounded-2xl shadow hover:shadow-lg transition">
-                                            <h3 className="text-lg font-semibold text-blue-600 mb-2">{item.title}</h3>
-                                            <div className="text-gray-700 space-y-1">
-                                                <p><span className="font-medium">USD:</span> {item.usd}</p>
-                                                <p><span className="font-medium">Rama:</span> {item.rama}</p>
+                                    item?.title !== "Generated ID's" && item?.title !== 'view Matrix' ?
+                                        (
+                                            <div key={index} style={{
+                                                background:
+                                                    "linear-gradient(45deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
+                                            }} className="p-5 rounded-2xl shadow hover:shadow-lg transition">
+                                                <h3 className="text-lg font-semibold text-white mb-2">{item.title}</h3>
+                                                <div className="text-yellow-500 space-y-1">
+                                                    <p><span className="font-medium">USD:</span> {item.usd}</p>
+                                                    <p><span className="font-medium">Rama:</span> {item.rama}</p>
+                                                </div>
                                             </div>
-                                        </div> : <div key={index} className="bg-yellow-500 p-5 rounded-2xl shadow hover:shadow-lg transition">
-                                            <h3 className="text-lg font-semibold text-blue-600 mb-2">{item.title}</h3>
-                                            <div className="text-gray-700 space-y-1">
-                                                <p><span className="font-medium">Total ID :</span> {item.totalId}</p>
+                                        ) :
+                                        (
+                                            item?.title === 'view Matrix' ? (
+                                                <Link to={urlMap[name]} key={index} style={{
+                                                    background:
+                                                        "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
+                                                }} className="p-5 rounded-2xl shadow hover:shadow-lg transition">
+                                                    <h3 className="text-lg font-semibold text-white mb-2">{MatrixName[name]}</h3>
+                                                    <div className="text-yellow-500 flex justify-center">
+                                                        <TbUniverse size={60} color='yellow' />
+                                                    </div>
+                                                </Link>
+                                            ) : <div key={index} style={{
+                                                background:
+                                                    "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
+                                            }} className="p-5 rounded-2xl shadow hover:shadow-lg transition">
+                                                <h3 className="text-lg font-semibold text-white mb-2">{item.title}</h3>
+                                                <div className="text-yellow-500 space-y-1">
+                                                    <p><span className="font-medium">Total ID :</span> {item.totalId}</p>
 
+                                                </div>
                                             </div>
-                                        </div>
+                                        )
                                 ))}
 
                             </div>
