@@ -41,7 +41,7 @@ export default function SellToken() {
         </div>
 
         <div className="text-blue-500 text-sm sm:text-lg cursor-pointer hover:underline">
-          Check in Binance Smart Chain
+          Check in Ramestta Smart Chain
         </div>
       </div>
       <div className="text-center mt-5 text-sm sm:text-base">

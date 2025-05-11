@@ -16,6 +16,7 @@ import DashboardInfo from './DashboardInfo';
 
 import cart from '../assets/images/cart.png';
 import { TbUniverse } from "react-icons/tb";
+import RamaLoader from '../util/RamaLoader';
 
 
 const RightUserPannel = () => {
@@ -423,9 +424,11 @@ const RightUserPannel = () => {
                                                     background:
                                                         "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
                                                 }} className="p-5 rounded-2xl shadow hover:shadow-lg transition">
-                                                    <h3 className="text-lg font-semibold text-white mb-2">{MatrixName[name]}</h3>
+                                                    <h3 className="text-sm font-semibold text-white mb-2">{MatrixName[name]} {'(Click here)'}</h3>
                                                     <div className="text-yellow-500 flex justify-center">
-                                                        <TbUniverse size={60} color='yellow' />
+                                                        {/* <TbUniverse size={60} color='yellow' /> */}
+
+                                                        <RamaLoader />
                                                     </div>
                                                 </Link>
                                             ) : <div key={index} style={{

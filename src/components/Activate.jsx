@@ -44,7 +44,7 @@ export default function Activate() {
 
         <div className="text-white text-sm sm:text-lg cursor-pointer hover:underline flex gap-2">
           <LuUserRound className="text-xl sm:text-2xl" />
-          Check in Binance Smart Chain
+          Check in Ramestta Smart Chain
         </div>
       </div>
       <div className='text-center mb-5 text-sm sm:text-base'>

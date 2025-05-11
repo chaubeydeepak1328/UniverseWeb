@@ -74,7 +74,7 @@ export default function BuyToken() {
         {/* Check Link */}
         <div className="text-white text-sm sm:text-lg cursor-pointer hover:underline mt-1 flex items-center gap-2 text-center">
           <LuUserRound className="text-xl sm:text-2xl" />
-          Check in Binance Smart Chain
+          Check in Ramestta Smart Chain
         </div>
       </div>
 

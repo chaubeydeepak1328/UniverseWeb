@@ -110,10 +110,10 @@ export default function Home() {
             <div className="flex justify-center items-center h-14 w-64 bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 rounded-lg shadow-lg hover:scale-105 transition-all duration-300 ease-in-out">
               <Link
                 to="/erv-token-home"
-                className="px-6 py-3 text-white text-lg font-semibold flex justify-center items-center gap-2 "
+                className="px-6 py-3 text-white text-md font-semibold flex justify-center items-center gap-2 "
               >
                 <CiYoutube className="text-3xl" />
-                <div>Watch In Telegram</div>
+                <div>Join Telegram community</div>
               </Link>
             </div>
             <button

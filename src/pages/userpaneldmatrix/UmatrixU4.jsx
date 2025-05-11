@@ -259,7 +259,7 @@ export default function UserPanel() {
                         {/* Table */}
                         <div className="flex flex-col mt-10 border-2 rounded-2xl p-4 sm:p-6 text-center w-full">
                             <div className="text-2xl sm:text-3xl font-bold mb-4 text-start">
-                                U5Profits’s
+                                U4Profits’s
                             </div>
 
                             <div className="w-full overflow-x-auto">

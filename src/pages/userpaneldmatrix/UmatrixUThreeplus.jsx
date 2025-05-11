@@ -233,7 +233,7 @@ export default function UserPanel() {
                         {/* Table */}
                         <div className="flex flex-col mt-10 border-2 rounded-2xl p-4 sm:p-6 text-center w-full">
                             <div className="text-2xl sm:text-3xl font-bold mb-4 text-start">
-                                U3 Plus Profits’s
+                                U3 premium Profits’s
                             </div>
 
                             <div className="w-full overflow-x-auto">
@@ -247,7 +247,6 @@ export default function UserPanel() {
                                             <th className="p-2 border">Date & Time</th>
                                             <th className="p-2 border">Status</th>
                                             <th className="p-2 border">Re-Generate</th>
-                                            <th className="p-2 border">Re-Invest</th>
                                             <th className="p-2 border">Net Profit</th>
                                         </tr>
                                     </thead>
@@ -260,7 +259,6 @@ export default function UserPanel() {
                                                 <td className="p-2 border">0.000 / $0.000</td>
                                                 <td className="p-2 border">2022-11-12 10:12:56</td>
                                                 <td className="p-2 border">0x4f0...98c0E</td>
-                                                <td className="p-2 border">0xc03...38624</td>
                                                 <td className="p-2 border">0xc03...38624</td>
                                                 <td className="p-2 border">0.000 / $0.000</td>
                                             </tr>

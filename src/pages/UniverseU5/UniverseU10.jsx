@@ -25,7 +25,9 @@ import DashboardInfo from "../../components/DashboardInfo";
 export default function UserPanel() {
 
     const location = useLocation();
-    const { id, slotVal, plan, matrixData } = location.state || {};
+    const { id, slotVal, matrixData } = location.state || {};
+
+    console.log("id, slotVal, matrixData", id, slotVal, matrixData)
 
 
 
@@ -36,10 +38,10 @@ export default function UserPanel() {
 
     const dummyData = [
         ["$10", "$30", "$90", "$270", "$810"],
-        ["$30", "$30", "$90", "$270", "$810"],
-        ["$90", "$30", "$90", "$270", "$810"],
-        ["$270", "$30", "$90", "$270", "$810"],
-        ["$810", "$30", "$90", "$270", "$810"],
+        ["$10", "$30", "$90", "$270", "$810"],
+        ["$10", "$30", "$90", "$270", "$810"],
+        ["$10", "$30", "$90", "$270", "$810"],
+        ["$10", "$30", "$90", "$270", "$810"],
     ];
 
 
@@ -72,7 +74,7 @@ export default function UserPanel() {
     const maximumSlot = dummyData[0]?.length || 0; //slots
 
     const [cycleIndex, setCycleIndex] = useState(0); // vertical
-    const [slotIndex, setSlotIndex] = useState(slotVal ? slotVal - 1 : 0);
+    const [slotIndex, setSlotIndex] = useState(slotVal);
 
 
 

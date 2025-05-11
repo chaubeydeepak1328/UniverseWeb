@@ -203,7 +203,9 @@ export default function UserPanel() {
                               alert("data is Loading ")
 
                             } else {
-                              navigate('/user-panel-home/universe', { state: { id: id, slotVal: 1, matrixData: matrixData, plan: values[0].replace(/\$/g, "").trim() } })
+                              navigate('/user-panel-home/universe', { state: { id: id, slotVal: 0, matrixData: matrixData } })
+
+                              console.log({ id: id, slotVal: 0, matrixData: matrixData, plan: values[0].replace(/\$/g, "").trim() })
                             }
                           }}
 
@@ -249,11 +251,18 @@ export default function UserPanel() {
 
                               } else {
                                 // navigate('/user-panel-home/universe', { state: { id: id, slotVal: 1, matrixData: matrixData, plan: values[0].replace(/\$/g, "").trim() } })
-                                navigate('/user-panel-home/universe', { state: { id: id, slotVal: index + 2, matrixData: matrixData, plan: value.replace(/\$/g, "").trim() } });
+                                navigate('/user-panel-home/universe', { state: { id: id, slotVal: index + 1, matrixData: matrixData } });
                               }
-                              console.log("id==========================================", id, "slotVal", index + 2, "plan", value.replace(/\$/g, "").trim())
+                              console.log("id==========================================", { id: id, slotVal: index + 1, matrixData: matrixData, plan: value.replace(/\$/g, "").trim() })
                             }}
-                            className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg cursor-pointer">
+                            // className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg cursor-pointer"
+
+                            className={`h-10 w-30 ${currentMatrix?.slotsPosition[index + 1][0] === "1"
+                              ? "bg-green-500"
+                              : "bg-[#DED8C8]"
+                              } rounded-xl flex justify-center items-center text-black text-lg cursor-pointer`}
+
+                          >
                             {value}
                           </button>
                           {[...Array(2)].map((_, i) => (
