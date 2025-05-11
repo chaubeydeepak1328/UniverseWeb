@@ -174,7 +174,7 @@ export default function UserPanel() {
                                 <div className="flex justify-center gap-6 lg:gap-30 items-center ml-0 lg:ml-[-50px]">
                                     <div className="flex justify-center items-center gap-2">
                                         <FaChevronLeft onClick={handleLeft} className="hover:text-blue-500 text-xl" />
-                                        <div className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm">{slotIndex + 1}</div>
+                                        <button onClick={handleLeft} className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm cursor-pointer">{slotIndex + 1}</button>
                                     </div>
 
                                     {/* User Card */}
@@ -210,7 +210,7 @@ export default function UserPanel() {
                                     </div>
 
                                     <div className="flex justify-center items-center gap-2">
-                                        <div className="w-10 h-10 bg-[#24b6ca] text-3xl font-bold flex justify-center items-center rounded-sm">{slotIndex == 9 ? "0" : slotIndex + 2}</div>
+                                        <button onClick={handleRight} className="w-10 h-10 bg-[#24b6ca] text-3xl font-bold flex justify-center items-center rounded-sm cursor-pointer">{slotIndex == 9 ? "0" : slotIndex + 2}</button>
                                         <FaChevronRight onClick={handleRight} className="hover:text-blue-500 text-xl" />
                                     </div>
 

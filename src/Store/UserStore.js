@@ -112,9 +112,9 @@ export const useStore = create((set) => ({
                 const u3premgenerated = await contract3.methods.matricesGenerated(address).call();
 
                 return {
-                    u5gen: u5generated,
-                    u4gen: u4generated,
-                    u3genprem: u3premgenerated,
+                    "U5": u5generated,
+                    "U4": u4generated,
+                    "U3 Premium": u3premgenerated,
                 };
             }
         } catch (error) {

@@ -51,7 +51,7 @@ const RightUserPannel = () => {
         const fetchData = async () => {
             try {
                 const response = await getU3Plus(address);
-                console.log("response:", response);
+                console.log("response: U3", response);
 
                 setU3Data(response)
                 setSloatData(response.slotinfo)
@@ -133,7 +133,7 @@ const RightUserPannel = () => {
                             >
 
 
-                                <div className={`h-10 w-20 sm:w-24 md:w-28 lg:w-26 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg sm:text-xl cursor-pointer ${slotIndex < slotData.length ? 'bg-green-500' : ''
+                                <div className={`h-10 w-20 sm:w-24 md:w-28 lg:w-26 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg sm:text-xl cursor-pointer ${slotIndex < slotData.length + 1 ? 'bg-green-500' : ''
                                     }`}>
                                     ${value}
                                 </div>
@@ -398,9 +398,9 @@ const RightUserPannel = () => {
                                 {[
                                     { title: 'Received', usd: '$23', rama: 145 },
                                     { title: 'Upgraded', usd: '$23', rama: 145 },
-                                    { title: 'Generated', usd: '$23', rama: 145 },
+                                    { title: 'Generated', usd: "$20", rama: 145 },
                                     { title: 'Net Profit', usd: '$23', rama: 145 },
-                                    { title: "Generated ID's", totalId: 12 },
+                                    { title: "Generated ID's", totalId: genId?.[name]?.length || 0 },
                                     { title: 'view Matrix', usd: '$23', rama: 145 },
                                 ].map((item, index) => (
 

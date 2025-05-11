@@ -147,9 +147,9 @@ export default function UserPanel() {
                 <button className="cursor-pointer" onClick={prev} disabled={currentIdIndex === 0}><FaChevronLeft className="text-3xl hover:text-yellow-500" />
                 </button>
 
-                <div className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm">
+                <button onClick={prev} className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm cursor-pointer">
                   {currentCount + 1}
-                </div>
+                </button>
                 <div>
                   <div className="flex flex-wrap gap-y-4 justify-between">
                     <div>
@@ -285,9 +285,9 @@ export default function UserPanel() {
                   {/* Levels */}
                 </div>
 
-                <div className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm">
+                <button onClick={next} className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm cursor-pointer">
                   {currentCount == matrixData.length - 1 ? "0" : currentCount + 2}
-                </div>
+                </button>
 
                 <button className="cursor-pointer" onClick={next} disabled={currentIdIndex === matrixData?.length - 1}><FaAngleRight className="text-4xl hover:text-yellow-500" />
                 </button>

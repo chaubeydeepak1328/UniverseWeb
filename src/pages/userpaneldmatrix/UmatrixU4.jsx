@@ -85,12 +85,20 @@ export default function UserPanel() {
 
     const { id, values, slotsPosition } = matrixData[currentIdIndex];
 
+
+
+    const [currentCount, setCurrentCount] = useState(0);
+
     const next = () => {
         if (currentIdIndex < matrixData.length - 1) setCurrentIdIndex(currentIdIndex + 1);
+
+        if (currentCount < matrixData?.length - 1) setCurrentCount(currentCount + 1);
     };
 
     const prev = () => {
         if (currentIdIndex > 0) setCurrentIdIndex(currentIdIndex - 1);
+
+        if (currentCount > 0) setCurrentCount(currentCount - 1);
     };
 
 
@@ -127,6 +135,9 @@ export default function UserPanel() {
                         >
                             <div className="flex justify-between items-center">
                                 <button className="cursor-pointer" onClick={prev} disabled={currentIdIndex === 0} ><FaChevronLeft className="text-3xl hover:text-yellow-500" />
+                                </button>
+                                <button onClick={prev} className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm cursor-pointer">
+                                    {currentCount + 1}
                                 </button>
                                 <div>
                                     <div className="flex flex-wrap justify-between items-center ">
@@ -230,12 +241,16 @@ export default function UserPanel() {
                                         </div>
 
 
-                                    
+
                                     </div>
 
                                     {/* Levels */}
                                     {/* Levels */}
                                 </div>
+                                <button onClick={next} className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm cursor-pointer">
+                                    {currentCount == matrixData.length - 1 ? "0" : currentCount + 2}
+                                </button>
+
                                 <button className="cursor-pointer" onClick={next} disabled={currentIdIndex === matrixData.length - 1}><FaAngleRight className="text-4xl hover:text-yellow-500" />
                                 </button>
                             </div>

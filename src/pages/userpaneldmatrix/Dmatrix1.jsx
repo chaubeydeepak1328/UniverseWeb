@@ -156,9 +156,9 @@ export default function UserPanel() {
                       onClick={prevSlot}
                       className="cursor-pointer hover:text-blue-500 hover:scale-200 transition-transform duration-300 text-xl"
                     />
-                    <div className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm">
+                    <button onClick={prevSlot} className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm cursor-pointer">
                       {slot.slotNo}
-                    </div>
+                    </button>
                   </div>
 
                   {/* ID Card */}
@@ -217,9 +217,9 @@ export default function UserPanel() {
                   </div>
 
                   <div className="flex justify-center items-center gap-2">
-                    <div className="w-10 h-10 bg-[#24b6ca] text-3xl font-bold flex justify-center items-center rounded-sm">
+                    <button onClick={nextSlot} className="w-10 h-10 bg-[#24b6ca] text-3xl font-bold flex justify-center items-center rounded-sm cursor-pointer">
                       {slotIndex + 2 <= dummyData.length ? slotIndex + 2 : "-"}
-                    </div>
+                    </button>
                     <FaChevronRight
                       onClick={nextSlot}
                       className="cursor-pointer hover:text-blue-500 hover:scale-200 transition-transform duration-300 text-xl"
