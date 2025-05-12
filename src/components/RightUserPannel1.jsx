@@ -21,6 +21,7 @@ const RightUserPannel1 = () => {
     const { handleSendTx, hash } = useTransaction(trxData !== null && trxData);
 
 
+
     useEffect(() => {
         if (hash) {
             console.log("Transaction hash:", hash);
@@ -47,12 +48,17 @@ const RightUserPannel1 = () => {
     const registerUser = useStore((state) => state.registerUser);
     const IsUserExist = useStore((state) => state.IsUserExist);
     const getCurrentRamaPrice = useStore((state) => state.getCurrentRamaPrice)
+    const getBalance = useStore((state) => state.getBalance)
+
+
+    const [walletBal, setWallBal] = useState();
 
     const [UserData, setUserData] = useState();
 
     useEffect(() => {
         console.log("Address:", address);
         console.log("Is Connected:", isConnected);
+
     }, [isConnected])
 
     const [sponsorAddress, setSponsorAddress] = useState('');
@@ -70,11 +76,26 @@ const RightUserPannel1 = () => {
 
             console.log(`this is sponser-->`, sponserExist.isexist)
 
+            console.log(sponserExist)
+
             if (sponserExist.isexist) {
 
-                setUserData(sponserExist)
+                const balance = await getBalance(address);
+                setWallBal(balance)
 
-                setMessage(`✅Valid Sponser address! You can Conitnue for registration`);
+                if (balance) {
+                    setUserData(sponserExist)
+
+                    if (parseFloat(sponserExist?.requireRama) > parseFloat(balance)) {
+                        setMessage("Insufficient fund")
+                    } else {
+                        setMessage(`✅Valid Sponser address! You can Conitnue for registration`);
+                    }
+
+
+                }
+
+
             } else {
                 setMessage("Invalid sponser Address");
                 return;
@@ -234,13 +255,26 @@ const RightUserPannel1 = () => {
                     {message}
                 </p> : ""}
 
-                <div className='w-100 flex gap-2 justify-center'>
-                    {message && (
-                        <div className='flex gap-2 justify-center'>
-                            <h2 >id: {UserData?.userId}</h2> <h2 >Required Rama : {UserData?.userId}</h2> <h2 >Available Rama : {UserData?.userId}</h2>
-                        </div>
-                    )}
+                <div className="w-full flex flex-col items-center justify-center gap-4 px-4 ">
+                    {message && message.startsWith("✅Valid Sponser address!") ||
+                        message.startsWith("Registration successful!") ? (
+                        <>
+                            <div className="w-full max-w-md flex flex-col sm:flex-row gap-4 items-center justify-between bg-gradient-to-r from-green-500 to-yellow-400 text-white font-semibold py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition duration-300 ease-in-out text-center sm:text-left">
+                                <h2 className="w-full sm:w-auto">Required Rama: <span className="font-bold">{UserData?.requireRama}</span></h2>
+                                <h2 className="w-full sm:w-auto">Available Rama: <span className="font-bold">{Number(walletBal).toFixed(2)}</span></h2>
+                            </div>
+
+                            <input
+                                type="text"
+                                value={UserData?.userId}
+                                disabled
+                                className="w-full max-w-sm px-4 py-3 text-center bg-white/10 text-white border border-yellow-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 text-lg placeholder:text-white/50 cursor-not-allowed transition duration-200"
+                                aria-label="User ID"
+                            />
+                        </>
+                    ) : ""}
                 </div>
+
 
 
 
@@ -249,7 +283,7 @@ const RightUserPannel1 = () => {
 
                 <div className="flex flex-col items-center text-sm font-medium text-white">
                     <div className='flex flex-row  flex-wrap justify-content-center items-center'>
-                        <p>Don't have Refferal ? </p><button className='p-2 bg-warning cursor-pointer' onClick={handleCopy}>Copy Referral</button>
+                        <p>Don't have Referal ? </p><button className='p-2 bg-warning cursor-pointer' onClick={handleCopy}>Copy Referral</button>
                     </div>
                     <div className='flex flex-row flex-wrap gap-4'>
                         <p>{staticReferal.slice(1, 7)} .... {staticReferal.slice(-6)}</p> <FaRegCopy className='cursor-pointer' onClick={handleCopy} />
@@ -258,16 +292,21 @@ const RightUserPannel1 = () => {
 
 
 
-                {isValidser ? <button onClick={handleRegister}
-                    className="w-full bg-gradient-to-r from-green-500 to-yellow-400 text-white font-semibold py-2 rounded-lg shadow hover:shadow-lg transition duration-200 cursor-pointer"
-                >
-                    Register Now
-                </button> :
-                    <button onClick={handleValidation}
+                {(isValidser &&
+                    parseFloat(UserData?.requireRama) < parseFloat(walletBal)) ? (
+                    <button onClick={handleRegister}
                         className="w-full bg-gradient-to-r from-green-500 to-yellow-400 text-white font-semibold py-2 rounded-lg shadow hover:shadow-lg transition duration-200 cursor-pointer"
                     >
-                        Validate Address
-                    </button>}
+                        Register Now
+                    </button>
+                ) :
+                    (
+                        <button onClick={handleValidation}
+                            className="w-full bg-gradient-to-r from-green-500 to-yellow-400 text-white font-semibold py-2 rounded-lg shadow hover:shadow-lg transition duration-200 cursor-pointer"
+                        >
+                            Validate Address
+                        </button>
+                    )}
 
 
 

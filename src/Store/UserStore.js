@@ -64,6 +64,23 @@ export const useStore = create((set) => ({
 
     // Smart Contract Data
 
+    getBalance: async (walletAdd) => {
+        try {
+            if (!walletAdd) {
+                throw new Error("Wallet address is required.");
+            }
+
+            const balanceWei = await web3.eth.getBalance(walletAdd);
+            const balanceEth = web3.utils.fromWei(balanceWei, 'ether');
+
+            return parseFloat(balanceEth).toFixed(4); // Optional: return balance with 4 decimal places
+        } catch (error) {
+            console.error("Failed to fetch balance:", error.message);
+            return null; // Or throw error depending on use case
+        }
+    },
+
+
     getCurrentRamaPrice: async () => {
         try {
 
@@ -191,9 +208,17 @@ export const useStore = create((set) => ({
             if (!walletAdd) {
                 throw new Error("Invalid wallet address");
             }
-            const { abi, contractAddress } = await fetchContractAbi("UserMang");
+            // const { abi, contractAddress } = await fetchContractAbi("UserMang");
 
-            const contract = new web3.eth.Contract(abi, contractAddress);
+            const [UserMang, PriceConvs] = await Promise.all([
+                fetchContractAbi("UserMang"),
+                fetchContractAbi("PriceConv"),
+            ]);
+
+            const contract = new web3.eth.Contract(UserMang.abi, UserMang.contractAddress);
+
+            const contract1 = new web3.eth.Contract(PriceConvs.abi, PriceConvs.contractAddress);
+
             const isExist = await contract.methods.isRegistered(walletAdd).call();
 
             console.log("is Users exist:", isExist, walletAdd);
@@ -204,11 +229,23 @@ export const useStore = create((set) => ({
                 if (user) {
 
                     const sponserId = await contract.methods.getUserIDByAddress(user.sponsor).call();
+
+
+
+
+                    // Get USD → RAMA value
+                    const valueInUSD = BigInt(20 * 1e6); // 20 USD in micro USD as BigInt
+                    const ramaAmount = await contract1.methods.usdToRama(valueInUSD).call();
+
+                    const requireRama = Number(ramaAmount) / 1e18;
+                    const formattedRama = requireRama.toFixed(4);
+
                     return {
                         isexist: true,
                         walletAdd: walletAdd,
                         userId: user.id.toString(),
                         sponserId: sponserId.toString(),
+                        requireRama: formattedRama,
                         sponserAdd: user.sponsor,
                         regTime: user.registrationTime,
                         directReferral: user.directReferrals,
