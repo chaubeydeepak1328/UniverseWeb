@@ -75,7 +75,7 @@ const LeftUserPannel = () => {
     console.log("User ID:", userId, userAddress, data);
 
 
-    const [RamaValueUsd, setRamaValueUsd] = useState("345");
+    const [RamaValueUsd, setRamaValueUsd] = useState("0");
 
 
 

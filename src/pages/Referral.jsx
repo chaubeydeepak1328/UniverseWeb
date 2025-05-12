@@ -78,6 +78,20 @@ const Referral = () => {
 
 
     useEffect(() => {
+            if (hash) {
+                console.log("Transaction hash:", hash);
+    
+    
+                // trxHashInfo
+                setMessage('Registration successful!');
+                setLoading(false)
+    
+                setShowModal(true)
+            }
+        }, [hash])
+
+
+    useEffect(() => {
         const fetchUserData = async () => {
             try {
                 if (address) {
@@ -129,8 +143,8 @@ const Referral = () => {
                 console.log("trx response", response)
 
                 setTrxData(response);
-                setMessage('Registration successful!');
-                setSponserAddress('');
+                
+               
                 setIsVerified(false);
 
                 setLoading(false);

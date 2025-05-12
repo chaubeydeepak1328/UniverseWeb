@@ -148,7 +148,6 @@ const RightUserPannel1 = () => {
                 console.log("trxResponse", trxResponse)
                 setTrxData(trxResponse);
 
-                setSponsorAddress('');
                 setIsValidser(false);
             } catch (error) {
                 setLoading(false)
