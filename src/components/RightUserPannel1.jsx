@@ -8,6 +8,7 @@ import { FaRegCopy } from "react-icons/fa";
 import '../App.css'
 import { useTransaction } from '../config/register';
 import TransactionModal from './TransactionModal';
+import { Spinner } from '../util/helpers';
 
 const RightUserPannel1 = () => {
 
@@ -17,6 +18,8 @@ const RightUserPannel1 = () => {
     // =========================================================
 
     const [trxData, setTrxData] = useState();
+
+    const [loading, setLoading] = useState(false)
 
     const { handleSendTx, hash } = useTransaction(trxData !== null && trxData);
 
@@ -29,6 +32,7 @@ const RightUserPannel1 = () => {
 
             // trxHashInfo
             setMessage('Registration successful!');
+            setLoading(false)
 
             setShowModal(true)
         }
@@ -37,7 +41,13 @@ const RightUserPannel1 = () => {
 
     useEffect(() => {
         if (trxData) {
-            handleSendTx(trxData);
+            try {
+                handleSendTx(trxData);
+            } catch (error) {
+                setLoading(false)
+                alert("somthing went Wrong")
+            }
+
         }
     }, [trxData]);
 
@@ -67,6 +77,7 @@ const RightUserPannel1 = () => {
     const [message, setMessage] = useState('');
 
     const handleValidation = async () => {
+        setLoading(true)
 
         const udtoRama = await getCurrentRamaPrice();
         console.log("=======!::::", udtoRama);
@@ -90,6 +101,7 @@ const RightUserPannel1 = () => {
                         setMessage("Insufficient fund")
                     } else {
                         setMessage(`✅Valid Sponser address! You can Conitnue for registration`);
+                        setLoading(false)
                     }
 
 
@@ -97,31 +109,37 @@ const RightUserPannel1 = () => {
 
 
             } else {
+                setLoading(false)
                 setMessage("Invalid sponser Address");
                 return;
             }
 
 
         } else {
+            setLoading(false)
             setMessage('Please enter a valid address');
             return;
         }
         // Example validation logic
         // const isValid = sponsorAddress.length > 0; // Check if the address is not empty
         setIsValidser(true);
+        setLoading(false)
     }
 
     const handleRegister = async () => {
         // Example registration logic
+        setLoading(true)
         if (isValidser) {
             try {
 
                 if (!isConnected) {
                     alert("Please Connect Wallet First");
+                    setLoading(false)
                     return;
                 }
                 if (!sponsorAddress) {
                     alert("Please Provide Sponser Wallet Address");
+                    setLoading(false)
                     return;
                 }
 
@@ -133,9 +151,11 @@ const RightUserPannel1 = () => {
                 setSponsorAddress('');
                 setIsValidser(false);
             } catch (error) {
+                setLoading(false)
                 setMessage(`Registration failed: ${error.message}`);
             }
         } else {
+            setLoading(false)
             console.log('Invalid address. Please enter a valid referral address.');
         }
     }
@@ -297,14 +317,17 @@ const RightUserPannel1 = () => {
                     <button onClick={handleRegister}
                         className="w-full bg-gradient-to-r from-green-500 to-yellow-400 text-white font-semibold py-2 rounded-lg shadow hover:shadow-lg transition duration-200 cursor-pointer"
                     >
-                        Register Now
+
+                        {loading ? <Spinner loading={loading} /> : "Register Now"}
+
                     </button>
                 ) :
                     (
                         <button onClick={handleValidation}
                             className="w-full bg-gradient-to-r from-green-500 to-yellow-400 text-white font-semibold py-2 rounded-lg shadow hover:shadow-lg transition duration-200 cursor-pointer"
                         >
-                            Validate Address
+                            {loading ? <Spinner loading={loading} /> : "Validate Address"}
+
                         </button>
                     )}
 

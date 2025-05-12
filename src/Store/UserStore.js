@@ -168,12 +168,29 @@ export const useStore = create((set) => ({
 
     getAllusers: async (userId) => {
         try {
-            const { abi, contractAddress } = await fetchContractAbi("UserMang");
 
-            const contract = new web3.eth.Contract(abi, contractAddress);
+
+            const [UserMang, PriceConvs] = await Promise.all([
+                fetchContractAbi("UserMang"),
+                fetchContractAbi("PriceConv"),
+            ]);
+
+
+            const contract = new web3.eth.Contract(UserMang.abi, UserMang.contractAddress);
+
+            const contract1 = new web3.eth.Contract(PriceConvs.abi, PriceConvs.contractAddress);
+
             const userAddress = await contract.methods.allUsers(userId).call();
 
-            if (userAddress) {
+
+            // Get USD → RAMA value
+            const valueInUSD = BigInt(20 * 1e6); // 20 USD in micro USD as BigInt
+            const ramaAmount = await contract1.methods.usdToRama(valueInUSD).call();
+
+            const requireRama = Number(ramaAmount) / 1e18;
+            const formattedRama = requireRama.toFixed(4);
+
+            if (userAddress && ramaAmount) {
 
                 const userInfo = await contract.methods.getUser(userAddress).call();
                 console.log(userInfo);
@@ -188,6 +205,7 @@ export const useStore = create((set) => ({
                         sponserAdd: userInfo.sponsor.toString(),
                         sponserId: sponserId.toString(),
                         regTime: userInfo.registrationTime,
+                        requireRama: formattedRama,
                         directReferral: userInfo.directReferrals,
                     }
                     return data;
