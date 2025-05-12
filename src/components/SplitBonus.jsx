@@ -57,6 +57,8 @@ export default function UplineBonus() {
                                             <th className="p-2 border">Type</th>
                                             <th className="p-2 border">From Wallet</th>
                                             <th className="p-2 border">Tx Hash</th>
+                                            <th className="p-2 border">from slot</th>
+                                            <th className="p-2 border">from cycle</th>
                                             <th className="p-2 border">Level</th>
                                             <th className="p-2 border">Profit</th>
                                         </tr>
@@ -66,6 +68,8 @@ export default function UplineBonus() {
                                             <td className="p-2 border">34</td>
                                             <td className="p-2 border">0xc09...12344</td>
                                             <td className="p-2 border">0xc03...38624</td>
+                                            <td className="p-2 border">2</td>
+                                            <td className="p-2 border">2</td>
                                             <td className="p-2 border">2</td>
                                             <td className="p-2 border">0.000 / $0.000</td>
                                         </tr>

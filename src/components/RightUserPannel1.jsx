@@ -11,6 +11,11 @@ import TransactionModal from './TransactionModal';
 
 const RightUserPannel1 = () => {
 
+    // for Modal
+    // ========================================================
+    const [showModal, setShowModal] = useState(false);
+    // =========================================================
+
     const [trxData, setTrxData] = useState();
 
     const { handleSendTx, hash } = useTransaction(trxData !== null && trxData);
@@ -23,6 +28,8 @@ const RightUserPannel1 = () => {
 
             // trxHashInfo
             setMessage('Registration successful!');
+
+            setShowModal(true)
         }
     }, [hash])
 
@@ -169,13 +176,7 @@ const RightUserPannel1 = () => {
 
 
 
-    // for Moal 
 
-    const [showModal, setShowModal] = useState(true);
-
-    const dummyHash = '0x123456789abcdef0987654321fedcba987654321';
-    const dummyUserWallet = '0xUserWallet1234567890abcdef';
-    const dummySponsorWallet = '0xSponsorWalletabcdef098765';
 
 
 
@@ -189,14 +190,18 @@ const RightUserPannel1 = () => {
                 background:
                     "linear-gradient(100deg, rgba(5, 53, 102, 1) 0%, rgba(169, 190, 10, 1) 100%)",
             }}>
-            {/* <div className='absolute'>
-                <TransactionModal
-                    isOpen={showModal}
-                    hash={dummyHash}
-                    userWallet={dummyUserWallet}
-                    sponsorWallet={dummySponsorWallet}
-                />
-            </div> */}
+            {
+                showModal && (
+                    <div className='absolute'>
+                        <TransactionModal
+                            isOpen={showModal}
+                            hash={hash}
+                            userWallet={address}
+                            sponsorWallet={sponsorAddress}
+                        />
+                    </div>
+                )
+            }
 
             <h2 className="text-2xl font-bold text-white mb-6 text-center">Register Now</h2>
 
