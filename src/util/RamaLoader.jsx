@@ -25,7 +25,7 @@ const RamaLoader = () => {
                         y="50%"
                         textAnchor="middle"
                         dominantBaseline="middle"
-                        className="fill-gray-900 text-[22px] font-bold font-zilap"
+                        className="fill-white text-[22px] font-bold font-zilap"
                     >
                         RAMESTTA
                     </text>

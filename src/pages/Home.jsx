@@ -31,7 +31,10 @@ export default function Home() {
 
   useEffect(() => {
     const checkUser = async () => {
-      if (isConnected && address) {
+
+      const localAddress = JSON.parse(localStorage.getItem("userData"))?.userAddress;
+
+      if ((isConnected && address) && localAddress) {
         const user = await IsUserExist(address); // Await here
         navigate('/user-panel-home', {
           state: {

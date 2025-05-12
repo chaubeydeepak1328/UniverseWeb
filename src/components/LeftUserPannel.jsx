@@ -115,7 +115,7 @@ const LeftUserPannel = () => {
                         className="h-10 w-10"
                     />
                 </div>
-                <div className=" lg:text-2xl font-bold">{userId ? "Id :" + userId : "Not Registered"}</div>
+                <div className=" lg:text-2xl font-bold">{userId ? "ID :" + userId : "Not Registered"}</div>
             </div>
             <div className="w-full flex justify-end mt-2">
                 <p className="text-2xl text-green-500">${RamaValueUsd}</p>
@@ -141,7 +141,8 @@ const LeftUserPannel = () => {
                 Sponser Address
             </div>
             <div className="lg:text-xl font-bold">
-                {data?.sponserAdd ? data?.sponserAdd?.slice(0, 7) + "..." + data?.sponserAdd?.slice(-7) : "Not Available"} {data?.sponserId && `(id: ${data?.sponserId})`}
+                <p> {data?.sponserAdd ? data?.sponserAdd?.slice(0, 7) + "..." + data?.sponserAdd?.slice(-7) : "Not Available"}</p>
+                <p> {data?.sponserId && `(ID: ${data?.sponserId})`}</p>
             </div>
             <div className="flex justify-between  mt-2 px-2">
                 <FaExternalLinkAlt className="hover:text-blue-700 cursor-pointer" />

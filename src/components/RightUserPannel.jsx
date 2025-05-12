@@ -17,7 +17,7 @@ import DashboardInfo from './DashboardInfo';
 import cart from '../assets/images/cart.png';
 import { TbUniverse } from "react-icons/tb";
 import RamaLoader from '../util/RamaLoader';
-
+import pointingFinger from "../assets/images/pointingFinger.png"
 
 const RightUserPannel = () => {
 
@@ -334,9 +334,9 @@ const RightUserPannel = () => {
                 };
 
                 const MatrixName = {
-                    "U5": "Enter Universe U5",
-                    "U4": "Enter Universe U4",
-                    "U3 Premium": "Enter universe u3 premium",
+                    "U5": "ENTER ",
+                    "U4": "ENTER",
+                    "U3 Premium": "ENTER",
                 };
 
 
@@ -424,10 +424,12 @@ const RightUserPannel = () => {
                                                     background:
                                                         "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
                                                 }} className="p-5 rounded-2xl shadow hover:shadow-lg transition">
-                                                    <h3 className="text-sm font-semibold text-white mb-2">{MatrixName[name]} {'(Click here)'}</h3>
-                                                    <div className="text-yellow-500 flex justify-center">
-                                                        {/* <TbUniverse size={60} color='yellow' /> */}
 
+                                                    <h3 className=" border-1 w-fit m-auto px-2 py-1 bg-yellow-500 rounded border-yellow-600 text-md font-semibold text-white mb-2">{MatrixName[name]} </h3>
+
+                                                    <div className="text-yellow-500 flex justify-center gap-4">
+                                                        {/* <TbUniverse size={60} color='yellow' /> */}
+                                                        <img className='-rotate-270 w-5' src={pointingFinger} alt="" />
                                                         <RamaLoader />
                                                     </div>
                                                 </Link>

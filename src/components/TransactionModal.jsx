@@ -160,11 +160,17 @@ import { config } from "../config/index"
 
 import { waitForTransactionReceipt } from '@wagmi/core';
 import { useDisconnect } from '@reown/appkit/react';
+import { useStore } from '../Store/UserStore';
 
-const TransactionModal = ({ userWallet, sponsorWallet, isOpen, hash }) => {
+const TransactionModal = ({ userWallet, sponsorWallet, isOpen, hash, closeModal }) => {
     const [receipt, setReceipt] = useState(null);
     const [message, setMessage] = useState('');
     const [timer, setTimer] = useState(15);
+
+    const [userData, setUserData] = useState();
+
+
+    const IsUserExist = useStore((state) => state.IsUserExist);
 
     const navigate = useNavigate();
 
@@ -192,16 +198,56 @@ const TransactionModal = ({ userWallet, sponsorWallet, isOpen, hash }) => {
 
 
 
+    useEffect(() => {
+        const storeData = () => {
+
+            if (userData) {
+                const safeUser = {
+                    ...userData,
+                    regTime: userData?.userData?.toString(), // convert BigInt to string
+                };
+
+                localStorage.setItem(
+                    "userData",
+                    JSON.stringify({
+                        userId: safeUser?.userId || null,
+                        userAddress: safeUser?.walletAdd,
+                        data: safeUser,
+                    })
+                );
+
+                closeModal();
+
+
+                window.location.href = "/user-panel-home";
+
+            }
+        }
+
+
+        storeData();
+    }, [userData])
+
+
+
     const handleNavigateUser = async () => {
         try {
 
-            await disconnect();
-            removeAddress()
-            navigate('/user-login');
+            // await disconnect();
+            // removeAddress()
+            // navigate('/user-login');
 
-        } catch (error) {
-            console.error("Failed to disconnect:", error);
+
+            const user = await IsUserExist(userWallet);
+            console.log("this is User=========>", user?.userId?.toString(), user)
+
+            setUserData(user)
+
+        } catch (err) {
+            console.error("Error checking user:", err);
+            toast.error("Failed to verify user.");
         }
+
     };
 
 

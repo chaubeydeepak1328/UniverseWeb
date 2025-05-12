@@ -218,6 +218,11 @@ const Referral = () => {
     }
 
 
+    // To close the modal from the TransactionModal:
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
 
     return (
         <div className="w-full min-h-screen flex items-center justify-center bg-black px-4 py-10">
@@ -240,6 +245,7 @@ const Referral = () => {
                                 hash={hash}
                                 userWallet={address}
                                 sponsorWallet={sponsorAddress?.userAddress}
+                                closeModal={handleCloseModal} // Pass close function
                             />
                         </div>
                     )

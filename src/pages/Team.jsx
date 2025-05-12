@@ -149,7 +149,7 @@ export default function Team() {
       <div className="mt-10">
        
         <span className="text-2xl md:text-3xl border-1 rounded-md px-10 py-2 font-bold">
-          Upline Id : ##
+          Upline ID : ##
         </span>
       </div>
 

@@ -217,7 +217,10 @@ const RightUserPannel1 = () => {
 
 
 
-
+    // To close the modal from the TransactionModal:
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
 
 
 
@@ -238,6 +241,7 @@ const RightUserPannel1 = () => {
                             hash={hash}
                             userWallet={address}
                             sponsorWallet={sponsorAddress}
+                            closeModal={handleCloseModal} // Pass close function
                         />
                     </div>
                 )

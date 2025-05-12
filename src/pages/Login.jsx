@@ -11,7 +11,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import {
   useAppKitAccount,
 } from '@reown/appkit/react'
-import { useSearchParams } from 'react-router-dom';
 
 import { useStore } from '../Store/UserStore';
 import { Spinner } from "../util/helpers";
@@ -38,9 +37,54 @@ export default function Login() {
     setAuthLoading(true)
 
 
-    if (address && isConnected) {
+    const localAddress = JSON.parse(localStorage.getItem("userData"))?.userAddress;
+
+    console.log("step1 ==========", localAddress)
+
+    if ((address && isConnected) && localAddress) {
+
       setAuthLoading(false)
       navigate('/user-panel-home');
+    }
+    else if ((address && isConnected) && localAddress == "undefined") {
+      
+      if (walletPrompted && isConnected && address) {
+        try {
+          const user = await IsUserExist(address);
+          console.log("this is User=========>", user?.userId?.toString(), user)
+
+
+          const safeUser = {
+            ...user,
+            regTime: user.regTime?.toString(), // convert BigInt to string
+          };
+
+          localStorage.setItem(
+            "userData",
+            JSON.stringify({
+              userId: safeUser?.userId || null,
+              userAddress: safeUser?.walletAdd,
+              data: safeUser,
+            })
+          );
+
+          // Storing to the local storage end
+          setAuthLoading(false)
+          navigate('/user-panel-home', {
+            state: {
+              userId: user?.userId?.toString() || null,
+              userAddress: user?.walletAdd, data: user || null,
+            }
+          });
+        } catch (err) {
+          setAuthLoading(false)
+          console.error("Error checking user:", err);
+          toast.error("Failed to verify user.");
+        } finally {
+          setAuthLoading(false)
+          setWalletPrompted(false); // Reset to prevent re-trigger
+        }
+      }
     }
     else {
       try {
