@@ -21,6 +21,7 @@ import { BsCaretUpFill } from "react-icons/bs";
 import Header from "../../components/Header";
 import LeftUserPannel from "../../components/LeftUserPannel";
 import DashboardInfo from "../../components/DashboardInfo";
+import { useStore } from "../../Store/UserStore";
 
 export default function UserPanel() {
 
@@ -96,8 +97,21 @@ export default function UserPanel() {
     };
 
 
+
+    const getFilteredLogs = useStore((state) => state.getFilteredLogs);
+
     useEffect(() => {
         handlePositionClick(cycleIndex)
+
+
+
+        const u5logs = async () => {
+            const res = getFilteredLogs();
+
+            console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&", res)
+        }
+
+        u5logs();
     }, [cycleIndex])
 
 

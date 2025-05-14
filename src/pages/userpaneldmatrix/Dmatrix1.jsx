@@ -24,11 +24,14 @@ import { FaCheckToSlot } from "react-icons/fa6";
 import LeftUserPannel from "../../components/LeftUserPannel";
 import Header from "../../components/Header";
 import DashboardInfo from "../../components/DashboardInfo";
+import { useStore } from "../../Store/UserStore";
 
 export default function UserPanel() {
 
   const location = useLocation();
   const { slotNumber } = location.state || {};
+
+  const [address, setAddress] = useState(JSON.parse(localStorage.getItem("userData")).userAddress);
 
 
   useEffect(() => {
@@ -36,27 +39,43 @@ export default function UserPanel() {
   }, [slotNumber])
 
 
-  const dummyData = [
-    { slotNo: 1, cycles: [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 0]] },
-    { slotNo: 2, cycles: [[1, 1, 1, 1]] },
-    { slotNo: 3, cycles: [[1, 1, 1, 0]] },
-    { slotNo: 4, cycles: [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 0, 0]] },
-    { slotNo: 5, cycles: [[1, 0, 0, 0]] },
-    { slotNo: 6, cycles: [[1, 1, 0, 0]] },
-    { slotNo: 7, cycles: [[1, 1, 1, 0]] },
-    { slotNo: 8, cycles: [[0, 0, 0, 0]] },
-    { slotNo: 9, cycles: [[0, 0, 0, 0]] },
-    { slotNo: 10, cycles: [[0, 0, 0, 0]] },
-  ];
+  const getU3Details = useStore((state) => state.getU3Details);
+
+  const [u3Data, setU3Data] = useState();
+
+  useEffect(() => {
+    const fetchU3Details = async () => {
+      const response = await getU3Details(address);
+
+      console.log(response);
+      setU3Data(response)
+    }
+
+    fetchU3Details();
+  }, [])
+
+
+  // const dummyData = [
+  //   { slotNo: 1, cycles: [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 0]] },
+  //   { slotNo: 2, cycles: [[1, 1, 1, 1]] },
+  //   { slotNo: 3, cycles: [[1, 1, 1, 0]] },
+  //   { slotNo: 4, cycles: [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 0, 0]] },
+  //   { slotNo: 5, cycles: [[1, 0, 0, 0]] },
+  //   { slotNo: 6, cycles: [[1, 1, 0, 0]] },
+  //   { slotNo: 7, cycles: [[1, 1, 1, 0]] },
+  //   { slotNo: 8, cycles: [[0, 0, 0, 0]] },
+  //   { slotNo: 9, cycles: [[0, 0, 0, 0]] },
+  //   { slotNo: 10, cycles: [[0, 0, 0, 0]] },
+  // ];
 
 
 
   const [slotIndex, setSlotIndex] = useState(slotNumber ? slotNumber : 0);
   const [cycleIndex, setCycleIndex] = useState(0);
 
-  const slot = dummyData[slotIndex];
-  const cycles = slot.cycles;
-  const currentCycle = cycles[cycleIndex];
+  const slot = u3Data?.[slotIndex];
+  const cycles = slot?.cycles;
+  const currentCycle = cycles?.[cycleIndex];
 
   const prevSlot = () => {
     setSlotIndex((prev) => (prev > 0 ? prev - 1 : prev));
@@ -64,7 +83,7 @@ export default function UserPanel() {
   };
 
   const nextSlot = () => {
-    setSlotIndex((prev) => (prev < dummyData.length - 1 ? prev + 1 : prev));
+    setSlotIndex((prev) => (prev < u3Data.length - 1 ? prev + 1 : prev));
     setCycleIndex(0);
   };
 
@@ -140,7 +159,7 @@ export default function UserPanel() {
                     <div>RECYCLE</div>
                     <TfiReload className="text-xl text-pink-500" />
                     <div>
-                      {cycleIndex + 1}/{cycles.length}
+                      {cycleIndex + 1}/{cycles?.length}
                     </div>
                   </div>
                   <FaChevronDown
@@ -157,7 +176,7 @@ export default function UserPanel() {
                       className="cursor-pointer hover:text-blue-500 hover:scale-200 transition-transform duration-300 text-xl"
                     />
                     <button onClick={prevSlot} className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm cursor-pointer">
-                      {slot.slotNo}
+                      {slot?.slotNo}
                     </button>
                   </div>
 
@@ -187,13 +206,13 @@ export default function UserPanel() {
 
                     {/* Circles */}
                     <div className="flex justify-center gap-3 mt-2">
-                      {currentCycle.map((status, j) => (
+                      {currentCycle?.map((status, j) => (
                         j == 2 ? <GiCircle
                           key={j}
                           className="rounded-full text-xl size-8"
                           style={
                             status
-                              ? { background: 'linear-gradient(to bottom, white 50%, #ff66d9 50%)' }
+                              ? (slotIndex === 0 ? { backgroundColor: 'white' } : { background: 'linear-gradient(to bottom, white 50%, #ff66d9 50%)' })
                               : { color: 'gray' }
                           }
                         />
@@ -218,7 +237,7 @@ export default function UserPanel() {
 
                   <div className="flex justify-center items-center gap-2">
                     <button onClick={nextSlot} className="w-10 h-10 bg-[#24b6ca] text-3xl font-bold flex justify-center items-center rounded-sm cursor-pointer">
-                      {slotIndex + 2 <= dummyData.length ? slotIndex + 2 : "-"}
+                      {slotIndex + 2 <= u3Data?.length ? slotIndex + 2 : "-"}
                     </button>
                     <FaChevronRight
                       onClick={nextSlot}

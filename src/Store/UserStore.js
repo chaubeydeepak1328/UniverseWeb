@@ -3,13 +3,13 @@ import Web3 from 'web3';
 
 
 const Contract = {
-    "U3plus": "0x3Fb1113FFA45319F42608e94eE03ed68740E8Da6",
-    "UIncome": "0xe99d6BEB132d780DdA86208f3efc47270413463A",
+    "U3plus": "0xEB2F378d50BbBB035F1E23D49b150546eD5Ee292",
+    "UIncome": "0xf2A619d84cEa69c414706aC04613B2d1216c131E",
     "U3prem": "0x5268362bCE89c9a73f298614e847cA8fDeAcB725",
     "U4": "0x4a6AD84A4FffD8fBEF84cBE95Fd01AC2953B47f6",
-    "U5": "0x8b78CC614B8b379a43BeEdC48Fe2Aa1B08B8Fe7d",
-    "UserMang": "0xD475815fccD43Cc50F5D84100263073aB7f81183",
-    "PriceConv": "0x6D0a10dCB7c459f73259f3d3C4b6Cd1a6c393af2",
+    "U5": "0x03fe5a09367031185Cc50AC1d97136C16438323e",
+    "UserMang": "0x1748178f875D82a50a81cbA1DE87249d69388AB4",
+    "PriceConv": "0x611F0dBf5169dfbaBbeE5830FA3Ea00DE8AeD7E5",
     "contReg": "0xc6E55AC39b6135Af3bE66F5413C1DAe789EBF481",
 }
 
@@ -375,11 +375,15 @@ export const useStore = create((set) => ({
                 throw new Error("Invalid wallet address");
             }
 
-            const { abi, contractAddress } = await fetchContractAbi("UserMang");
+            const { abi, contractAddress } = await fetchContractAbi("U3plus");
             const contract = new web3.eth.Contract(abi, contractAddress);
 
             // Activated slot
-            const lastSloat = await contract.methods.getUsersSlotLevel(walletAdd).call();
+            const endSlot = await contract.methods.getLastUpgradedSlot(walletAdd).call();
+
+
+            const lastSloat = endSlot.toString()
+            console.log("lastSloat", lastSloat)
 
 
             const slotInfoArray = [];
@@ -387,24 +391,34 @@ export const useStore = create((set) => ({
             if (lastSloat) {
 
                 for (let i = 1; i <= Number(lastSloat); i++) {
-                    const slot = await contract.methods.getUserSlot(walletAdd, 0, i).call();
+                    const activeCycle = await contract.methods.getSlotInfo(walletAdd, i).call();
 
-                    if (!slot || !slot.positions) {
-                        console.warn(`Invalid slot data at level ${i}`, slot);
+
+                    const cycles = activeCycle.currentCycle.toString();
+                    console.log("curCycle", cycles);
+
+
+                    if (!cycles || !activeCycle.currentCycle) {
+                        console.warn(`Invalid cycle data at level ${i}`, slot);
                         slotInfoArray.push({ users: 0, cycles: 0 });
                         continue;
                     }
 
                     // wallet address ,same matrix,slotLeve/current slot  current cycle for each slot
-                    const currentCycle = await contract.methods.getCurrentCycle(walletAdd, 0, i).call();
+                    const positionInfo = await contract.methods.getAllPositionMembers(walletAdd, i, cycles).call();
 
+                    console.log("positionInfo", positionInfo)
                     const zeroAddress = "0x0000000000000000000000000000000000000000";
-                    const totalPositions = slot.positions.filter(addr => addr !== zeroAddress).length;
-                    const cycles = (parseInt(currentCycle))
-                    const users = totalPositions % 4;
+                    const usersArray = [0, 1, 2, 3].map(index => positionInfo[index] !== zeroAddress ? 1 : 0);
+                    const users = usersArray.reduce((sum, val) => sum + val, 0);
 
-                    slotInfoArray.push({ users, cycles });
+
+                    slotInfoArray.push({ users, cycles: cycles - 1 });
                 }
+
+
+                console.log(lastSloat, slotInfoArray)
+
 
 
                 return {
@@ -597,7 +611,137 @@ export const useStore = create((set) => ({
 
         }
 
+    },
+
+
+    // getTrxU5: async () => {
+
+    //     // matrixId, slotIndex, positionIndex, chunkIndex
+
+    //     // const { abi, address } = await fetchContractAbi("U5");
+
+    //     // const contract = new web3.eth.Contract(abi, contractAddress);
+
+
+
+    //     // const trxData = await contract.methods.getChunkDetails(matrixId, slotIndex, positionIndex, chunkIndex).call();
+
+
+    //     // const slotStatus = await contract.methods.getChunkDetails(matrixId, slotIndex).call();
+
+    //     // return {
+    //     //     usd: trxData.receivedAmountInUSDT,
+    //     //     rama: trxData.receivedAmounIntRAMA,
+    //     //     TrxHash: "jcdhskfgygf43kur934y4ju4o3",
+    //     //     dateTime: trxData.receiveDate,
+    //     //     status: slotStatus,
+    //     //     ReGenerate: "jkh",
+    //     //     NetProfit: "shdkh"
+
+    //     // }
+
+    //     const response = await fetch(`https://latest-backendapi.ramascan.com/api/v2/addresses/${Contract[U5]}/logs`);
+
+    //     const data = await response.json();
+
+    //     const res = data.filter(val =>
+    //         val.decoded &&
+    //         val.decoded.method_call &&
+    //         val.decoded.method_call.startsWith("SlotPaymentReceived")
+    //     );
+
+    //     console.log(res);
+    //     return res;
+
+
+
+
+
+
+    // },
+
+
+    getFilteredLogs: async () => {
+        try {
+            const response = await fetch(`https://latest-backendapi.ramascan.com/api/v2/addresses/${Contract["U5"]}/logs`);
+            const data = await response.json();
+
+            const res = data.items
+                .filter(val =>
+                    val.decoded &&
+                    val.decoded.method_call &&
+                    val.decoded.method_call.startsWith("SlotPaymentReceived")
+                )
+                .map(val => {
+                    const paramObj = {};
+                    val.decoded.parameters.forEach(param => {
+                        paramObj[param.name] = param.value;
+                    });
+                    return paramObj;
+                });
+
+            console.log("getFilteredLogs", res);
+            return res;
+        } catch (error) {
+            console.error("Error fetching or processing data:", error);
+            return [];
+        }
+    },
+
+
+
+    getU3Details: async (walletAdd) => {
+        try {
+            if (!walletAdd) {
+                throw new Error("Invalid wallet address");
+            }
+
+            const { abi, contractAddress } = await fetchContractAbi("U3plus");
+            const contract = new web3.eth.Contract(abi, contractAddress);
+
+            const endSlot = await contract.methods.getLastUpgradedSlot(walletAdd).call();
+            const lastSlot = Number(endSlot);
+
+            const zeroAddress = "0x0000000000000000000000000000000000000000";
+            const slotInfoArray = [];
+
+            for (let slotNo = 1; slotNo <= lastSlot; slotNo++) {
+                const activeSlot = await contract.methods.getSlotInfo(walletAdd, slotNo).call();
+                const currentCycle = Number(activeSlot.currentCycle);
+
+                const allCycles = [];
+
+                for (let cycle = 1; cycle <= currentCycle; cycle++) {
+                    const positionInfo = await contract.methods.getAllPositionMembers(walletAdd, slotNo, cycle).call();
+
+                    const cycleArray = [0, 1, 2, 3].map(index =>
+                        positionInfo[index] && positionInfo[index] !== zeroAddress ? 1 : 0
+                    );
+
+                    allCycles.push(cycleArray);
+                }
+
+                slotInfoArray.push({
+                    slotNo,
+                    cycles: allCycles.length > 0 ? allCycles : [[0, 0, 0, 0]],
+                });
+            }
+
+            // Ensure 10 slots minimum
+            for (let i = lastSlot + 1; i <= 10; i++) {
+                slotInfoArray.push({
+                    slotNo: i,
+                    cycles: [[0, 0, 0, 0]],
+                });
+            }
+
+            return slotInfoArray;
+        } catch (error) {
+            console.error("Error:", error);
+            alert(`Error checking user: ${error.message}`);
+        }
     }
+
 
 
 
