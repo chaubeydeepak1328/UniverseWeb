@@ -1,19 +1,9 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { RxCopy } from "react-icons/rx";
-import { FaExternalLinkAlt } from "react-icons/fa";
-import { IoMdLogOut } from "react-icons/io";
-import universeLogo from "../assets/images/universeLogo.png";
-import universeCoin from "../assets/images/universeCoin.png";
-import { FaTelegram } from "react-icons/fa";
-
-import { PiUsersFourBold } from "react-icons/pi";
-import { GiSplitArrows } from "react-icons/gi";
-import { MdOutlineContactMail } from "react-icons/md";
-import { FaCheckToSlot } from "react-icons/fa6";
+import React, { useEffect, useState } from "react";
 import LeftUserPannel from "./LeftUserPannel";
 import Header from "./Header";
 import DashboardInfo from "./DashboardInfo";
+import { useStore } from "../Store/UserStore";
+
 
 
 
@@ -21,6 +11,33 @@ import DashboardInfo from "./DashboardInfo";
 
 export default function UplineBonus() {
     const values = [0.005, 0.001, 0.003, 0.003, 0.002, 0.004, 0.002];
+
+    // const [address, setAddress] = useState(JSON.parse(localStorage.getItem("userData") || '{}')?.userAddress);
+
+
+    const [splitData, setSplitData] = useState()
+
+    const getSplitBonus = useStore((state) => state.getSplitBonus);
+
+
+
+
+
+
+    useEffect(() => {
+
+        const fetchSplit = async () => {
+
+            const data = await getSplitBonus();
+            console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$u3plsu split Bonus", data)
+            setSplitData(data)
+        }
+
+
+        fetchSplit();
+    }, [])
+
+
     return (
         <div className=" px-4"
             style={{

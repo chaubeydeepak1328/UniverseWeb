@@ -1,14 +1,15 @@
 import { create } from 'zustand';
 import Web3 from 'web3';
+import axios from 'axios';
 
 
 const Contract = {
-    "U3plus": "0xEB2F378d50BbBB035F1E23D49b150546eD5Ee292",
+    "U3plus": "0x77071C096325DD176881C24391AfC327D86AeAc6",
     "UIncome": "0xf2A619d84cEa69c414706aC04613B2d1216c131E",
     "U3prem": "0x5268362bCE89c9a73f298614e847cA8fDeAcB725",
     "U4": "0x4a6AD84A4FffD8fBEF84cBE95Fd01AC2953B47f6",
-    "U5": "0x03fe5a09367031185Cc50AC1d97136C16438323e",
-    "UserMang": "0x1748178f875D82a50a81cbA1DE87249d69388AB4",
+    "U5": "0x7593EF2DD7714Da6cfb3Db908AE67b6C3114f240",
+    "UserMang": "0x3dD4c655cB071342F6A8554b8F0E34177EE12639",
     "PriceConv": "0x611F0dBf5169dfbaBbeE5830FA3Ea00DE8AeD7E5",
     "contReg": "0xc6E55AC39b6135Af3bE66F5413C1DAe789EBF481",
 }
@@ -143,14 +144,24 @@ export const useStore = create((set) => ({
 
     homePannelInfo: async (address) => {
         try {
-            const { abi, contractAddress } = await fetchContractAbi("UserMang");
-            const contract = new web3.eth.Contract(abi, contractAddress);
-            const slotLevel = await contract.methods.getUsersSlotLevel(address).call();
+
+            const [U3Plus, UserMang] = await Promise.all([
+                fetchContractAbi("U3plus"),
+                fetchContractAbi("UserMang"),
+            ]);
+
+            const contract = new web3.eth.Contract(U3Plus.abi, U3Plus.contractAddress);
+
+            const contract1 = new web3.eth.Contract(UserMang.abi, UserMang.contractAddress);
+
+
+            const endSlot = await contract.methods.getLastUpgradedSlot(address).call();
+            const slotLevel = Number(endSlot);
             console.log("slotlevel================", slotLevel)
 
 
             if (slotLevel) {
-                const user = await contract.methods.getUser(address).call();
+                const user = await contract1.methods.getUser(address).call();
 
                 return {
                     InvitedPartner: user.directReferrals.length,
@@ -159,7 +170,7 @@ export const useStore = create((set) => ({
             }
         } catch (error) {
             console.error("Error:", error);
-            alert(`user Id Exist ${error.message}`);
+            alert(`Some Error Occured ${error.message}`);
             throw error;
         }
 
@@ -413,7 +424,7 @@ export const useStore = create((set) => ({
                     const users = usersArray.reduce((sum, val) => sum + val, 0);
 
 
-                    slotInfoArray.push({ users, cycles: cycles - 1 });
+                    slotInfoArray.push({ users, cycles: cycles });
                 }
 
 
@@ -740,6 +751,22 @@ export const useStore = create((set) => ({
             console.error("Error:", error);
             alert(`Error checking user: ${error.message}`);
         }
+    },
+
+
+
+    getSplitBonus: async () => {
+        const response = await axios.get(`https://latest-backendapi.ramascan.com/api/v2/addresses/${Contract["U3plus"]}/logs`);
+
+        // filtering the data Payment Spilted
+
+        const data1 = response.data
+
+        const splitPayment = data1.items.filter((val) => val.decoded.method_call.startsWith("PaymentSplited"));
+
+        // const paymentArr = splitPayment.forEach(())
+        console.log(splitPayment)
+        return splitPayment
     }
 
 
