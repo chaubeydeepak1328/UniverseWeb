@@ -3,7 +3,7 @@ import universeLogo from "../../assets/images/universeLogo.png";
 import universeCoin from "../../assets/images/universeCoin.png";
 import { RxCopy } from "react-icons/rx";
 import { FaExternalLinkAlt, FaTelegram } from "react-icons/fa";
-import { RiLogoutCircleRLine } from "react-icons/ri";
+import { RiFontSize, RiLogoutCircleRLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 import { PiLineVerticalLight } from "react-icons/pi";
 import { BsCaretUpFill } from "react-icons/bs";
@@ -312,7 +312,7 @@ export default function UserPanel() {
 
             {/* Table */}
             {/* Table */}
-            <div className="flex flex-col mt-10 border-2 rounded-2xl p-4 sm:p-6 text-center w-full">
+            {/* <div className="flex flex-col mt-10 border-2 rounded-2xl p-4 sm:p-6 text-center w-full">
               <div className="text-2xl sm:text-3xl font-bold mb-4 text-start">
                 U5Profits’s
               </div>
@@ -347,6 +347,56 @@ export default function UserPanel() {
                   </tbody>
                 </table>
               </div>
+            </div> */}
+
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-6 mt-6">
+
+              {/* Box */}
+              {[
+                { title: 'Received', usd: '$23', rama: 145 },
+                { title: 'Upgraded', usd: '$23', rama: 145 },
+                { title: 'Generated', usd: "$20", rama: 145 },
+                { title: 'Net Profit', usd: '$23', rama: 145 },
+                { title: "Generated ID's", totalId: "$29" },
+              ].map((item, index) => (
+
+                item?.title !== "Generated ID's" && item?.title !== 'view Matrix' ?
+                  (
+                    <div key={index} style={{
+                      background:
+                        "linear-gradient(45deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
+                    }} className="p-3 rounded-2xl shadow hover:shadow-lg transition">
+                      <h3 className="text-sm font-semibold text-white mb-2 ">{item.title}</h3>
+                      <div className="text-yellow-500 space-y-1">
+                        <p><span className=" text-[13px] font-bold">USD:</span> {item.usd}</p>
+                        <p><span className="font- text-[13px]">Rama:</span> {item.rama}</p>
+                      </div>
+                    </div>
+                  ) :
+                  (
+                    item?.title === 'view Matrix' ? (
+                      <button key={index} style={{
+                        background:
+                          "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
+                      }} className="p-3 rounded-2xl shadow hover:shadow-lg transition">
+
+                        <div className="text-yellow-500 flex justify-center gap-4">
+
+                        </div>
+                      </button>
+                    ) : <div key={index} style={{
+                      background:
+                        "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
+                    }} className="p-5 rounded-2xl shadow hover:shadow-lg transition">
+                      <h3 className="text-sm font-semibold text-white mb-2">{item.title}</h3>
+                      <div className="text-yellow-500 space-y-1">
+                        <p style={{ FontSize: '15px' }}><span className="font-sm">TotalID :</span> {item.totalId}</p>
+
+                      </div>
+                    </div>
+                  )
+              ))}
+
             </div>
 
 

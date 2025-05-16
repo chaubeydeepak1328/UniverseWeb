@@ -23,6 +23,8 @@ import LeftUserPannel from "../../components/LeftUserPannel";
 import DashboardInfo from "../../components/DashboardInfo";
 import { useStore } from "../../Store/UserStore";
 
+import u5dummytableData from "../../config/u5Dummydata"
+
 export default function UserPanel() {
 
     const location = useLocation();
@@ -81,6 +83,9 @@ export default function UserPanel() {
 
     const handleLeft = () => {
         if (slotIndex > 0) setSlotIndex(slotIndex - 1);
+
+        // for table 
+        setCurrentPage(1);
     };
 
     const handleRight = () => {
@@ -99,6 +104,7 @@ export default function UserPanel() {
 
 
     const getFilteredLogs = useStore((state) => state.getFilteredLogs);
+    const getU5table = useStore((state) => state.getU5table)
 
     useEffect(() => {
         handlePositionClick(cycleIndex)
@@ -120,7 +126,57 @@ export default function UserPanel() {
     const handlePositionClick = (index) => {
         setSeletedPos(index);
         console.log("Selected Position:", selectedPos);
+
+        // for table filter 
+        setCurrentPage(1);
     }
+
+
+
+
+
+    // ========================================================================================
+    // for table 
+    // ========================================================================================
+
+
+    const [tableData, setTableData] = useState();
+
+
+
+
+    useEffect(() => {
+        const fetchtableDat = async () => {
+            console.log("++++++++++++++++++++++++++++++", id, slotIndex, selectedPos)
+            const data = await getU5table(id, slotIndex, selectedPos);
+
+
+            setTableData(data)
+        }
+
+
+        fetchtableDat();
+
+    }, [slotIndex, selectedPos])
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const recordsPerPage = 9;
+
+    // // Filter data based on selection
+    // const filteredData = u5dummytableData.filter(tx =>
+    //     slotIndex && selectedPos ?
+    //         tx.slotNumber === slotIndex && tx.positionNumber === selectedPos :
+    //         []
+    // );
+    // // Pagination calculations
+    const lastIndex = currentPage * recordsPerPage;
+    const firstIndex = lastIndex - recordsPerPage;
+    // const currentRecords = tableData.slice(firstIndex, lastIndex);
+    const totalPages = Math.ceil(tableData?.length / recordsPerPage);
+
+    // // Generate unique slots and positions for dropdowns
+    // const slots = [...new Set(u5dummytableData.map(tx => tx.slotNumber))];
+    // const positions = [...new Set(u5dummytableData.map(tx => tx.positionNumber))];
 
 
 
@@ -245,7 +301,7 @@ export default function UserPanel() {
 
 
                         {/* Partners Table */}
-                        <div className="flex flex-col mt-10 border-2 rounded-2xl p-4 sm:p-6 text-center w-full">
+                        {/* <div className="flex flex-col mt-10 border-2 rounded-2xl p-4 sm:p-6 text-center w-full">
                             <div className="text-2xl sm:text-3xl font-bold mb-4 text-start">
                                 U5Profits’s
                             </div>
@@ -280,7 +336,86 @@ export default function UserPanel() {
                                     </tbody>
                                 </table>
                             </div>
+                        </div> */}
+
+
+
+                        <div className="p-6 max-w-6xl mx-auto">
+                            {/* Selection Controls */}
+
+
+                            {/* Table Display */}
+                            {tableData?.length > 0 ? (
+                                <div>
+                                    <table className="w-full border-collapse">
+                                        <thead>
+                                            <tr className="bg-gray-100">
+                                                <th className="p-3 text-left text-black">Sno</th>
+                                                <th className="p-3 text-left text-black">Slot</th>
+                                                <th className="p-3 text-left text-black">Position</th>
+                                                <th className="p-3 text-left text-black">Chunk</th>
+                                                <th className="p-3 text-left text-black">USD</th>
+                                                <th className="p-3 text-left text-black">RAMA</th>
+                                                <th className="p-3 text-left text-black">Transaction Hash</th>
+                                                <th className="p-3 text-left text-black">Date/Time</th>
+                                                <th className="p-3 text-left text-black">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {tableData?.map((tx, index) => (
+                                                <tr key={index} className="border-t">
+                                                    <td className="p-3">{index + 1}</td>
+                                                    <td className="p-3">{tx?.initiatedFrom}</td>
+                                                    <td className="p-3">{tx?.forwardedFrom}</td>
+                                                    <td className="p-3">{tx?.forwardedTo}</td>
+                                                    <td className="p-3">${tx?.receivedAmountInRAMA}</td>
+                                                    <td className="p-3">{tx?.totalAmountAccountedForRegenerationInRAMA}</td>
+                                                    <td className="p-3 font-mono text-blue-600">
+                                                        {tx?.totalProfitInRAMA}...
+                                                    </td>
+                                                    <td className="p-3">{tx?.receivedDate}</td>
+                                                    <td className="p-3">
+                                                        <span className={`px-2 py-1 rounded ${tx?.receivedDate === 'upgrade' ?
+                                                            'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                                                            }`}>
+                                                            {tx?.receivedDate}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+
+                                    {/* Pagination Controls */}
+                                    <div className="flex justify-between items-center mt-4">
+                                        <button
+                                            className="px-4 py-2 text-black bg-gray-100 rounded disabled:opacity-50"
+                                            onClick={() => setCurrentPage(p => p - 1)}
+                                            disabled={currentPage === 1}
+                                        >
+                                            Previous
+                                        </button>
+
+                                        <span>Page {currentPage} of {totalPages}</span>
+
+                                        <button
+                                            className="px-4 py-2 text-black bg-gray-100 rounded disabled:opacity-50"
+                                            onClick={() => setCurrentPage(p => p + 1)}
+                                            disabled={currentPage === totalPages}
+                                        >
+                                            Next
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="text-center p-8 text-gray-500">
+                                    Select a Slot and Position to view transactions
+                                </div>
+                            )}
                         </div>
+
+
+
 
                     </div>
                 </div>

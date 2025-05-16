@@ -1,15 +1,15 @@
 import { create } from 'zustand';
-import Web3 from 'web3';
+import Web3, { errors } from 'web3';
 import axios from 'axios';
 
 
 const Contract = {
-    "U3plus": "0x77071C096325DD176881C24391AfC327D86AeAc6",
+    "U3plus": "0xF240fb44d8d56bE56ED204c08a28eB4A5B119562",
     "UIncome": "0xf2A619d84cEa69c414706aC04613B2d1216c131E",
     "U3prem": "0x5268362bCE89c9a73f298614e847cA8fDeAcB725",
     "U4": "0x4a6AD84A4FffD8fBEF84cBE95Fd01AC2953B47f6",
-    "U5": "0x7593EF2DD7714Da6cfb3Db908AE67b6C3114f240",
-    "UserMang": "0x3dD4c655cB071342F6A8554b8F0E34177EE12639",
+    "U5": "0x7Ff3c3510Dd77a520a0295FebF1952014C64154B",
+    "UserMang": "0xc4121B05141Cb22d49C0AA62005Fe3D1026D5abF",
     "PriceConv": "0x611F0dBf5169dfbaBbeE5830FA3Ea00DE8AeD7E5",
     "contReg": "0xc6E55AC39b6135Af3bE66F5413C1DAe789EBF481",
 }
@@ -767,7 +767,46 @@ export const useStore = create((set) => ({
         // const paymentArr = splitPayment.forEach(())
         console.log(splitPayment)
         return splitPayment
+    },
+
+    getU5table: async (matrixId, slotIndex, selectedPos) => {
+
+        console.log("matrixId, slotIndex, selectedPos", matrixId, slotIndex, selectedPos)
+        try {
+            if (matrixId == null || slotIndex == null || selectedPos == null) {
+                let missingParam = !matrixId
+                    ? "matrix id"
+                    : !slotIndex
+                        ? "slot index"
+                        : "position index";
+                throw new Error(`Please provide ${missingParam}`);
+            }
+
+            const { abi, contractAddress } = await fetchContractAbi("U5");
+            const contract = new web3.eth.Contract(abi, contractAddress);
+
+            const tableData = await contract.methods
+                .getAllChunksForPosition(matrixId, slotIndex, selectedPos).call();
+
+            const trx = (tableData?.initiatedFrom || []).map((_, i) => ({
+                initiatedFrom: tableData.initiatedFrom[i].toString(),
+                forwardedFrom: tableData.forwardedFrom[i].toString(),
+                forwardedTo: tableData.forwardedTo[i].toString(),
+                receivedAmountInRAMA: tableData.receivedAmountInRAMA[i].toString(),
+                totalAmountAccountedForRegenerationInRAMA: tableData.totalAmountAccountedForRegenerationInRAMA[i].toString(),
+                totalAmountForwardedForSlotUpgradeInRAMA: tableData.totalAmountForwardedForSlotUpgradeInRAMA[i].toString(),
+                totalProfitInRAMA: tableData.totalProfitInRAMA[i].toString(),
+                receivedDate: tableData.receivedDate[i].toString(),
+            }));
+
+            console.log("Fetched Transactions:", trx);
+            return trx;
+        } catch (error) {
+            console.error("Error in getU5table:", error.message || error);
+            return [];
+        }
     }
+
 
 
 
