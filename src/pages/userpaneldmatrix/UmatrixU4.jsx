@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import universeLogo from "../../assets/images/universeLogo.png";
 import universeCoin from "../../assets/images/universeCoin.png";
 import { RxCopy } from "react-icons/rx";
@@ -16,6 +16,7 @@ import { FaChevronLeft } from "react-icons/fa6";
 import Header from "../../components/Header";
 import LeftUserPannel from "../../components/LeftUserPannel";
 import DashboardInfo from "../../components/DashboardInfo";
+import { useStore } from "../../Store/UserStore";
 
 
 
@@ -23,13 +24,17 @@ export default function UserPanel() {
 
     const navigate = useNavigate();
 
+    const [address, setAddress] = useState(JSON.parse(localStorage.getItem("userData")).userAddress);
+
+    const getU4info = useStore((state) => state.getU4info)
 
 
-    const [currentIdIndex, setCurrentIdIndex] = useState(0);
 
-    const matrixData = [
+
+
+    const dummyData = [
         {
-            id: 1,
+            id: 'N/a',
             values: [
                 "$40",
                 "$80",
@@ -44,50 +49,88 @@ export default function UserPanel() {
             ],
 
             slotsPosition: [
-                ["1", "1", "0", "0"],
-                ["1", "0", "0", "0"],
-                ["1", "1", "1", "0"],
-                ["1", "0", "0", "0"],
-                ["1", "1", "1", "0"],
-                ["1", "1", "0", "0"],
-                ["1", "0", "0", "0"],
-                ["1", "1", "1", "0"],
+                ["0", "0", "0", "0"],
+                ["0", "0", "0", "0"],
+                ["0", "0", "0", "0"],
+                ["0", "0", "0", "0"],
+                ["0", "0", "0", "0"],
+                ["0", "0", "0", "0"],
+                ["0", "0", "0", "0"],
+                ["0", "0", "0", "0"],
                 ["0", "0", "0", "0"],
                 ["0", "0", "0", "0"],
             ]
         },
-        {
-            id: 2,
-            values: ["$40",
-                "$80",
-                "$160",
-                "$320",
-                "$640",
-                "$1280",
-                "$2560",
-                "$5120",
-                "$10240",
-                "$20480",],
-            slotsPosition: [
-                ["1", "1", "1", "0"],
-                ["1", "1", "1", "0"],
-                ["1", "1", "0", "0"],
-                ["1", "0", "0", "0"],
-                ["1", "1", "1", "1"],
-                ["1", "1", "0", "0"],
-                ["1", "0", "0", "0"],
-                ["1", "1", "1", "0"],
-                ["0", "0", "0", "0"],
-                ["0", "0", "0", "0"],
-            ]
-        },
+        // {
+        //     id: 2,
+        //     values: ["$40",
+        //         "$80",
+        //         "$160",
+        //         "$320",
+        //         "$640",
+        //         "$1280",
+        //         "$2560",
+        //         "$5120",
+        //         "$10240",
+        //         "$20480",],
+        //     slotsPosition: [
+        //         ["1", "1", "1", "0"],
+        //         ["1", "1", "1", "0"],
+        //         ["1", "1", "0", "0"],
+        //         ["1", "0", "0", "0"],
+        //         ["1", "1", "1", "1"],
+        //         ["1", "1", "0", "0"],
+        //         ["1", "0", "0", "0"],
+        //         ["1", "1", "1", "0"],
+        //         ["0", "0", "0", "0"],
+        //         ["0", "0", "0", "0"],
+        //     ]
+        // },
     ];
 
-    const { id, values, slotsPosition } = matrixData[currentIdIndex];
+
+    const [currentIdIndex, setCurrentIdIndex] = useState(0);
+
+    const [matrixData, setMatrixData] = useState(dummyData);
+
+
+
+
+
+    // const { id, values, slotsPosition } = matrixData[currentIdIndex];
+
+    useEffect(() => {
+        const fetchU4 = async () => {
+            try {
+                const response = await getU4info(address);
+                console.log("==========U4 response---->", response);
+                if (response) {
+                    setMatrixData(response); // Make sure this is an array
+                }
+            } catch (err) {
+                console.error("Error fetching U4 info:", err);
+            }
+        };
+
+        if (address) {
+            fetchU4();
+        }
+    }, [address]);
+
+
+    const currentMatrix = matrixData?.[currentIdIndex];
+    const id = currentMatrix?.id;
+    const values = currentMatrix?.values || [];
+    const slotsPosition = currentMatrix?.slotsPosition || [];
 
 
 
     const [currentCount, setCurrentCount] = useState(0);
+
+
+
+
+
 
     const next = () => {
         if (currentIdIndex < matrixData.length - 1) setCurrentIdIndex(currentIdIndex + 1);
@@ -170,15 +213,31 @@ export default function UserPanel() {
                                     {/* Levels */}
                                     {/* Levels */}
                                     <div className="flex flex-col items-center gap-4 mt-10">
-                                        <div className="my-10">
-                                            <span className="border-2 rounded-xl bg-yellow-500 mb-4 text-2xl px-12 py-2"> Id {id} </span>
+
+                                        <div className="mt-10">
+                                            <span className="rounded-xl border-2 text-[12px] lg:text-2xl px-6 lg:px-12 py-2 bg-yellow-500">
+                                                Matrix ID {id ? id : "0"}
+                                            </span>
                                         </div>
+
                                         {/* First Card - First Line */}
                                         <div className="flex justify-center">
                                             <div className="flex flex-col items-center">
                                                 <button
-                                                    className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg cursor-pointer"
-                                                    onClick={() => navigate('/user-panel-home/UniverseU4', { state: { id: id, slotVal: 1, plan: values[0].replace(/\$/g, "").trim() } })}
+                                                    className={`h-10 w-30 ${currentMatrix?.slotsPosition[0][0] == "1"
+                                                        ? "bg-green-500"
+                                                        : "bg-[#DED8C8]"
+                                                        } rounded-xl flex justify-center items-center text-black text-lg cursor-pointer`}
+                                                    onClick={() => {
+                                                        if (id == "N/a") {
+                                                            alert("data is Loading ")
+
+                                                        } else {
+                                                            navigate('/user-panel-home/UniverseU4', { state: { id: id, slotVal: 0, matrixData: matrixData } })
+
+                                                            console.log({ id: id, slotVal: 0, matrixData: matrixData, plan: values[0].replace(/\$/g, "").trim() })
+                                                        }
+                                                    }}
                                                 >
                                                     {values[0]}
                                                 </button>
@@ -190,7 +249,7 @@ export default function UserPanel() {
                                                     </div>
                                                 ))}
                                                 <div className="flex justify-center items-center gap-1">
-                                                    {slotsPosition[0].map((value, j) => (
+                                                    {slotsPosition[0]?.map((value, j) => (
                                                         <button
                                                             key={j}
                                                             className={`h-[20px] w-[20px] rounded-full flex justify-center items-center cursor-pointer border border-black
@@ -212,8 +271,22 @@ export default function UserPanel() {
                                             {values.slice(1).map((value, index) => (
                                                 <div key={index + 1} className="flex flex-col items-center">
                                                     <button
-                                                        onClick={() => navigate('/user-panel-home/UniverseU4', { state: { id: id, slotVal: index + 2, plan: value.replace(/\$/g, "").trim() } })}
-                                                        className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg cursor-pointer">
+                                                        onClick={() => {
+
+                                                            if (id == "N/a") {
+                                                                alert("data is Loading ")
+
+                                                            } else {
+                                                                // navigate('/user-panel-home/UniverseU4', { state: { id: id, slotVal: 1, matrixData: matrixData, plan: values[0].replace(/\$/g, "").trim() } })
+                                                                navigate('/user-panel-home/UniverseU4', { state: { id: id, slotVal: index + 2, matrixData: matrixData } });
+                                                            }
+                                                            console.log("id==========================================", { id: id, slotVal: index + 2, matrixData: matrixData, plan: value.replace(/\$/g, "").trim() })
+                                                        }}
+                                                        className={`h-10 w-30 ${currentMatrix?.slotsPosition[index + 1][0] === "1"
+                                                            ? "bg-green-500"
+                                                            : "bg-[#DED8C8]"
+                                                            } rounded-xl flex justify-center items-center text-black text-lg cursor-pointer`}
+                                                    >
                                                         {value}
                                                     </button>
                                                     {[...Array(2)].map((_, i) => (
@@ -248,10 +321,10 @@ export default function UserPanel() {
                                     {/* Levels */}
                                 </div>
                                 <button onClick={next} className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm cursor-pointer">
-                                    {currentCount == matrixData.length - 1 ? "0" : currentCount + 2}
+                                    {currentCount == matrixData?.length - 1 ? "0" : currentCount + 2}
                                 </button>
 
-                                <button className="cursor-pointer" onClick={next} disabled={currentIdIndex === matrixData.length - 1}><FaAngleRight className="text-4xl hover:text-yellow-500" />
+                                <button className="cursor-pointer" onClick={next} disabled={currentIdIndex === matrixData?.length - 1}><FaAngleRight className="text-4xl hover:text-yellow-500" />
                                 </button>
                             </div>
                         </div>

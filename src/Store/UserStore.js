@@ -4,12 +4,12 @@ import axios from 'axios';
 
 
 const Contract = {
-    "U3plus": "0xF240fb44d8d56bE56ED204c08a28eB4A5B119562",
-    "UIncome": "0xf2A619d84cEa69c414706aC04613B2d1216c131E",
-    "U3prem": "0x5268362bCE89c9a73f298614e847cA8fDeAcB725",
-    "U4": "0x4a6AD84A4FffD8fBEF84cBE95Fd01AC2953B47f6",
-    "U5": "0x7Ff3c3510Dd77a520a0295FebF1952014C64154B",
-    "UserMang": "0xc4121B05141Cb22d49C0AA62005Fe3D1026D5abF",
+    "UIncome": "0x33779FAE653426b99C7E9a7350547d837730fB88",
+    "U3prem": "0x716ca497F94b0F965c01D634A411Dd6CA8ec22e4",
+    "U4": "0x35b105Cc126c89EBEF8227a916dA1e19CDF58cfA",
+    "U3plus": "0xDBd6DfC675C2B2A88714B4052D1d4E9089b1f144",
+    "UserMang": "0x52cBdD2B42c776812C2A34DA6bE555DcEe3729bf",
+    "U5": "0x53dBEf34659b019E22EA69a4A78d20B83918497D",
     "PriceConv": "0x611F0dBf5169dfbaBbeE5830FA3Ea00DE8AeD7E5",
     "contReg": "0xc6E55AC39b6135Af3bE66F5413C1DAe789EBF481",
 }
@@ -126,9 +126,13 @@ export const useStore = create((set) => ({
             const u5generated = await contract1.methods.getGeneratedMatrices(address).call();
 
             if (u5generated) {
-                const u4generated = await contract2.methods.matricesGenerated(address).call();
-                const u3premgenerated = await contract3.methods.matricesGenerated(address).call();
+                const u4generated = await contract2.methods.getGeneratedMatrices(address).call();
+                const u3premgenerated = await contract3.methods.getGeneratedMatrices(address).call();
 
+
+                console.log("U5", u5generated,
+                    "U4", u4generated,
+                    "U3 Premium", u3premgenerated,)
                 return {
                     "U5": u5generated,
                     "U4": u4generated,
@@ -792,10 +796,10 @@ export const useStore = create((set) => ({
                 initiatedFrom: tableData.initiatedFrom[i].toString(),
                 forwardedFrom: tableData.forwardedFrom[i].toString(),
                 forwardedTo: tableData.forwardedTo[i].toString(),
-                receivedAmountInRAMA: tableData.receivedAmountInRAMA[i].toString(),
+                receivedAmountInRAMA: web3.utils.fromWei(tableData.receivedAmountInRAMA[i].toString(), 'ether'),
                 totalAmountAccountedForRegenerationInRAMA: tableData.totalAmountAccountedForRegenerationInRAMA[i].toString(),
-                totalAmountForwardedForSlotUpgradeInRAMA: tableData.totalAmountForwardedForSlotUpgradeInRAMA[i].toString(),
-                totalProfitInRAMA: tableData.totalProfitInRAMA[i].toString(),
+                totalAmountForwardedForSlotUpgradeInRAMA: web3.utils.fromWei(tableData.totalAmountForwardedForSlotUpgradeInRAMA[i].toString(), 'ether'),
+                totalProfitInRAMA: web3.utils.fromWei(tableData.totalProfitInRAMA[i].toString(), 'ether'),
                 receivedDate: tableData.receivedDate[i].toString(),
             }));
 
@@ -805,13 +809,143 @@ export const useStore = create((set) => ({
             console.error("Error in getU5table:", error.message || error);
             return [];
         }
-    }
+    },
 
 
 
+    // getU5table: async (matrixId, slotIndex, selectedPos) => {
+    //     console.log("matrixId, slotIndex, selectedPos", matrixId, slotIndex, selectedPos);
+
+    //     try {
+
+
+    //         const eventTopic = web3.utils.keccak256("chunkReceived(uint256,uint256,uint256,uint256,uint256,uint256)");
+    //         // 2. Fetch logs for the U5 contract
+    //         // const latestBlock = await web3.eth.getBlockNumber(latestBlock);
+    //         const latestBlock = await web3.eth.getBlockNumber();
+
+
+    //         console.log("-----------Latest block", latestBlock)
+    //         const logs = await web3.eth.getPastLogs({
+    //             fromBlock: "earliest",
+    //             toBlock: latestBlock,
+    //             address: Contract["U5"], // Ensure this is the correct U5 address
+    //             topics: [
+    //                 // eventTopic,
+    //                 "0x6441096f6dc9ec5c293f0c0f151e796cb14acaf79f8e4a23606923f142a569b9",
+    //                 // web3.utils.padLeft(web3.utils.toHex(matrixId), 64),
+    //                 // web3.utils.padLeft(web3.utils.toHex(slotIndex), 64),
+    //                 // web3.utils.padLeft(web3.utils.toHex(selectedPos), 64),
+    //             ]
+    //         });
+
+    //         console.log("Logs----------->", logs)
+
+    //         // 3. Decode the logs
+    //         const result = [];
+    //         for (const log of logs) {
+    //             // Decode the data (6 uint256 parameters)
+    //             const decoded = web3.eth.abi.decodeLog(
+    //                 [
+    //                     { type: 'uint256', name: 'matrixID', indexed: true },
+    //                     { type: 'uint256', name: 'matrixOwnerSlot', indexed: true },
+    //                     { type: 'uint256', name: 'matrixOwnerSlotPosition', indexed: true },
+    //                     { type: 'uint256', name: 'amountInUSD' },
+    //                     { type: 'uint256', name: 'amountInRAMA' },
+    //                     { type: 'uint256', name: 'indexSitAt' },
+    //                 ],
+    //                 log.data,
+    //                 log.topics.slice(1)
+    //                 // log.topics.slice(1) // No indexed parameters except the event topic
+    //             );
+
+    //             // 4. Fetch block timestamp
+    //             const block = await web3.eth.getBlock(log.blockNumber);
+
+
+    //             result.push({
+    //                 // transactionHash: log.transactionHash,
+    //                 timestamp: block.timestamp,
+    //                 matrixID: decoded.matrixID,
+    //                 matrixOwnerSlot: decoded.matrixOwnerSlot,
+    //                 matrixOwnerSlotPosition: decoded.matrixOwnerSlotPosition,
+    //                 amountInUSD: decoded.amountInUSD,
+    //                 amountInRAMA: decoded.amountInRAMA,
+    //                 indexSRAI: decoded.indexSitAt
+    //             });
 
 
 
+    //         }
 
+    //         console.log("📦 Final JSON result:", result);
+    //         return result;
+    //     } catch (error) {
+    //         console.error("❌ Error:", error);
+    //         throw error;
+    //     }
+    // },
+
+
+
+    getU4info: async (address) => {
+        try {
+            const { abi, contractAddress } = await fetchContractAbi("U4");
+            const contract = new web3.eth.Contract(abi, contractAddress);
+
+            const genMatrices = await contract.methods.getGeneratedMatrices(address).call();
+
+            console.log("matrix U4 data--->", genMatrices)
+
+
+            const slotIndex = 10;
+            const values = [
+                "$40",
+                "$80",
+                "$160",
+                "$320",
+                "$640",
+                "$1280",
+                "$2560",
+                "$5120",
+                "$10240",
+                "$20480",
+            ];
+
+            const result = await Promise.all(
+                genMatrices.map(async (matrixIdStr) => {
+                    const matrixId = parseInt(matrixIdStr);
+
+                    // Prepare parallel calls for all 10 slots for current matrixId
+                    const slotPromises = Array.from({ length: slotIndex }, (_, j) =>
+                        contract.methods.getU5MatrixPositions(matrixId, j + 1).call()
+                    );
+
+                    const slotResults = await Promise.all(slotPromises);
+
+                    const slotsPosition = slotResults.map(slotPositions =>
+                        slotPositions.isFilledPositions.map(pos => (pos === true ? "1" : pos === false ? "0" : ""))
+                    );
+
+                    return {
+                        id: matrixId,
+                        values: values,
+                        slotsPosition: slotsPosition
+                    };
+                })
+            );
+
+            console.log("Slot Data Matrix (U4):", result);
+            return result;
+
+        } catch (error) {
+            console.error("Error:", error);
+            alert(`Error checking: ${error.message}`);
+        }
+    },
+
+
+
+   
 
 }));

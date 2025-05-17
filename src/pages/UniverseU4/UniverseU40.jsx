@@ -21,8 +21,11 @@ import LeftUserPannel from "../../components/LeftUserPannel";
 import DashboardInfo from "../../components/DashboardInfo";
 
 export default function UserPanel() {
+
+
+
     const location = useLocation();
-    const { id, slotVal, plan } = location.state || {};
+    const { id, slotVal, matrixData } = location.state || {};
 
     const dummyData = [
         ["$40", "$80", "$160", "$320", "$640", "$1280", "$2560", "$5120", "$10240", "$20480",],
@@ -32,61 +35,7 @@ export default function UserPanel() {
         ["$40", "$80", "$160", "$320", "$640", "$1280", "$2560", "$5120", "$10240", "$20480",],
     ];
 
-    const matrixData = [
-        {
-            id: 1,
-            values: [
-                "$40",
-                "$80",
-                "$160",
-                "$320",
-                "$640",
-                "$1280",
-                "$2560",
-                "$5120",
-                "$10240",
-                "$20480",
-            ],
-
-            slotsPosition: [
-                ["1", "1", "0", "0"],
-                ["1", "0", "0", "0"],
-                ["1", "1", "1", "0"],
-                ["1", "0", "0", "0"],
-                ["1", "1", "1", "0"],
-                ["1", "1", "0", "0"],
-                ["1", "0", "0", "0"],
-                ["1", "1", "1", "0"],
-                ["0", "0", "0", "0"],
-                ["0", "0", "0", "0"],
-            ]
-        },
-        {
-            id: 2,
-            values: ["$40",
-                "$80",
-                "$160",
-                "$320",
-                "$640",
-                "$1280",
-                "$2560",
-                "$5120",
-                "$10240",
-                "$20480",],
-            slotsPosition: [
-                ["1", "1", "1", "0"],
-                ["1", "1", "1", "0"],
-                ["1", "1", "0", "0"],
-                ["1", "0", "0", "0"],
-                ["1", "1", "1", "1"],
-                ["1", "1", "0", "0"],
-                ["1", "0", "0", "0"],
-                ["1", "1", "1", "0"],
-                ["0", "0", "0", "0"],
-                ["0", "0", "0", "0"],
-            ]
-        },
-    ];
+    
     const maximumCycle = 4; //position
     const maximumSlot = dummyData[0]?.length || 0; //slots
 
