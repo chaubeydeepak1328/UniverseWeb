@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import universeLogo from "../../assets/images/universeLogo.png";
 import universeCoin from "../../assets/images/universeCoin.png";
 import { RxCopy } from "react-icons/rx";
@@ -16,41 +16,66 @@ import { FaChevronLeft } from "react-icons/fa6";
 import LeftUserPannel from "../../components/LeftUserPannel";
 import Header from "../../components/Header";
 import DashboardInfo from "../../components/DashboardInfo";
+import { useStore } from "../../Store/UserStore";
 
 
 
 export default function UserPanel() {
     const navigate = useNavigate();
 
-    const [currentIdIndex, setCurrentIdIndex] = useState(0);
+    const [address, setAddress] = useState(JSON.parse(localStorage.getItem("userData")).userAddress);
 
-    const matrixData = [
+
+    const getU3premInfo = useStore((state) => state.getU3premInfo)
+
+
+
+    const dummyData = [
         {
-            id: 1,
+            id: 'N/a',
             values: ["$640", "$1280", "$2560", "$5120", "$10240"],
             slotsPosition: [
-                ["1", "1", "0"],
-                ["1", "0", "0"],
-                ["1", "1", "1"],
                 ["0", "0", "0"],
                 ["0", "0", "0"],
-            ]
-        },
-        {
-            id: 2,
-            values: ["$640", "$1280", "$2560", "$5120", "$10240"],
-            slotsPosition: [
-                ["1", "1", "1"],
-                ["1", "1", "1"],
-                ["1", "1", "0"],
-                ["1", "0", "0"],
-                ["1", "1", "1"],
+                ["0", "0", "0"],
+                ["0", "0", "0"],
+                ["0", "0", "0"],
             ]
         },
     ];
 
 
-    const { id, values, slotsPosition } = matrixData[currentIdIndex];
+    const [currentIdIndex, setCurrentIdIndex] = useState(0);
+
+    const [matrixData, setMatrixData] = useState(dummyData);
+
+
+    useEffect(() => {
+        const fetchU3prem = async () => {
+            try {
+                const response = await getU3premInfo(address);
+                console.log("==========U5 response---->", response);
+                if (response) {
+                    setMatrixData(response); // Make sure this is an array
+                }
+            } catch (err) {
+                console.error("Error fetching U5 info:", err);
+            }
+        };
+
+        if (address) {
+            fetchU3prem();
+        }
+    }, [address]);
+
+
+    const currentMatrix = matrixData?.[currentIdIndex];
+    const id = currentMatrix?.id;
+    const values = currentMatrix?.values || [];
+    const slotsPosition = currentMatrix?.slotsPosition || [];
+
+
+    // const { id, values, slotsPosition } = matrixData[currentIdIndex];
 
     const [currentCount, setCurrentCount] = useState(0);
 
@@ -146,8 +171,24 @@ export default function UserPanel() {
                                         {/* First Card - First Line */}
                                         <div className="flex justify-center">
                                             <div className="flex flex-col items-center">
-                                                <button onClick={() => navigate('/user-panel-home/user-panel-umatrix-3pre-details', { state: { id: id, slotVal: 1, plan: values[0].replace(/\$/g, "").trim() } })}
-                                                    className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg cursor-pointer"
+                                                <button
+                                                    // onClick={() => navigate('', { state: { id: id, slotVal: 1, plan: values[0].replace(/\$/g, "").trim() } })}
+
+                                                    onClick={() => {
+                                                        if (id == "N/a") {
+                                                            alert("data is Loading ")
+
+                                                        } else {
+                                                            navigate('/user-panel-home/user-panel-umatrix-3pre-details', { state: { id: id, slotVal: 0, matrixData: matrixData } })
+
+                                                            console.log({ id: id, slotVal: 0, matrixData: matrixData, plan: values[0].replace(/\$/g, "").trim() })
+                                                        }
+                                                    }}
+
+                                                    className={`h-10 w-30 ${currentMatrix?.slotsPosition[0][0] == "1"
+                                                        ? "bg-green-500"
+                                                        : "bg-[#DED8C8]"
+                                                        } rounded-xl flex justify-center items-center text-black text-lg cursor-pointer`}
                                                 >
                                                     {values[0]}
                                                 </button>
@@ -180,11 +221,28 @@ export default function UserPanel() {
                                                 <div key={index + 1} className="flex flex-col items-center">
                                                     <button
 
+                                                        // onClick={() => {
+                                                        //     navigate('', { state: { id: id, slotVal: index + 2, plan: value.replace(/\$/g, "").trim() } });
+                                                        //     console.log("id==========================================", id, "slotVal", index + 2, "plan", value.replace(/\$/g, "").trim())
+                                                        // }}
+
+
                                                         onClick={() => {
-                                                            navigate('/user-panel-home/user-panel-umatrix-3pre-details', { state: { id: id, slotVal: index + 2, plan: value.replace(/\$/g, "").trim() } });
-                                                            console.log("id==========================================", id, "slotVal", index + 2, "plan", value.replace(/\$/g, "").trim())
+
+                                                            if (id == "N/a") {
+                                                                alert("data is Loading ")
+
+                                                            } else {
+                                                                navigate('/user-panel-home/user-panel-umatrix-3pre-details', { state: { id: id, slotVal: index + 1, matrixData: matrixData } });
+                                                            }
+                                                            console.log("id==========================================", { id: id, slotVal: index + 1, matrixData: matrixData, plan: value.replace(/\$/g, "").trim() })
                                                         }}
-                                                        className="h-10 w-30 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg cursor-pointer"
+
+
+                                                        className={`h-10 w-30 ${currentMatrix?.slotsPosition[index + 1][0] === "1"
+                                                            ? "bg-green-500"
+                                                            : "bg-[#DED8C8]"
+                                                            } rounded-xl flex justify-center items-center text-black text-lg cursor-pointer`}
 
                                                     >
                                                         {value}
@@ -197,7 +255,7 @@ export default function UserPanel() {
                                                         </div>
                                                     ))}
                                                     <div className="flex justify-center items-center gap-6">
-                                                        {slotsPosition[index + 1].map((val, j) => (
+                                                        {slotsPosition[index + 1]?.map((val, j) => (
                                                             <button
                                                                 key={j}
                                                                 className={`h-[20px] w-[20px] rounded-full flex justify-center items-center cursor-pointer border border-black
@@ -322,6 +380,6 @@ export default function UserPanel() {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

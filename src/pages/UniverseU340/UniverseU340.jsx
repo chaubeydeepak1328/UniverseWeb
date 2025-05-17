@@ -22,8 +22,11 @@ import DashboardInfo from "../../components/DashboardInfo";
 
 export default function UserPanel() {
 
+
     const location = useLocation();
-    const { id, slotVal, plan } = location.state || {};
+    const { id, slotVal, matrixData } = location.state || {};
+
+    // const { id, slotVal, plan } = location.state || {};
 
     const dummyData = [
         ["$640", "$1280", "$2560", "$5120", "$10240"],
@@ -33,30 +36,30 @@ export default function UserPanel() {
         ["$640", "$1280", "$2560", "$5120", "$10240"],
     ];
 
-    const matrixData = [
-        {
-            id: 1,
-            values: ["$640", "$1280", "$2560", "$5120", "$10240"],
-            slotsPosition: [
-                ["1", "1", "0"],
-                ["1", "0", "0"],
-                ["1", "1", "1"],
-                ["0", "0", "0"],
-                ["0", "0", "0"],
-            ]
-        },
-        {
-            id: 2,
-            values: ["$640", "$1280", "$2560", "$5120", "$10240"],
-            slotsPosition: [
-                ["1", "1", "1"],
-                ["1", "1", "1"],
-                ["1", "1", "0"],
-                ["1", "0", "0"],
-                ["1", "1", "1"],
-            ]
-        },
-    ];
+    // const matrixData = [
+    //     {
+    //         id: 1,
+    //         values: ["$640", "$1280", "$2560", "$5120", "$10240"],
+    //         slotsPosition: [
+    //             ["1", "1", "0"],
+    //             ["1", "0", "0"],
+    //             ["1", "1", "1"],
+    //             ["0", "0", "0"],
+    //             ["0", "0", "0"],
+    //         ]
+    //     },
+    //     {
+    //         id: 2,
+    //         values: ["$640", "$1280", "$2560", "$5120", "$10240"],
+    //         slotsPosition: [
+    //             ["1", "1", "1"],
+    //             ["1", "1", "1"],
+    //             ["1", "1", "0"],
+    //             ["1", "0", "0"],
+    //             ["1", "1", "1"],
+    //         ]
+    //     },
+    // ];
 
     const maximumCycle = 3; //position
     const maximumSlot = dummyData[0]?.length || 0; //slots

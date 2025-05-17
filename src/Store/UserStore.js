@@ -113,30 +113,61 @@ export const useStore = create((set) => ({
 
     generatedId: async (address) => {
         try {
-            const [U5, U4, U3prem] = await Promise.all([
+            const [U5, U4, U3prem, PriceConv] = await Promise.all([
                 fetchContractAbi("U5"),
                 fetchContractAbi("U4"),
                 fetchContractAbi("U3prem"),
+                fetchContractAbi("PriceConv"),
             ]);
 
             const contract1 = new web3.eth.Contract(U5.abi, U5.contractAddress);
             const contract2 = new web3.eth.Contract(U4.abi, U4.contractAddress);
             const contract3 = new web3.eth.Contract(U3prem.abi, U3prem.contractAddress);
+            const contract4 = new web3.eth.Contract(PriceConv.abi, PriceConv.contractAddress);
+
 
             const u5generated = await contract1.methods.getGeneratedMatrices(address).call();
 
+            const u5DataRama = await contract1.methods.getTotalIncomeAcrossMatrices(address).call();
+
+
             if (u5generated) {
                 const u4generated = await contract2.methods.getGeneratedMatrices(address).call();
+                const u4DataRama = await contract2.methods.getTotalIncomeAcrossMatrices(address).call();
+
                 const u3premgenerated = await contract3.methods.getGeneratedMatrices(address).call();
+                const u3PremDataRama = await contract3.methods.getTotalIncomeAcrossMatrices(address).call();
 
 
-                console.log("U5", u5generated,
-                    "U4", u4generated,
-                    "U3 Premium", u3premgenerated,)
+
+                // const rama = web3.utils.fromWei(u5DataRama.totalReceivedAmountInRAMA, 'ether');
+                const convertValuesToEther = (weiObject) =>
+                    Object.fromEntries(
+                        Object.entries(weiObject).map(([key, value]) => [key, web3.utils.fromWei(value, 'ether')])
+                    );
+
+
+                const u5RamaConverted = convertValuesToEther(u5DataRama);
+                const u4RamaConverted = convertValuesToEther(u4DataRama);
+                const u3PremRamaConverted = convertValuesToEther(u3PremDataRama);
+
+                console.log(u5RamaConverted, u4RamaConverted, u3PremRamaConverted)
+
+
+
                 return {
-                    "U5": u5generated,
-                    "U4": u4generated,
-                    "U3 Premium": u3premgenerated,
+                    "U5": {
+                        "generatedId": u5generated,
+                        "RamaPrice": u5RamaConverted
+                    },
+                    "U4": {
+                        "generatedId": u4generated,
+                        "RamaPrice": u4RamaConverted
+                    },
+                    "U3 Premium": {
+                        "generatedId": u3premgenerated,
+                        "RamaPrice": u3PremRamaConverted
+                    }
                 };
             }
         } catch (error) {
@@ -410,7 +441,7 @@ export const useStore = create((set) => ({
 
 
                     const cycles = activeCycle.currentCycle.toString();
-                    console.log("curCycle", cycles);
+                    // console.log("curCycle", cycles);
 
 
                     if (!cycles || !activeCycle.currentCycle) {
@@ -422,7 +453,7 @@ export const useStore = create((set) => ({
                     // wallet address ,same matrix,slotLeve/current slot  current cycle for each slot
                     const positionInfo = await contract.methods.getAllPositionMembers(walletAdd, i, cycles).call();
 
-                    console.log("positionInfo", positionInfo)
+                    // console.log("positionInfo", positionInfo)
                     const zeroAddress = "0x0000000000000000000000000000000000000000";
                     const usersArray = [0, 1, 2, 3].map(index => positionInfo[index] !== zeroAddress ? 1 : 0);
                     const users = usersArray.reduce((sum, val) => sum + val, 0);
@@ -945,7 +976,53 @@ export const useStore = create((set) => ({
     },
 
 
+    getU3premInfo: async (address) => {
+        try {
+            const { abi, contractAddress } = await fetchContractAbi("U3prem");
+            const contract = new web3.eth.Contract(abi, contractAddress);
 
-   
+            const genMatrices = await contract.methods.getGeneratedMatrices(address).call();
+
+            console.log("matrix U4 data--->", genMatrices)
+
+
+            const slotIndex = 5;
+            const values = ["$640", "$1280", "$2560", "$5120", "$10240"];
+
+            const result = await Promise.all(
+                genMatrices.map(async (matrixIdStr) => {
+                    const matrixId = parseInt(matrixIdStr);
+
+                    // Prepare parallel calls for all 10 slots for current matrixId
+                    const slotPromises = Array.from({ length: slotIndex }, (_, j) =>
+                        contract.methods.getU5MatrixPositions(matrixId, j + 1).call()
+                    );
+
+                    const slotResults = await Promise.all(slotPromises);
+
+                    const slotsPosition = slotResults.map(slotPositions =>
+                        slotPositions.isFilledPositions.slice(0, -1).map(pos => (pos === true ? "1" : pos === false ? "0" : ""))
+                    );
+
+                    return {
+                        id: matrixId,
+                        values: values,
+                        slotsPosition: slotsPosition
+                    };
+                })
+            );
+
+            console.log("Slot Data Matrix ******************(U3Prem)***************:", result);
+            return result;
+
+        } catch (error) {
+            console.error("Error:", error);
+            alert(`Error checking: ${error.message}`);
+        }
+    },
+
+
+
+
 
 }));

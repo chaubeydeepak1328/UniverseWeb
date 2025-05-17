@@ -29,7 +29,7 @@ const RightUserPannel = () => {
 
     const [u3Data, setU3Data] = useState();
     const [slotData, setSloatData] = useState([]);
-    const [genId, setGenId] = useState();
+    const [MatrixInfo, setMatrixInfo] = useState();
 
 
 
@@ -59,7 +59,7 @@ const RightUserPannel = () => {
 
 
                 const response1 = await generatedId(address)
-                setGenId(response1)
+                setMatrixInfo(response1)
                 console.log("generatedId:", response1);
             } catch (error) {
                 console.error("Error fetching U3Plus:", error);
@@ -342,9 +342,9 @@ const RightUserPannel = () => {
 
                 // Map each name to its unique value
                 const idMap = {
-                    "U5": genId?.u5gen?.length ?? 0,
-                    "U4": genId?.u4gen?.length ?? 0,
-                    "U3 Premium": genId?.u3genprem?.length ?? 0,
+                    "U5": MatrixInfo?.u5gen?.length ?? 0,
+                    "U4": MatrixInfo?.u4gen?.length ?? 0,
+                    "U3 Premium": MatrixInfo?.u3genprem?.length ?? 0,
                 };
 
                 const EarnedRama = {
@@ -397,12 +397,12 @@ const RightUserPannel = () => {
 
                                 {/* Box */}
                                 {[
-                                    { title: 'Received', usd: '$23', rama: 145 },
-                                    { title: 'Upgraded', usd: '$23', rama: 145 },
-                                    { title: 'Generated', usd: "$20", rama: 145 },
-                                    { title: 'Net Profit', usd: '$23', rama: 145 },
-                                    { title: "Generated ID's", totalId: genId?.[name]?.length || 0 },
-                                    { title: 'view Matrix', usd: '$23', rama: 145 },
+                                    { title: 'Received', usd: '$23', rama: MatrixInfo?.[name].RamaPrice.totalReceivedAmountInRAMA || 0 },
+                                    { title: 'Upgraded', usd: '$23', rama: MatrixInfo?.[name].RamaPrice.totalForwardedAmountInRAMA || 0 },
+                                    { title: 'Generated', usd: "$20", rama: MatrixInfo?.[name].RamaPrice.totalRegenerationAmountInRAMA || 0 },
+                                    { title: 'Net Profit', usd: '$23', rama: MatrixInfo?.[name].RamaPrice.totalProfitInRAMA || 0 },
+                                    { title: "Generated ID's", totalId: MatrixInfo?.[name]?.generatedId.length || 0 },
+                                    { title: 'view Matrix' },
                                 ].map((item, index) => (
 
                                     item?.title !== "Generated ID's" && item?.title !== 'view Matrix' ?
@@ -413,7 +413,7 @@ const RightUserPannel = () => {
                                             }} className="p-5 rounded-2xl shadow hover:shadow-lg transition">
                                                 <h3 className="text-lg font-semibold text-white mb-2">{item.title}</h3>
                                                 <div className="text-yellow-500 space-y-1">
-                                                    <p><span className="font-medium">USD:</span> {item.usd}</p>
+                                                    {/* <p><span className="font-medium">USD:</span> {item.usd}</p> */}
                                                     <p><span className="font-medium">Rama:</span> {item.rama}</p>
                                                 </div>
                                             </div>
