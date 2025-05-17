@@ -1,16 +1,9 @@
-import React, { useEffect, useState } from "react";
-import universeLogo from "../../assets/images/universeLogo.png";
-import universeCoin from "../../assets/images/universeCoin.png";
-import { RxCopy } from "react-icons/rx";
-import { FaExternalLinkAlt, FaTelegram } from "react-icons/fa";
-import { RiLogoutCircleRLine } from "react-icons/ri";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+
+import { useNavigate } from "react-router-dom";
 import { PiLineVerticalLight } from "react-icons/pi";
 import { BsCaretUpFill } from "react-icons/bs";
-import { PiUsersFourBold } from "react-icons/pi";
-import { GiSplitArrows } from "react-icons/gi";
-import { MdOutlineContactMail } from "react-icons/md";
-import { FaCheckToSlot } from "react-icons/fa6";
+
 import { FaAngleRight } from "react-icons/fa6";
 import { FaChevronLeft } from "react-icons/fa6";
 import Header from "../../components/Header";
@@ -61,31 +54,6 @@ export default function UserPanel() {
                 ["0", "0", "0", "0"],
             ]
         },
-        // {
-        //     id: 2,
-        //     values: ["$40",
-        //         "$80",
-        //         "$160",
-        //         "$320",
-        //         "$640",
-        //         "$1280",
-        //         "$2560",
-        //         "$5120",
-        //         "$10240",
-        //         "$20480",],
-        //     slotsPosition: [
-        //         ["1", "1", "1", "0"],
-        //         ["1", "1", "1", "0"],
-        //         ["1", "1", "0", "0"],
-        //         ["1", "0", "0", "0"],
-        //         ["1", "1", "1", "1"],
-        //         ["1", "1", "0", "0"],
-        //         ["1", "0", "0", "0"],
-        //         ["1", "1", "1", "0"],
-        //         ["0", "0", "0", "0"],
-        //         ["0", "0", "0", "0"],
-        //     ]
-        // },
     ];
 
 
@@ -105,7 +73,7 @@ export default function UserPanel() {
                 const response = await getU4info(address);
                 console.log("==========U4 response---->", response);
                 if (response) {
-                    setMatrixData(response); // Make sure this is an array
+                    setMatrixData(response.length == 0 ? dummyData : response); // Make sure this is an array
                 }
             } catch (err) {
                 console.error("Error fetching U4 info:", err);

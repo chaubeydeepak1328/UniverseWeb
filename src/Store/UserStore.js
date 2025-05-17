@@ -4,13 +4,13 @@ import axios from 'axios';
 
 
 const Contract = {
-    "UIncome": "0x33779FAE653426b99C7E9a7350547d837730fB88",
-    "U3prem": "0x716ca497F94b0F965c01D634A411Dd6CA8ec22e4",
-    "U4": "0x35b105Cc126c89EBEF8227a916dA1e19CDF58cfA",
-    "U3plus": "0xDBd6DfC675C2B2A88714B4052D1d4E9089b1f144",
-    "UserMang": "0x52cBdD2B42c776812C2A34DA6bE555DcEe3729bf",
-    "U5": "0x53dBEf34659b019E22EA69a4A78d20B83918497D",
+    "UserMang": "0x1F34dfCbaD8e3a502e28c8c98f4E48AD047dfb25",
+    "U3plus": "0xc07A43Ad7b68F56955D10C2AFf1dF88Fe5895A50",
+    "U5": "0x5Ec894603bbdC8Ed032B5fd6dE78132c44f8Ae92",
     "PriceConv": "0x611F0dBf5169dfbaBbeE5830FA3Ea00DE8AeD7E5",
+    "UIncome": "0x1864249F46Fb8E59Dc51FE6cb197bcb66aCbf71C",
+    "U4": "0x83Cf1A072812d5417C5593B638dEdF8Bc5426Daa",
+    "U3prem": "0x56Fba3cFF3Cdd16607a80E6cb779784dFf0bE11a",
     "contReg": "0xc6E55AC39b6135Af3bE66F5413C1DAe789EBF481",
 }
 
@@ -111,68 +111,137 @@ export const useStore = create((set) => ({
         }
     },
 
+    // generatedId: async (address) => {
+    //     try {
+    //         const [U5, U4, U3prem] = await Promise.all([
+    //             fetchContractAbi("U5"),
+    //             fetchContractAbi("U4"),
+    //             fetchContractAbi("U3prem"),
+    //         ]);
+
+
+    //         const contract1 = new web3.eth.Contract(U5.abi, U5.contractAddress);
+    //         const contract2 = new web3.eth.Contract(U4.abi, U4.contractAddress);
+    //         const contract3 = new web3.eth.Contract(U3prem.abi, U3prem.contractAddress);
+
+
+    //         const u5generated = await contract1.methods.getGeneratedMatrices(address).call();
+
+    //         const u5DataRama = await contract1.methods.getTotalIncomeAcrossMatrices(address).call();
+
+
+    //         if (u5generated) {
+    //             const u4generated = await contract2.methods.getGeneratedMatrices(address).call();
+    //             const u4DataRama = await contract2.methods.getTotalIncomeAcrossMatrices(address).call();
+
+    //             const u3premgenerated = await contract3.methods.getGeneratedMatrices(address).call();
+    //             const u3PremDataRama = await contract3.methods.getTotalIncomeAcrossMatrices(address).call();
+
+
+
+    //             // const rama = web3.utils.fromWei(u5DataRama.totalReceivedAmountInRAMA, 'ether');
+    //             const convertValuesToEther = (weiObject) =>
+    //                 Object.fromEntries(
+    //                     Object.entries(weiObject).map(([key, value]) => [key, web3.utils.fromWei(value, 'ether')])
+    //                 );
+
+
+    //             const u5RamaConverted = convertValuesToEther(u5DataRama);
+    //             const u4RamaConverted = convertValuesToEther(u4DataRama);
+    //             const u3PremRamaConverted = convertValuesToEther(u3PremDataRama);
+
+    //             console.log(u5RamaConverted, u4RamaConverted, u3PremRamaConverted)
+
+
+
+    //             return {
+    //                 "U5": {
+    //                     "generatedId": u5generated,
+    //                     "RamaPrice": u5RamaConverted
+    //                 },
+    //                 "U4": {
+    //                     "generatedId": u4generated,
+    //                     "RamaPrice": u4RamaConverted
+    //                 },
+    //                 "U3 Premium": {
+    //                     "generatedId": u3premgenerated,
+    //                     "RamaPrice": u3PremRamaConverted
+    //                 }
+    //             };
+    //         }
+    //     } catch (error) {
+    //         console.error("Error in generatedId:", error);
+    //         throw error;
+    //     }
+    // },
     generatedId: async (address) => {
         try {
-            const [U5, U4, U3prem, PriceConv] = await Promise.all([
+            const [U5, U4, U3prem] = await Promise.allSettled([
                 fetchContractAbi("U5"),
                 fetchContractAbi("U4"),
                 fetchContractAbi("U3prem"),
-                fetchContractAbi("PriceConv"),
             ]);
 
-            const contract1 = new web3.eth.Contract(U5.abi, U5.contractAddress);
-            const contract2 = new web3.eth.Contract(U4.abi, U4.contractAddress);
-            const contract3 = new web3.eth.Contract(U3prem.abi, U3prem.contractAddress);
-            const contract4 = new web3.eth.Contract(PriceConv.abi, PriceConv.contractAddress);
+            const results = {};
 
+            const convertValuesToEther = (weiObject) =>
+                Object.fromEntries(
+                    Object.entries(weiObject).map(([key, value]) => [
+                        key,
+                        web3.utils.fromWei(value, 'ether'),
+                    ])
+                );
 
-            const u5generated = await contract1.methods.getGeneratedMatrices(address).call();
+            if (U5.status === "fulfilled") {
+                try {
+                    const contract1 = new web3.eth.Contract(U5.value.abi, U5.value.contractAddress);
+                    const u5generated = await contract1.methods.getGeneratedMatrices(address).call();
+                    const u5DataRama = await contract1.methods.getTotalIncomeAcrossMatrices(address).call();
 
-            const u5DataRama = await contract1.methods.getTotalIncomeAcrossMatrices(address).call();
-
-
-            if (u5generated) {
-                const u4generated = await contract2.methods.getGeneratedMatrices(address).call();
-                const u4DataRama = await contract2.methods.getTotalIncomeAcrossMatrices(address).call();
-
-                const u3premgenerated = await contract3.methods.getGeneratedMatrices(address).call();
-                const u3PremDataRama = await contract3.methods.getTotalIncomeAcrossMatrices(address).call();
-
-
-
-                // const rama = web3.utils.fromWei(u5DataRama.totalReceivedAmountInRAMA, 'ether');
-                const convertValuesToEther = (weiObject) =>
-                    Object.fromEntries(
-                        Object.entries(weiObject).map(([key, value]) => [key, web3.utils.fromWei(value, 'ether')])
-                    );
-
-
-                const u5RamaConverted = convertValuesToEther(u5DataRama);
-                const u4RamaConverted = convertValuesToEther(u4DataRama);
-                const u3PremRamaConverted = convertValuesToEther(u3PremDataRama);
-
-                console.log(u5RamaConverted, u4RamaConverted, u3PremRamaConverted)
-
-
-
-                return {
-                    "U5": {
-                        "generatedId": u5generated,
-                        "RamaPrice": u5RamaConverted
-                    },
-                    "U4": {
-                        "generatedId": u4generated,
-                        "RamaPrice": u4RamaConverted
-                    },
-                    "U3 Premium": {
-                        "generatedId": u3premgenerated,
-                        "RamaPrice": u3PremRamaConverted
-                    }
-                };
+                    results["U5"] = {
+                        generatedId: u5generated,
+                        RamaPrice: convertValuesToEther(u5DataRama),
+                    };
+                } catch (err) {
+                    console.error("Error fetching U5 data:", err.message);
+                }
             }
+
+            if (U4.status === "fulfilled") {
+                try {
+                    const contract2 = new web3.eth.Contract(U4.value.abi, U4.value.contractAddress);
+                    const u4generated = await contract2.methods.getGeneratedMatrices(address).call();
+                    const u4DataRama = await contract2.methods.getTotalIncomeAcrossMatrices(address).call();
+
+                    results["U4"] = {
+                        generatedId: u4generated,
+                        RamaPrice: convertValuesToEther(u4DataRama),
+                    };
+                } catch (err) {
+                    console.error("Error fetching U4 data:", err.message);
+                }
+            }
+
+            if (U3prem.status === "fulfilled") {
+                try {
+                    const contract3 = new web3.eth.Contract(U3prem.value.abi, U3prem.value.contractAddress);
+                    const u3premgenerated = await contract3.methods.getGeneratedMatrices(address).call();
+                    const u3PremDataRama = await contract3.methods.getTotalIncomeAcrossMatrices(address).call();
+
+                    results["U3 Premium"] = {
+                        generatedId: u3premgenerated,
+                        RamaPrice: convertValuesToEther(u3PremDataRama),
+                    };
+                } catch (err) {
+                    console.error("Error fetching U3 Premium data:", err.message);
+                }
+            }
+
+            return results;
+
         } catch (error) {
-            console.error("Error in generatedId:", error);
-            throw error;
+            console.error("Unhandled error in generatedId:", error.message);
+            return {}; // or throw error if you prefer
         }
     },
 
@@ -919,6 +988,78 @@ export const useStore = create((set) => ({
 
 
 
+
+
+
+    // getU4info: async (address) => {
+    //     try {
+    //         const { abi, contractAddress } = await fetchContractAbi("U4");
+    //         const contract = new web3.eth.Contract(abi, contractAddress);
+
+    //         const genMatrices = await contract.methods.getGeneratedMatrices(address).call();
+
+    //         console.log("matrix U4 data--->", genMatrices)
+
+
+    //         const slotIndex = 10;
+    //         const values = [
+    //             "$40",
+    //             "$80",
+    //             "$160",
+    //             "$320",
+    //             "$640",
+    //             "$1280",
+    //             "$2560",
+    //             "$5120",
+    //             "$10240",
+    //             "$20480",
+    //         ];
+
+    //         if (!genMatrices || genMatrices.length === 0) {
+    //             console.log("No matrix found for this address");
+    //             return [];
+    //         }
+
+
+    //         const result = await Promise.all(
+    //             genMatrices.map(async (matrixIdStr) => {
+    //                 try {
+    //                     const matrixId = parseInt(matrixIdStr);
+
+    //                     // Prepare parallel calls for all 10 slots for current matrixId
+    //                     const slotPromises = Array.from({ length: slotIndex }, (_, j) =>
+    //                         contract.methods.getU5MatrixPositions(matrixId, j + 1).call()
+    //                     );
+
+    //                     const slotResults = await Promise.all(slotPromises);
+
+    //                     const slotsPosition = slotResults.map(slotPositions =>
+    //                         slotPositions.isFilledPositions.map(pos => (pos === true ? "1" : pos === false ? "0" : ""))
+    //                     );
+
+    //                     return {
+    //                         id: matrixId,
+    //                         values: values,
+    //                         slotsPosition: slotsPosition
+    //                     };
+    //                 } catch (error) {
+    //                     console.error(`Matrix ID ${matrixIdStr} failed:`, error);
+    //                     return null; // Skip this matrixId
+    //                 }
+    //             })
+    //         );
+
+    //         console.log("Slot Data Matrix (U4):", result);
+    //         return result;
+
+    //     } catch (error) {
+    //         console.error("Error:", error);
+    //         alert(`Error checking: ${error.message}`);
+    //     }
+    // },
+
+
+
     getU4info: async (address) => {
         try {
             const { abi, contractAddress } = await fetchContractAbi("U4");
@@ -926,54 +1067,56 @@ export const useStore = create((set) => ({
 
             const genMatrices = await contract.methods.getGeneratedMatrices(address).call();
 
-            console.log("matrix U4 data--->", genMatrices)
+            if (!Array.isArray(genMatrices) || genMatrices.length === 0) {
+                console.log("No matrix found for this address");
+                return [];
+            }
 
-
-            const slotIndex = 10;
             const values = [
-                "$40",
-                "$80",
-                "$160",
-                "$320",
-                "$640",
-                "$1280",
-                "$2560",
-                "$5120",
-                "$10240",
-                "$20480",
+                "$40", "$80", "$160", "$320", "$640",
+                "$1280", "$2560", "$5120", "$10240", "$20480"
             ];
 
-            const result = await Promise.all(
+            // Process all matrix IDs concurrently with Promise.all
+            const matrices = await Promise.all(
                 genMatrices.map(async (matrixIdStr) => {
                     const matrixId = parseInt(matrixIdStr);
+                    if (isNaN(matrixId)) return null;
 
-                    // Prepare parallel calls for all 10 slots for current matrixId
-                    const slotPromises = Array.from({ length: slotIndex }, (_, j) =>
-                        contract.methods.getU5MatrixPositions(matrixId, j + 1).call()
-                    );
+                    try {
+                        const slotCalls = [...Array(values.length)].map((_, index) =>
+                            contract.methods.getU5MatrixPositions(matrixId, index + 1).call()
+                        );
 
-                    const slotResults = await Promise.all(slotPromises);
+                        const slotResults = await Promise.all(slotCalls);
 
-                    const slotsPosition = slotResults.map(slotPositions =>
-                        slotPositions.isFilledPositions.map(pos => (pos === true ? "1" : pos === false ? "0" : ""))
-                    );
+                        const slotsPosition = slotResults.map(result => {
+                            const filled = result?.isFilledPositions || [];
+                            return filled.map(pos => (pos ? "1" : "0"));
+                        });
 
-                    return {
-                        id: matrixId,
-                        values: values,
-                        slotsPosition: slotsPosition
-                    };
+                        return {
+                            id: matrixId,
+                            values,
+                            slotsPosition,
+                        };
+                    } catch (err) {
+                        console.warn(`Error processing matrix ID ${matrixId}:`, err.message);
+                        return null;
+                    }
                 })
             );
 
-            console.log("Slot Data Matrix (U4):", result);
-            return result;
-
-        } catch (error) {
-            console.error("Error:", error);
-            alert(`Error checking: ${error.message}`);
+            const filtered = matrices.filter(Boolean);
+            console.log("Optimized U4 matrix data:", filtered);
+            return filtered;
+        } catch (err) {
+            console.error("getU4info error:", err.message);
+            alert(`Error checking: ${err.message}`);
+            return [];
         }
     },
+
 
 
     getU3premInfo: async (address) => {

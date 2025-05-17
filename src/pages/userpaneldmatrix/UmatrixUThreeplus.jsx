@@ -56,7 +56,7 @@ export default function UserPanel() {
                 const response = await getU3premInfo(address);
                 console.log("==========U5 response---->", response);
                 if (response) {
-                    setMatrixData(response); // Make sure this is an array
+                    setMatrixData(response.length == 0 ? dummyData : response); // Make sure this is an array
                 }
             } catch (err) {
                 console.error("Error fetching U5 info:", err);
@@ -166,7 +166,7 @@ export default function UserPanel() {
 
 
                                         <div className="my-10">
-                                            <span className="border-2 text-2xl px-12 py-2 rounded-xl bg-yellow-500"> Id {id} </span>
+                                            <span className="border-2 lg:text-2xl px-12 py-2 rounded-xl bg-yellow-500"> Id {id} </span>
                                         </div>
                                         {/* First Card - First Line */}
                                         <div className="flex justify-center">

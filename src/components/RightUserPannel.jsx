@@ -397,10 +397,10 @@ const RightUserPannel = () => {
 
                                 {/* Box */}
                                 {[
-                                    { title: 'Received', usd: '$23', rama: MatrixInfo?.[name].RamaPrice.totalReceivedAmountInRAMA || 0 },
-                                    { title: 'Upgraded', usd: '$23', rama: MatrixInfo?.[name].RamaPrice.totalForwardedAmountInRAMA || 0 },
-                                    { title: 'Generated', usd: "$20", rama: MatrixInfo?.[name].RamaPrice.totalRegenerationAmountInRAMA || 0 },
-                                    { title: 'Net Profit', usd: '$23', rama: MatrixInfo?.[name].RamaPrice.totalProfitInRAMA || 0 },
+                                    { title: 'Received', usd: '$23', rama: MatrixInfo?.[name]?.RamaPrice?.totalReceivedAmountInRAMA || 0 },
+                                    { title: 'Upgraded', usd: '$23', rama: MatrixInfo?.[name]?.RamaPrice?.totalForwardedAmountInRAMA || 0 },
+                                    { title: 'Generated', usd: "$20", rama: MatrixInfo?.[name]?.RamaPrice?.totalRegenerationAmountInRAMA || 0 },
+                                    { title: 'Net Profit', usd: '$23', rama: MatrixInfo?.[name]?.RamaPrice?.totalProfitInRAMA || 0 },
                                     { title: "Generated ID's", totalId: MatrixInfo?.[name]?.generatedId.length || 0 },
                                     { title: 'view Matrix' },
                                 ].map((item, index) => (
