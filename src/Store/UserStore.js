@@ -1165,6 +1165,85 @@ export const useStore = create((set) => ({
     },
 
 
+    getU4table: async (matrixId, slotIndex, selectedPos) => {
+
+        console.log("matrixId, slotIndex, selectedPos", matrixId, slotIndex, selectedPos)
+        try {
+            if (matrixId == null || slotIndex == null || selectedPos == null) {
+                let missingParam = !matrixId
+                    ? "matrix id"
+                    : !slotIndex
+                        ? "slot index"
+                        : "position index";
+                throw new Error(`Please provide ${missingParam}`);
+            }
+
+            const { abi, contractAddress } = await fetchContractAbi("U4");
+            const contract = new web3.eth.Contract(abi, contractAddress);
+
+            const tableData = await contract.methods
+                .getAllChunksForPosition(matrixId, slotIndex, selectedPos).call();
+
+            const trx = (tableData?.initiatedFrom || []).map((_, i) => ({
+                initiatedFrom: tableData.initiatedFrom[i].toString(),
+                forwardedFrom: tableData.forwardedFrom[i].toString(),
+                forwardedTo: tableData.forwardedTo[i].toString(),
+                receivedAmountInRAMA: web3.utils.fromWei(tableData.receivedAmountInRAMA[i].toString(), 'ether'),
+                totalAmountAccountedForRegenerationInRAMA: tableData.totalAmountAccountedForRegenerationInRAMA[i].toString(),
+                totalAmountForwardedForSlotUpgradeInRAMA: web3.utils.fromWei(tableData.totalAmountForwardedForSlotUpgradeInRAMA[i].toString(), 'ether'),
+                totalProfitInRAMA: web3.utils.fromWei(tableData.totalProfitInRAMA[i].toString(), 'ether'),
+                receivedDate: tableData.receivedDate[i].toString(),
+            }));
+
+            console.log("Fetched Transactions:", trx);
+            return trx;
+        } catch (error) {
+            console.error("Error in getU5table:", error.message || error);
+            return [];
+        }
+    },
+
+
+
+    getU3Premtable: async (matrixId, slotIndex, selectedPos) => {
+
+        console.log("matrixId, slotIndex, selectedPos", matrixId, slotIndex, selectedPos)
+        try {
+            if (matrixId == null || slotIndex == null || selectedPos == null) {
+                let missingParam = !matrixId
+                    ? "matrix id"
+                    : !slotIndex
+                        ? "slot index"
+                        : "position index";
+                throw new Error(`Please provide ${missingParam}`);
+            }
+
+            const { abi, contractAddress } = await fetchContractAbi("U3prem");
+            const contract = new web3.eth.Contract(abi, contractAddress);
+
+            const tableData = await contract.methods
+                .getAllChunksForPosition(matrixId, slotIndex, selectedPos).call();
+
+            const trx = (tableData?.initiatedFrom || []).map((_, i) => ({
+                initiatedFrom: tableData.initiatedFrom[i].toString(),
+                forwardedFrom: tableData.forwardedFrom[i].toString(),
+                forwardedTo: tableData.forwardedTo[i].toString(),
+                receivedAmountInRAMA: web3.utils.fromWei(tableData.receivedAmountInRAMA[i].toString(), 'ether'),
+                totalAmountAccountedForRegenerationInRAMA: tableData.totalAmountAccountedForRegenerationInRAMA[i].toString(),
+                totalAmountForwardedForSlotUpgradeInRAMA: web3.utils.fromWei(tableData.totalAmountForwardedForSlotUpgradeInRAMA[i].toString(), 'ether'),
+                totalProfitInRAMA: web3.utils.fromWei(tableData.totalProfitInRAMA[i].toString(), 'ether'),
+                receivedDate: tableData.receivedDate[i].toString(),
+            }));
+
+            console.log("Fetched Transactions:", trx);
+            return trx;
+        } catch (error) {
+            console.error("Error in getU5table:", error.message || error);
+            return [];
+        }
+    },
+
+
 
 
 

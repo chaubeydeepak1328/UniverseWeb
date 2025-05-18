@@ -1,24 +1,17 @@
 import React, { useEffect, useState } from "react";
-import universeLogo from "../../assets/images/universeLogo.png";
-import universeCoin from "../../assets/images/universeCoin.png";
-import { RxCopy } from "react-icons/rx";
 import {
-    FaExternalLinkAlt,
-    FaTelegram,
     FaChevronLeft,
     FaChevronRight,
     FaChevronUp,
 } from "react-icons/fa";
-import { FaChevronDown, FaCheckToSlot } from "react-icons/fa6";
-import { RiLogoutCircleRLine } from "react-icons/ri";
-import { PiLineVerticalLight, PiUsersFourBold } from "react-icons/pi";
-import { GiSplitArrows } from "react-icons/gi";
-import { Link, useLocation } from "react-router-dom";
-import { MdOutlineContactMail } from "react-icons/md";
+import { FaChevronDown } from "react-icons/fa6";
+import { PiLineVerticalLight } from "react-icons/pi";
+import { useLocation } from "react-router-dom";
 import { BsCaretUpFill } from "react-icons/bs";
 import Header from "../../components/Header";
 import LeftUserPannel from "../../components/LeftUserPannel";
 import DashboardInfo from "../../components/DashboardInfo";
+import { useStore } from "../../Store/UserStore";
 
 export default function UserPanel() {
 
@@ -35,7 +28,7 @@ export default function UserPanel() {
         ["$40", "$80", "$160", "$320", "$640", "$1280", "$2560", "$5120", "$10240", "$20480",],
     ];
 
-    
+
     const maximumCycle = 4; //position
     const maximumSlot = dummyData[0]?.length || 0; //slots
 
@@ -47,6 +40,9 @@ export default function UserPanel() {
 
     const handleLeft = () => {
         if (slotIndex > 0) setSlotIndex(slotIndex - 1);
+
+        // for table 
+        setCurrentPage(1);
     };
 
     const handleRight = () => {
@@ -73,7 +69,64 @@ export default function UserPanel() {
     const handlePositionClick = (index) => {
         setSeletedPos(index);
         console.log("Selected Position:", selectedPos);
+
+
+        // for table filter 
+        setCurrentPage(1);
     }
+
+
+
+    // ========================================================================================
+    // for table 
+    // ========================================================================================
+    const getU4table = useStore((state) => state.getU4table)
+
+    const [tableData, setTableData] = useState();
+
+
+
+
+    useEffect(() => {
+        const fetchtableDat = async () => {
+            console.log("++++++++++++++++++++++++++++++", id, slotIndex + 1, selectedPos + 1)
+            const data = await getU4table(id, slotIndex + 1, selectedPos + 1);
+
+
+            setTableData(data)
+        }
+
+
+        fetchtableDat();
+
+    }, [slotIndex, selectedPos])
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const recordsPerPage = 9;
+
+    // // Filter data based on selection
+    // const filteredData = u5dummytableData.filter(tx =>
+    //     slotIndex && selectedPos ?
+    //         tx.slotNumber === slotIndex && tx.positionNumber === selectedPos :
+    //         []
+    // );
+    // // Pagination calculations
+    const lastIndex = currentPage * recordsPerPage;
+    const firstIndex = lastIndex - recordsPerPage;
+    const currentRecords = tableData?.slice(firstIndex, lastIndex);
+    const totalPages = Math.ceil(tableData?.length / recordsPerPage);
+
+    // // Generate unique slots and positions for dropdowns
+    // const slots = [...new Set(u5dummytableData.map(tx => tx.slotNumber))];
+    // const positions = [...new Set(u5dummytableData.map(tx => tx.positionNumber))];
+
+
+
+    function convertTimestampToDateTime(timestamp) {
+        const date = new Date(timestamp * 1000); // Convert from seconds to milliseconds
+        return date.toLocaleString(); // Returns local date and time string
+    }
+
 
     return (
         <div
@@ -168,7 +221,7 @@ export default function UserPanel() {
                         </div>
 
                         {/* Partners Table */}
-                        <div className="flex flex-col mt-10 border-2 rounded-2xl p-4 sm:p-6 text-center w-full">
+                        {/* <div className="flex flex-col mt-10 border-2 rounded-2xl p-4 sm:p-6 text-center w-full">
                             <div className="text-2xl sm:text-3xl font-bold mb-4 text-start">
                                 U4Profits’s
                             </div>
@@ -203,7 +256,88 @@ export default function UserPanel() {
                                     </tbody>
                                 </table>
                             </div>
+                        </div> */}
+
+
+
+                        <div className="w-full overflow-x-auto py-4  max-w-6xl mx-auto">
+                            {/* Selection Controls */}
+
+
+                            {/* Table Display */}
+                            {tableData?.length > 0 ? (
+                                <div>
+                                    <table className="w-full min-w-[700px] border-collapse text-sm sm:text-base">
+                                        <thead>
+                                            <tr className="bg-gray-100">
+                                                <th className="p-3 text-left text-black">Sno</th>
+                                                <th className="p-3 text-left text-black">Slot</th>
+                                                <th className="p-3 text-left text-black">Position</th>
+                                                <th className="p-3 text-left text-black">Chunk</th>
+                                                <th className="p-3 text-left text-black">RAMA</th>
+                                                <th className="p-3 text-left text-black">USD</th>
+                                                <th className="p-3 text-left text-black">Transaction Hash</th>
+                                                <th className="p-3 text-left text-black">Date/Time</th>
+                                                {/* <th className="p-3 text-left text-black">Status</th> */}
+                                                <th className="p-3 text-left text-black">Net Profit</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {currentRecords?.map((tx, index) => (
+                                                <tr key={index} className="border-t">
+                                                    <td className="p-3">{index + 1}</td>
+                                                    <td className="p-3">{slotIndex + 1}</td>
+                                                    <td className="p-3">{selectedPos + 1}</td>
+                                                    <td className="p-3">{index + 1}</td>
+                                                    <td className="p-3">{tx?.receivedAmountInRAMA}</td>
+                                                    <td className="p-3">{tx?.totalAmountAccountedForRegenerationInRAMA}</td>
+                                                    <td className="p-3 font-mono text-blue-600">
+                                                        {"0xihehweoho"}...
+                                                    </td>
+                                                    <td className="p-3">{convertTimestampToDateTime(tx?.receivedDate)}</td>
+                                                    <td className="p-3">{tx?.totalProfitInRAMA}</td>
+
+                                                    {/* <td className="p-3">
+                                                        <span className={`px-2 py-1 rounded ${tx?.receivedDate === 'upgrade' ?
+                                                            'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                                                            }`}>
+                                                            {tx?.receivedDate}
+                                                        </span>
+                                                    </td> */}
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+
+                                    {/* Pagination Controls */}
+                                    <div className="flex justify-center lg:justify-end gap-6 items-center mt-4">
+                                        <button
+                                            className="px-4 py-2 text-black bg-gray-100 rounded disabled:opacity-50 cursor-pointer"
+                                            onClick={() => setCurrentPage(p => p - 1)}
+                                            disabled={currentPage === 1}
+                                        >
+                                            Previous
+                                        </button>
+
+                                        <span>Page {currentPage} of {totalPages}</span>
+
+                                        <button
+                                            className="px-4 py-2 text-black bg-gray-100 rounded disabled:opacity-50 cursor-pointer"
+                                            onClick={() => setCurrentPage(p => p + 1)}
+                                            disabled={currentPage === totalPages}
+                                        >
+                                            Next
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="text-center p-8 text-gray-500">
+                                    Select a Slot and Position to view transactions
+                                </div>
+                            )}
                         </div>
+
 
                     </div>
                 </div>

@@ -37,8 +37,9 @@ const DashboardInfo = () => {
             }
         };
 
-        DahPannelInfo();
-    }, []);
+        if (address)
+            DahPannelInfo();
+    }, [address]);
 
 
     const handleCopy = (address) => {
