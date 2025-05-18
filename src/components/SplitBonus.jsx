@@ -18,8 +18,16 @@ export default function UplineBonus() {
     const [splitData, setSplitData] = useState()
 
     const getSplitBonus = useStore((state) => state.getSplitBonus);
+    const fetchU3MatrixLogs = useStore((state) => state.fetchU3MatrixLogs);
 
 
+    useEffect(() => {
+        const fetch = async () => {
+            await fetchU3MatrixLogs(); // 👈 this is what actually fills u3MatrixLogs
+        };
+        fetch();
+    }, []);
+    
 
 
 

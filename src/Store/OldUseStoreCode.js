@@ -2,8 +2,6 @@ import { create } from 'zustand';
 import Web3, { errors } from 'web3';
 import axios from 'axios';
 
-const TOPIC0 = "0x2bbc8d9aa6da5698030aa4a655c975f5a89fa1d065a2c99d64be4e93d746c388";
-const TOPIC1 = "0x000000000000000000000000a3f854a2d139d07559d6865c2e44ba8c3c60255d";
 
 const Contract = {
     "UserMang": "0x1F34dfCbaD8e3a502e28c8c98f4E48AD047dfb25",
@@ -54,7 +52,7 @@ const web3 = new Web3(INFURA_URL);
 
 
 
-export const useStore = create((set, get) => ({
+export const useStore = create((set) => ({
 
 
     // User Wallet Info
@@ -1244,55 +1242,6 @@ export const useStore = create((set, get) => ({
             return [];
         }
     },
-
-    // ===========================================================================================================================
-    // Filtering the Data on the basis of log 
-    // ===========================================================================================================================
-
-    u3MatrixLogs: [],
-    loadingU3Logs: false,
-
-    fetchU3MatrixLogs: async () => {
-        set({ loadingU3Logs: true });
-        try {
-            const { abi, contractAddress } = await fetchContractAbi("U3plus");
-            const contract = new web3.eth.Contract(abi, contractAddress);
-
-            const logs = await web3.eth.getPastLogs({
-                fromBlock: 0,
-                toBlock: "latest",
-                address: contractAddress,
-                topics: [TOPIC0, TOPIC1],
-            });
-
-            const eventAbi = abi.find(
-                (e) => e.name === "PaymentReceivedInCurrentCyclePosition" && e.type === "event"
-            );
-
-            const decoded = logs.map((log) => {
-                const decodedLog = web3.eth.abi.decodeLog(eventAbi.inputs, log.data, log.topics.slice(1));
-                return {
-                    initiatedFrom: decodedLog.initiatedFrom,
-                    forwardedFrom: decodedLog.forwardedFrom,
-                    finalReceiver: decodedLog.finalReceiver,
-                    slotLevel: decodedLog.slotLevel,
-                    positionIndex: decodedLog.positionIndex,
-                    cycleNo: decodedLog.cycleNo,
-                    amountInRAMA: web3.utils.fromWei(decodedLog.amountInRAMA.toString(), "ether"),
-                    txHash: log.transactionHash,
-                    blockNumber: log.blockNumber,
-                };
-            });
-
-            set({ u3MatrixLogs: decoded });
-            console.log("✅ Logs fetched:", decoded);
-        } catch (err) {
-            console.error("❌ Error fetching U3 logs:", err.message);
-        } finally {
-            set({ loadingU3Logs: false });
-        }
-    },
-
 
 
 
