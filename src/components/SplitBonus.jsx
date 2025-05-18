@@ -12,7 +12,7 @@ import { useStore } from "../Store/UserStore";
 export default function UplineBonus() {
     const values = [0.005, 0.001, 0.003, 0.003, 0.002, 0.004, 0.002];
 
-    // const [address, setAddress] = useState(JSON.parse(localStorage.getItem("userData") || '{}')?.userAddress);
+    const [address, setAddress] = useState(JSON.parse(localStorage.getItem("userData") || '{}')?.userAddress);
 
 
     const [splitData, setSplitData] = useState()
@@ -23,11 +23,11 @@ export default function UplineBonus() {
 
     useEffect(() => {
         const fetch = async () => {
-            await fetchU3MatrixLogs(); // 👈 this is what actually fills u3MatrixLogs
+            await fetchU3MatrixLogs(address); // 👈 this is what actually fills u3MatrixLogs
         };
         fetch();
     }, []);
-    
+
 
 
 

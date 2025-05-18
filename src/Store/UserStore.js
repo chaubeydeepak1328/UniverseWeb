@@ -2,9 +2,6 @@ import { create } from 'zustand';
 import Web3, { errors } from 'web3';
 import axios from 'axios';
 
-const TOPIC0 = "0x2bbc8d9aa6da5698030aa4a655c975f5a89fa1d065a2c99d64be4e93d746c388";
-const TOPIC1 = "0x000000000000000000000000a3f854a2d139d07559d6865c2e44ba8c3c60255d";
-
 const Contract = {
     "UserMang": "0x1F34dfCbaD8e3a502e28c8c98f4E48AD047dfb25",
     "U3plus": "0xc07A43Ad7b68F56955D10C2AFf1dF88Fe5895A50",
@@ -1249,47 +1246,83 @@ export const useStore = create((set, get) => ({
     // Filtering the Data on the basis of log 
     // ===========================================================================================================================
 
-    u3MatrixLogs: [],
-    loadingU3Logs: false,
 
-    fetchU3MatrixLogs: async () => {
-        set({ loadingU3Logs: true });
+    fetchU3MatrixLogs: async (Waladdress) => {
+
         try {
             const { abi, contractAddress } = await fetchContractAbi("U3plus");
-            const contract = new web3.eth.Contract(abi, contractAddress);
 
-            const logs = await web3.eth.getPastLogs({
-                fromBlock: 0,
-                toBlock: "latest",
-                address: contractAddress,
-                topics: [TOPIC0, TOPIC1],
-            });
 
-            const eventAbi = abi.find(
-                (e) => e.name === "PaymentReceivedInCurrentCyclePosition" && e.type === "event"
+            const TOPIC0 = "0x2bbc8d9aa6da5698030aa4a655c975f5a89fa1d065a2c99d64be4e93d746c388";
+            // const TOPIC3 = "0x" + Waladdress.toLowerCase().replace("0x", "").padStart(64, "0");
+
+
+            const topicEncodedAddress = "0x" + Waladdress.toLowerCase().replace("0x", "").padStart(64, "0");
+
+
+
+            // if user is receiver 
+            const [logsByInitiator, logsByReceiver] = await Promise.all([
+                web3.eth.getPastLogs({
+                    fromBlock: 0,
+                    toBlock: "latest",
+                    address: contractAddress,
+                    topics: [TOPIC0, topicEncodedAddress] // Topic1 = initiatedFrom
+                }),
+                web3.eth.getPastLogs({
+                    fromBlock: 0,
+                    toBlock: "latest",
+                    address: contractAddress,
+                    topics: [TOPIC0, undefined, undefined, topicEncodedAddress] // Topic3 = finalReceiver
+                })
+            ]);
+
+
+
+            console.log("🔍 Unfiltered logs:", logsByInitiator, logsByReceiver);
+
+
+
+            const allLogs = [...logsByInitiator, ...logsByReceiver];
+
+            // Deduplicate logs by transactionHash
+            const uniqueLogsMap = new Map();
+            allLogs.forEach(log => uniqueLogsMap.set(log.transactionHash, log));
+            const uniqueLogs = Array.from(uniqueLogsMap.values());
+
+            // Decode
+            const eventAbi = abi.find(e => e.name === "PaymentReceivedInCurrentCyclePosition" && e.type === "event");
+
+            const decoded = await Promise.all(
+                uniqueLogs.map(async (log) => {
+                    const decodedLog = web3.eth.abi.decodeLog(eventAbi.inputs, log.data, log.topics.slice(1));
+                    const block = await web3.eth.getBlock(log.blockNumber);
+
+                    return {
+                        initiatedFrom: decodedLog.initiatedFrom,
+                        forwardedFrom: decodedLog.forwardedFrom,
+                        finalReceiver: decodedLog.finalReceiver,
+                        slotLevel: decodedLog.slotLevel,
+                        positionIndex: decodedLog.positionIndex,
+                        cycleNo: decodedLog.cycleNo,
+                        amountInUSD: decodedLog.amountInUSD,
+                        amountInRAMA: web3.utils.fromWei(decodedLog.amountInRAMA.toString(), "ether"),
+                        txHash: log.transactionHash,
+                        blockNumber: log.blockNumber,
+                        timestamp: Number(block.timestamp),
+                        formattedDate: new Date(Number(block.timestamp) * 1000).toLocaleString(),
+                    };
+                })
             );
 
-            const decoded = logs.map((log) => {
-                const decodedLog = web3.eth.abi.decodeLog(eventAbi.inputs, log.data, log.topics.slice(1));
-                return {
-                    initiatedFrom: decodedLog.initiatedFrom,
-                    forwardedFrom: decodedLog.forwardedFrom,
-                    finalReceiver: decodedLog.finalReceiver,
-                    slotLevel: decodedLog.slotLevel,
-                    positionIndex: decodedLog.positionIndex,
-                    cycleNo: decodedLog.cycleNo,
-                    amountInRAMA: web3.utils.fromWei(decodedLog.amountInRAMA.toString(), "ether"),
-                    txHash: log.transactionHash,
-                    blockNumber: log.blockNumber,
-                };
-            });
 
-            set({ u3MatrixLogs: decoded });
-            console.log("✅ Logs fetched:", decoded);
+
+
+            console.log("✅ Logs fetched:",);
+
+            return decoded
         } catch (err) {
             console.error("❌ Error fetching U3 logs:", err.message);
-        } finally {
-            set({ loadingU3Logs: false });
         }
     },
 

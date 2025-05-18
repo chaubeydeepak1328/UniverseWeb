@@ -1,10 +1,5 @@
-import React, { useEffect, useState } from "react";
-import universeLogo from "../../assets/images/universeLogo.png";
-import universeCoin from "../../assets/images/universeCoin.png";
-import { RxCopy } from "react-icons/rx";
+import { useEffect, useState } from "react";
 import {
-  FaExternalLinkAlt,
-  FaTelegram,
   FaChevronLeft,
   FaChevronRight,
 } from "react-icons/fa";
@@ -14,12 +9,7 @@ import { RiLogoutCircleRLine } from "react-icons/ri";
 import { PiLineVerticalLight } from "react-icons/pi";
 import { GiCircle } from "react-icons/gi";
 import { TfiReload } from "react-icons/tfi";
-import { LuUsers } from "react-icons/lu";
-import { Link, useLocation } from "react-router-dom";
-import { PiUsersFourBold } from "react-icons/pi";
-import { GiSplitArrows } from "react-icons/gi";
-import { MdOutlineContactMail } from "react-icons/md";
-import { FaCheckToSlot } from "react-icons/fa6";
+import { useLocation } from "react-router-dom";
 
 import LeftUserPannel from "../../components/LeftUserPannel";
 import Header from "../../components/Header";
@@ -31,12 +21,17 @@ export default function UserPanel() {
   const location = useLocation();
   const { slotNumber } = location.state || {};
 
-  const [address, setAddress] = useState(JSON.parse(localStorage.getItem("userData")).userAddress);
+  const [isLoadingU3, setIsLoadingU3] = useState(true);
 
 
-  useEffect(() => {
-    console.log("------->slot no", slotNumber)
-  }, [slotNumber])
+  const [address, setAddress] = useState(() => {
+    try {
+      const data = JSON.parse(localStorage.getItem("userData"));
+      return data?.userAddress || "";
+    } catch {
+      return "";
+    }
+  });
 
 
   const getU3Details = useStore((state) => state.getU3Details);
@@ -45,10 +40,14 @@ export default function UserPanel() {
 
   useEffect(() => {
     const fetchU3Details = async () => {
+
+      setIsLoadingU3(true);
       const response = await getU3Details(address);
 
       console.log(response);
       setU3Data(response)
+
+      setIsLoadingU3(false);
     }
 
     fetchU3Details();
@@ -83,7 +82,7 @@ export default function UserPanel() {
   };
 
   const nextSlot = () => {
-    setSlotIndex((prev) => (prev < u3Data.length - 1 ? prev + 1 : prev));
+    setSlotIndex((prev) => (prev < u3Data?.length - 1 ? prev + 1 : prev));
     setCycleIndex(0);
   };
 
@@ -94,6 +93,55 @@ export default function UserPanel() {
   const nextCycle = () => {
     setCycleIndex((prev) => (prev < cycles.length - 1 ? prev + 1 : prev));
   };
+
+  // =======================================================================================================
+  // Fetch the Table Details
+  // ======================================================================================================
+
+  const [tableData, setTableData] = useState([]);
+
+  const fetchU3MatrixLogs = useStore((state) => state.fetchU3MatrixLogs);
+
+  useEffect(() => {
+    const fetchTableData = async () => {
+      const res = await fetchU3MatrixLogs(address);
+
+      console.log("res--------------->", res)
+
+      setTableData(res)
+
+    }
+    if (address) fetchTableData()
+  }, [])
+
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPerPage = 10;
+
+  // Filter the Data on the basis of slot and cycles
+
+  const filterData = Array.isArray(tableData)
+    ? tableData.filter(
+      (val) =>
+        Number(val.cycleNo) === Number(cycleIndex + 1) &&
+        Number(val.slotLevel) === Number(slotIndex + 1)
+    )
+    : [];
+
+
+  const lastIndex = currentPage * recordsPerPage;
+  const firstIndex = lastIndex - recordsPerPage;
+  const currentRecords = filterData?.slice(firstIndex, lastIndex);
+  const totalPages = Math.ceil(filterData?.length / recordsPerPage);
+
+
+
+  function convertTimestampToDateTime(timestamp) {
+    const date = new Date(timestamp * 1000); // Convert from seconds to milliseconds
+    return date.toLocaleString(); // Returns local date and time string
+  }
+
+
 
 
 
@@ -139,21 +187,14 @@ export default function UserPanel() {
                 </div>
               </div>
 
-              {/* <div className="mt-10">
-                <span className="border-2 text-2xl px-12 py-2">Slot 1</span>
-              </div> */}
-
-              {/* <div className="mt-10">
-                <span className="border-2 text-2xl px-12 py-2">Sponsor ID</span>
-              </div> */}
 
 
               <div className="flex flex-wrap justify-start items-center gap-0 mt-10 p-4">
                 {/* Recycle Control */}
                 <div className="flex flex-col items-center justify-center mt-30">
                   <FaChevronUp
-                    onClick={prevCycle}
-                    className="cursor-pointer text-3xl hover:text-4xl hover:text-blue-500"
+                    onClick={isLoadingU3 ? undefined : prevCycle}
+                    className={`cursor-pointer text-3xl ${isLoadingU3 ? 'opacity-50 cursor-not-allowed' : 'hover:text-blue-500'}`}
                   />
                   <div className="flex justify-center items-center gap-2">
                     <div>RECYCLE</div>
@@ -163,8 +204,8 @@ export default function UserPanel() {
                     </div>
                   </div>
                   <FaChevronDown
-                    onClick={nextCycle}
-                    className="cursor-pointer text-3xl hover:text-4xl hover:text-blue-500"
+                    onClick={isLoadingU3 ? undefined : nextCycle}
+                    className={`cursor-pointer text-3xl ${isLoadingU3 ? 'opacity-50 cursor-not-allowed' : 'hover:text-blue-500'}`}
                   />
                 </div>
 
@@ -172,10 +213,10 @@ export default function UserPanel() {
                 <div className="flex flex-col lg:flex-row justify-center items-center ml-0 lg:ml-[-50px]">
                   <div className="flex justify-center items-center gap-2">
                     <FaChevronLeft
-                      onClick={prevSlot}
-                      className="cursor-pointer hover:text-blue-500 hover:scale-200 transition-transform duration-300 text-xl"
+                      onClick={isLoadingU3 ? undefined : prevSlot}
+                      className={`cursor-pointer text-xl ${isLoadingU3 ? 'opacity-50 cursor-not-allowed' : 'hover:text-blue-500'}`}
                     />
-                    <button onClick={prevSlot} className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm cursor-pointer">
+                    <button onClick={isLoadingU3 ? undefined : nextSlot} className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm cursor-pointer">
                       {slot?.slotNo}
                     </button>
                   </div>
@@ -229,8 +270,6 @@ export default function UserPanel() {
                           />
 
 
-
-
                       ))}
                     </div>
                   </div>
@@ -240,55 +279,81 @@ export default function UserPanel() {
                       {slotIndex + 2 <= u3Data?.length ? slotIndex + 2 : "-"}
                     </button>
                     <FaChevronRight
-                      onClick={nextSlot}
-                      className="cursor-pointer hover:text-blue-500 hover:scale-200 transition-transform duration-300 text-xl"
+                      onClick={isLoadingU3 ? undefined : nextSlot}
+                      className={`cursor-pointer text-xl ${isLoadingU3 ? 'opacity-50 cursor-not-allowed' : 'hover:text-blue-500'}`}
                     />
                   </div>
                 </div>
               </div>
-
-
-
             </div>
 
-            {/* Partners table */}
-            <div className="flex flex-col mt-10 border-2 rounded-2xl p-4 sm:p-6 text-center w-full">
-              <div className="text-2xl sm:text-3xl font-bold mb-4 text-start">
-                U3 Plus Profits’s
-              </div>
+            <div className="w-full overflow-x-auto py-4  max-w-6xl mx-auto">
+              {/* Selection Controls */}
 
-              <div className="w-full overflow-x-auto">
-                <table className="w-full min-w-[700px] border-collapse text-sm sm:text-base">
-                  <thead className="">
-                    <tr>
-                      <th className="p-2 border">S. No.</th>
-                      <th className="p-2 border">USD</th>
-                      <th className="p-2 border">RAMA</th>
-                      <th className="p-2 border">Tx Hash</th>
-                      <th className="p-2 border">Date & Time</th>
-                      <th className="p-2 border">Status</th>
-                      <th className="p-2 border">Re-Generate</th>
-                      <th className="p-2 border">Re-Invest</th>
-                      <th className="p-2 border">Net Profit</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {[...Array(4)].map((_, i) => (
-                      <tr key={i} className="border-t">
-                        <td className="p-2 border">1</td>
-                        <td className="p-2 border">10</td>
-                        <td className="p-2 border">0xc03...38624</td>
-                        <td className="p-2 border">0.000 / $0.000</td>
-                        <td className="p-2 border">2022-11-12 10:12:56</td>
-                        <td className="p-2 border">0x4f0...98c0E</td>
-                        <td className="p-2 border">0xc03...38624</td>
-                        <td className="p-2 border">0xc03...38624</td>
-                        <td className="p-2 border">0.000 / $0.000</td>
+
+              {/* Table Display */}
+              {tableData?.length > 0 || tableData?.length == null ? (
+                <div>
+                  <table className="w-full min-w-[700px] border-collapse text-sm sm:text-base">
+                    <thead>
+                      <tr className="bg-gray-100">
+
+                        <th className="p-3 text-left text-black">Sno</th>
+                        <th className="p-3 text-left text-black">Slot</th>
+                        <th className="p-3 text-left text-black">Cycle</th>
+                        <th className="p-3 text-left text-black">Position</th>
+                        <th className="p-3 text-left text-black">USD</th>
+                        <th className="p-3 text-left text-black">RAMA</th>
+                        <th className="p-3 text-left text-black">Tx Hash</th>
+                        <th className="p-3 text-left text-black">Date & Time</th>
+                        <th className="p-3 text-left text-black">Status</th>
+                        <th className="p-3 text-left text-black">Net Profit</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody>
+                      {currentRecords?.map((tx, index) => (
+                        <tr key={index} className="border-t">
+                          <td className="p-3">{index + 1}</td>
+                          <td className="p-3">{tx?.slotLevel}</td>
+                          <td className="p-3">{tx?.cycleNo}</td>
+                          <td className="p-3">{tx?.positionIndex}</td>
+                          <td className="p-3">{tx?.amountInUSD}</td>
+                          <td className="p-3">{tx?.amountInRAMA}</td>
+                          <td className="p-3 font-mono text-blue-600 truncate">{tx?.txHash.slice(0, 7) + "....." + tx?.txHash.slice(-7)}</td>
+                          <td className="p-3">{convertTimestampToDateTime(tx?.timestamp)}</td>
+                          <td className="p-3">{tx?.finalReceiver == address ? "Credit" : "forwarded"}</td>
+                          <td className="p-3">{tx?.finalReceiver == address ? tx.amountInUSD : "0"}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+
+                  {/* Pagination Controls */}
+                  <div className="flex  justify-center lg:justify-end gap-6 items-center mt-4">
+                    <button
+                      className="px-4 py-2 text-black bg-gray-100 rounded disabled:opacity-50 cursor-pointer"
+                      onClick={() => setCurrentPage(p => p - 1)}
+                      disabled={currentPage === 1}
+                    >
+                      Previous
+                    </button>
+
+                    <span>Page {currentPage} of {Number(totalPages)}</span>
+
+                    <button
+                      className="px-4 py-2 text-black bg-gray-100 rounded disabled:opacity-50 cursor-pointer"
+                      onClick={() => setCurrentPage(p => p + 1)}
+                      disabled={currentPage === totalPages}
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center p-8 text-gray-500">
+                  Select a Slot and Position to view transactions
+                </div>
+              )}
             </div>
 
 

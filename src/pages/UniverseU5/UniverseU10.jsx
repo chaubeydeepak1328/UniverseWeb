@@ -1,29 +1,18 @@
-import React, { use, useEffect, useState } from "react";
-import universeLogo from "../../assets/images/universeLogo.png";
-import universeCoin from "../../assets/images/universeCoin.png";
-import { RxCopy } from "react-icons/rx";
+import  {  useEffect, useState } from "react";
 import {
-    FaExternalLinkAlt,
-    FaTelegram,
     FaChevronLeft,
     FaChevronRight,
     FaChevronUp,
 } from "react-icons/fa";
-import { FaChevronDown, FaCheckToSlot } from "react-icons/fa6";
-import { RiLogoutCircleRLine } from "react-icons/ri";
-import { PiLineVerticalLight, PiUsersFourBold } from "react-icons/pi";
-import { GiCircle, GiSplitArrows } from "react-icons/gi";
-import { TfiReload } from "react-icons/tfi";
-import { LuUsers } from "react-icons/lu";
-import { Link, useLocation } from "react-router-dom";
-import { MdOutlineContactMail } from "react-icons/md";
+import { FaChevronDown } from "react-icons/fa6";
+import { PiLineVerticalLight } from "react-icons/pi";
+import { useLocation } from "react-router-dom";
 import { BsCaretUpFill } from "react-icons/bs";
 import Header from "../../components/Header";
 import LeftUserPannel from "../../components/LeftUserPannel";
 import DashboardInfo from "../../components/DashboardInfo";
 import { useStore } from "../../Store/UserStore";
 
-import u5dummytableData from "../../config/u5Dummydata"
 
 export default function UserPanel() {
 
@@ -162,22 +151,11 @@ export default function UserPanel() {
     const [currentPage, setCurrentPage] = useState(1);
     const recordsPerPage = 9;
 
-    // // Filter data based on selection
-    // const filteredData = u5dummytableData.filter(tx =>
-    //     slotIndex && selectedPos ?
-    //         tx.slotNumber === slotIndex && tx.positionNumber === selectedPos :
-    //         []
-    // );
-    // // Pagination calculations
+    
     const lastIndex = currentPage * recordsPerPage;
     const firstIndex = lastIndex - recordsPerPage;
     const currentRecords = tableData?.slice(firstIndex, lastIndex);
     const totalPages = Math.ceil(tableData?.length / recordsPerPage);
-
-    // // Generate unique slots and positions for dropdowns
-    // const slots = [...new Set(u5dummytableData.map(tx => tx.slotNumber))];
-    // const positions = [...new Set(u5dummytableData.map(tx => tx.positionNumber))];
-
 
 
     function convertTimestampToDateTime(timestamp) {
@@ -307,43 +285,7 @@ export default function UserPanel() {
                         </div>
 
 
-                        {/* Partners Table */}
-                        {/* <div className="flex flex-col mt-10 border-2 rounded-2xl p-4 sm:p-6 text-center w-full">
-                            <div className="text-2xl sm:text-3xl font-bold mb-4 text-start">
-                                U5Profits’s
-                            </div>
-
-                            <div className="w-full overflow-x-auto">
-                                <table className="w-full min-w-[700px] border-collapse text-sm sm:text-base">
-                                    <thead className="">
-                                        <tr>
-                                            <th className="p-2 border">S. No.</th>
-                                            <th className="p-2 border">USD</th>
-                                            <th className="p-2 border">RAMA</th>
-                                            <th className="p-2 border">Tx Hash</th>
-                                            <th className="p-2 border">Date & Time</th>
-                                            <th className="p-2 border">Status</th>
-                                            <th className="p-2 border">Re-Generate</th>
-                                            <th className="p-2 border">Net Profit</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {[...Array(4)].map((_, i) => (
-                                            <tr key={i} className="border-t">
-                                                <td className="p-2 border">1</td>
-                                                <td className="p-2 border">10</td>
-                                                <td className="p-2 border">0xc03...38624</td>
-                                                <td className="p-2 border">0.000 / $0.000</td>
-                                                <td className="p-2 border">2022-11-12 10:12:56</td>
-                                                <td className="p-2 border">0x4f0...98c0E</td>
-                                                <td className="p-2 border">0xc03...38624</td>
-                                                <td className="p-2 border">0.000 / $0.000</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div> */}
+                      
 
 
 

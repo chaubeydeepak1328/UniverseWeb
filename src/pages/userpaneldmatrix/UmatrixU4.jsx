@@ -298,42 +298,7 @@ export default function UserPanel() {
                         </div>
 
                         {/* Table */}
-                        {/* <div className="flex flex-col mt-10 border-2 rounded-2xl p-4 sm:p-6 text-center w-full">
-                            <div className="text-2xl sm:text-3xl font-bold mb-4 text-start">
-                                U4Profits’s
-                            </div>
-
-                            <div className="w-full overflow-x-auto">
-                                <table className="w-full min-w-[700px] border-collapse text-sm sm:text-base">
-                                    <thead className="">
-                                        <tr>
-                                            <th className="p-2 border">S. No.</th>
-                                            <th className="p-2 border">USD</th>
-                                            <th className="p-2 border">RAMA</th>
-                                            <th className="p-2 border">Tx Hash</th>
-                                            <th className="p-2 border">Date & Time</th>
-                                            <th className="p-2 border">Status</th>
-                                            <th className="p-2 border">Re-Generate</th>
-                                            <th className="p-2 border">Net Profit</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {[...Array(4)].map((_, i) => (
-                                            <tr key={i} className="border-t">
-                                                <td className="p-2 border">1</td>
-                                                <td className="p-2 border">10</td>
-                                                <td className="p-2 border">0xc03...38624</td>
-                                                <td className="p-2 border">0.000 / $0.000</td>
-                                                <td className="p-2 border">2022-11-12 10:12:56</td>
-                                                <td className="p-2 border">0x4f0...98c0E</td>
-                                                <td className="p-2 border">0xc03...38624</td>
-                                                <td className="p-2 border">0.000 / $0.000</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div> */}
+                       
 
 
                         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-6 mt-6">

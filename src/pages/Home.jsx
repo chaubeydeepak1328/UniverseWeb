@@ -1,11 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import FeaturesCard from "../components/FeaturesCard";
-import About from "../components/About";
-import EpicJourney from "../components/EpicJourney";
-import UniversResult from "../components/UniverseResult";
-import Comission from "../components/Comission";
-import Footer from "../components/Footer";
+
 import universeLogo from "../assets/images/universeLogo.png";
 import { CiYoutube } from "react-icons/ci";
 import { FiLink } from "react-icons/fi"; import { TbLogin } from "react-icons/tb";
@@ -93,13 +88,7 @@ export default function Home() {
 
         {/* Text Content */}
         <div className="z-10 flex flex-col items-center text-center">
-          {/* <h1 className="text-5xl sm:text-6xl md:text-8xl font-extrabold bg-gradient-to-r from-yellow-300 via-amber-400 to-yellow-500 text-transparent bg-clip-text drop-shadow-2xl animate-pulse">
-            UNIVERSE
-          </h1>
-
-          <h3 className="text-lg sm:text-xl md:text-3xl font-semibold mt-4 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-300 text-transparent bg-clip-text drop-shadow-md">
-            Explore the Infinite Possibilities
-          </h3> */}
+        
 
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row gap-6 mt-10">
@@ -120,7 +109,6 @@ export default function Home() {
               </Link>
             </div>
             <button
-              // to="/express-login"
               onClick={handleJoin}
               className="h-14 w-64 flex justify-center items-center ga-2 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white text-lg font-semibold rounded-xl shadow-xl border border-transparent hover:border-white hover:scale-105 transition-all duration-300 ease-in-out"
             >
@@ -131,9 +119,7 @@ export default function Home() {
 
           {/* Tagline */}
           <div className="mt-6">
-            {/* <p className="text-md sm:text-xl md:text-3xl font-bold bg-gradient-to-r from-yellow-400 via-pink-500 to-blue-500 text-transparent bg-clip-text drop-shadow-lg">
-              dApp on Ramestta Blockchain
-            </p> */}
+            
           </div>
         </div>
 
@@ -143,13 +129,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Remaining Sections */}
-      {/* <About />
-      <FeaturesCard />
-      <EpicJourney />
-      <UniversResult />
-      <Comission /> */}
-      {/* <Footer /> */}
+      
     </div>
   );
 }

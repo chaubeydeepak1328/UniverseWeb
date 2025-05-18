@@ -1,4 +1,3 @@
-import React from "react";
 import universeLogo from "../assets/images/universeLogo.png";
 import { LuUserRound } from "react-icons/lu";
 import { Link } from "react-router-dom";

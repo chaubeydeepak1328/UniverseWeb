@@ -31,8 +31,6 @@ export default function UserPanel() {
     }
   }, []);
 
-  // const { state } = useLocation();
-  // const { userId, userAddress, data } = state || {};
 
   console.log("User ID:", userId, userAddress, data);
 

@@ -4,18 +4,11 @@ import { PiLineVerticalLight } from "react-icons/pi";
 import { GiCircle } from "react-icons/gi";
 import { TfiReload } from "react-icons/tfi";
 import { LuUsers } from "react-icons/lu";
-import { PiUsersFourBold } from "react-icons/pi";
-import { GiSplitArrows } from "react-icons/gi";
-import { FaCheckToSlot } from "react-icons/fa6";
-import { MdOutlineContactMail } from "react-icons/md";
-import { RxCopy } from "react-icons/rx";
 
 import { useStore } from '../Store/UserStore';
-import { useAppKitAccount } from '@reown/appkit/react';
 import DashboardInfo from './DashboardInfo';
 
 import cart from '../assets/images/cart.png';
-import { TbUniverse } from "react-icons/tb";
 import RamaLoader from '../util/RamaLoader';
 import pointingFinger from "../assets/images/pointingFinger.png"
 
@@ -69,28 +62,11 @@ const RightUserPannel = () => {
         fetchData();
     }, []);
 
-    // const values = [
-    //     10, 20, 40, 80, 160, 320, 640, 1280, 2560, 5120,
-    // ].slice(0, lastSlot); // Adjust the number of values as needed
-
 
     const values = [
         10, 20, 40, 80, 160, 320, 640, 1280, 2560, 5120,
     ];
-    // Dynamic the page  
-    // const slotData = [
-    //     { users: 3, cycles: 2 }, //user should be between 0-3 if ine more user come then cycle complete  and  next cycle show no user
-    //     { users: 0, cycles: 1 }, // In each slots there are 4 users and can be infinite cycles
-    //     { users: 3, cycles: 0 },
-    //     { users: 2, cycles: 3 }, // Last active with 2 users
-    //     { users: 1, cycles: 0 },
-    //     { users: 2, cycles: 0 },
-    //     { users: 3, cycles: 0 },
-    //     { users: 0, cycles: 0 },
-    //     { users: 0, cycles: 0 },
-    //     { users: 0, cycles: 0 },
-    // ];
-
+    
     // Determine last active slot with users > 0
     const lastActiveIndex = slotData.reduce((acc, curr, idx) => curr.users > 0 ? idx : acc, -1);
 
@@ -285,11 +261,7 @@ const RightUserPannel = () => {
                                         ))}
                                     </div>
                                 ))}
-                                {/* <div className="flex justify-center gap-2">
-                                    {[...Array(4)].map((_, j) => (
-                                        <GiCircle key={j} className={circleClass} />
-                                    ))}
-                                </div> */}
+                               
 
                                 <div className="flex justify-center gap-2">
                                     {[...Array(4)].map((_, j) => {
@@ -370,23 +342,9 @@ const RightUserPannel = () => {
                                 {name} {name == "U5" ? ">>>>>" : name == "U3 Premium" ? ">>>" : ">>>>"}
                             </span>
                             <br />
-                            {/* <span className="text-2xl md:text-xl font-bold">{EarnedRama[name]} RAMA</span> */}
+              
                         </div>
-                        {/* <div className="flex flex-col items-center mt-4">
-                            <Link
-                                to={urlMap[name]}
-                                className="h-10 w-30 rounded-sm flex justify-center items-center text-white text-lg md:text-xl"
-                                style={{
-                                    background:
-                                        "linear-gradient(100deg, rgba(239, 185, 10, 1) 0%, rgba(156, 148, 121, 1) 100%)",
-                                }}
-                            >
-                                {idMap[name]}
-                            </Link>
-                            <div className="bg-white h-6 w-20 text-black font-bold mt-0">
-                                No of Id
-                            </div>
-                        </div> */}
+                    
 
                         {/* Box for Dynamic Data */}
 

@@ -14,45 +14,6 @@ import { ToastContainer, toast } from 'react-toastify';
 const LeftUserPannel = () => {
 
 
-    // const { address } = useAppKitAccount();
-    // const IsUserExist = useStore((state) => state.IsUserExist);
-    // const [userId, setUserId] = useState(null);
-    // const [userAddress, setUserAddress] = useState(null);
-    // const [data, setData] = useState(null);
-
-    // const [RamaValueUsd, setRamaValueUsd] = useState("345");
-
-    // useEffect(() => {
-    //     const fetchUserData = async () => {
-    //         if (address) {
-    //             const user = await IsUserExist(address);
-    //             console.log("User data:", user); // Log the fetched user data
-    //             setUserId(user.userId);
-    //             setUserAddress(user.walletAdd);
-    //             setData(user);
-
-    //         }
-    //     };
-
-    //     fetchUserData();
-    // }, [address]); // <-- You had an extra } here previously
-
-
-    // const handleCopy = (address) => {
-    //     if (address) {
-    //         navigator.clipboard.writeText(address);
-    //         toast.success("Address copied to clipboard!", {
-    //             position: "top-right",
-    //             autoClose: 2000,
-    //             hideProgressBar: false,
-    //             closeOnClick: true,
-    //             pauseOnHover: true,
-    //             draggable: true,
-    //             progress: undefined,
-    //         });
-    //     }
-    // };
-
 
     const [userId, setUserId] = useState(null);
     const [userAddress, setUserAddress] = useState(null);
@@ -69,8 +30,6 @@ const LeftUserPannel = () => {
         }
     }, []);
 
-    // const { state } = useLocation();
-    // const { userId, userAddress, data } = state || {};
 
     console.log("User ID:", userId, userAddress, data);
 

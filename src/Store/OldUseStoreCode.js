@@ -2,6 +2,11 @@ import { create } from 'zustand';
 import Web3, { errors } from 'web3';
 import axios from 'axios';
 
+const TOPIC0 = "0x6441096f6dc9ec5c293f0c0f151e796cb14acaf79f8e4a23606923f142a569b9";
+const TOPIC1 = "0x0000000000000000000000000000000000000000000000000000000000000001";
+const TOPIC2 = "0x0000000000000000000000000000000000000000000000000000000000000004";
+const TOPIC3 = "0x0000000000000000000000000000000000000000000000000000000000000002";
+
 
 const Contract = {
     "UserMang": "0x1F34dfCbaD8e3a502e28c8c98f4E48AD047dfb25",
@@ -52,7 +57,7 @@ const web3 = new Web3(INFURA_URL);
 
 
 
-export const useStore = create((set) => ({
+export const useStore = create((set, get) => ({
 
 
     // User Wallet Info
@@ -1242,6 +1247,53 @@ export const useStore = create((set) => ({
             return [];
         }
     },
+
+    // ===========================================================================================================================
+    // Filtering the Data on the basis of log 
+    // ===========================================================================================================================
+
+    u3MatrixLogs: [],
+    loadingU3Logs: false,
+
+    fetchU3MatrixLogs: async () => {
+        set({ loadingU3Logs: true });
+        try {
+            const { abi, contractAddress } = await fetchContractAbi("U5");
+            const contract = new web3.eth.Contract(abi, contractAddress);
+
+            const logs = await web3.eth.getPastLogs({
+                fromBlock: 0,
+                toBlock: "latest",
+                address: contractAddress,
+                topics: [TOPIC0, TOPIC1, TOPIC2, TOPIC3],
+            });
+
+            const eventAbi = abi.find(
+                (e) => e.name === "chunkReceived" && e.type === "event"
+            );
+
+            const decoded = logs.map((log) => {
+                const decodedLog = web3.eth.abi.decodeLog(eventAbi.inputs, log.data, log.topics.slice(1));
+                return {
+                    matrixID: decodedLog.matrixID,
+                    matrixOwnerSlot: decodedLog.matrixOwnerSlot,
+                    matrixOwnerSlotPosition: decodedLog.matrixOwnerSlotPosition,
+                    amountInUSD: decodedLog.amountInUSD,
+                    amountInRAMA: web3.utils.fromWei(decodedLog.amountInRAMA.toString(), "ether"),
+                    txHash: log.transactionHash,
+                    blockNumber: log.blockNumber,
+                };
+            });
+
+            set({ u3MatrixLogs: decoded });
+            console.log("✅ Logs fetched:", decoded);
+        } catch (err) {
+            console.error("❌ Error fetching U3 logs:", err.message);
+        } finally {
+            set({ loadingU3Logs: false });
+        }
+    },
+
 
 
 
