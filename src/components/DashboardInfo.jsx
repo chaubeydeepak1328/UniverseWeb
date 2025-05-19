@@ -4,13 +4,16 @@ import { GiSplitArrows } from 'react-icons/gi'
 import { MdOutlineContactMail } from 'react-icons/md'
 import { PiUsersFourBold } from 'react-icons/pi'
 import { RxCopy } from 'react-icons/rx'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useStore } from '../Store/UserStore'
 import { ToastContainer, toast } from 'react-toastify';
 
 const DashboardInfo = () => {
 
     const homePannelInfo = useStore((state) => state.homePannelInfo)
+
+
+    const navigate = useNavigate();
 
 
     const [address, setAddress] = useState(JSON.parse(localStorage.getItem("userData")).userAddress);
@@ -100,9 +103,14 @@ const DashboardInfo = () => {
                     </div>
                 </div>
             </Link>
-            <Link
-                to="/user-panel-home/slot-activate"
-                className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl bg-blue-500 text-black p-4"
+            <button
+                onClick={() => {
+                    ActivatedSlot ? navigate("/user-panel-home/slot-activate", {
+                        state: { ActivateSlot: Number(ActivatedSlot + 1) }
+                    }) : ""
+                }}
+                // to="/user-panel-home/slot-activate" ActivatedSlot
+                className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl bg-blue-500 text-black p-4 cursor-pointer"
                 style={{
                     background:
                         "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
@@ -118,7 +126,7 @@ const DashboardInfo = () => {
                         <span>Income : 0000000.00 RAMA</span>
                     </div>
                 </div>
-            </Link>
+            </button>
             <div
                 className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl bg-blue-500 text-black p-4 cursor-pointer"
                 style={{
@@ -138,7 +146,7 @@ const DashboardInfo = () => {
                     <div><RxCopy onClick={() => handleCopy(`${window.location.origin}/referral/${userId}`)} className="text-3xl  hover:text-[#f9ad13]" /></div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

@@ -21,6 +21,7 @@ export default function UserPanel() {
   const getU5info = useStore((state) => state.getU5info)
 
 
+  const [loading, setLoading] = useState(true);
 
 
   const dummyData = [
@@ -90,6 +91,28 @@ export default function UserPanel() {
 
   };
 
+
+  // ==================================================================
+  // Basic Matric Info 
+  // ==================================================================
+
+  const getU5MartixInfo = useStore((state) => state.getU5MartixInfo)
+
+  const [MatrixDetails, setMatrixDetails] = useState();
+
+
+
+
+  const fetchmatrixInfo = async () => {
+    setLoading(true);
+    const res = await getU5MartixInfo(address);
+    setMatrixDetails(res);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (address) fetchmatrixInfo();
+  }, [address]);
 
 
 
@@ -185,7 +208,9 @@ export default function UserPanel() {
                             } else {
                               navigate('/user-panel-home/universe', { state: { id: id, slotVal: 0, matrixData: matrixData } })
 
-                              console.log({ id: id, slotVal: 0, matrixData: matrixData, plan: values[0].replace(/\$/g, "").trim() })
+                              console.log({
+                                id: id, slotVal: 0, matrixData: matrixData, plan: values?.[0]?.replace(/\$/g, "").trim() || ""
+                              })
                             }
                           }}
 
@@ -290,56 +315,90 @@ export default function UserPanel() {
 
             </div>
 
-            {/* Table */}
-            
+            {/* Matrix Info */}
+
 
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-6 mt-6">
 
               {/* Box */}
-              {[
-                { title: 'Received', usd: '$23', rama: 145 },
-                { title: 'Upgraded', usd: '$23', rama: 145 },
-                { title: 'Generated', usd: "$20", rama: 145 },
-                { title: 'Net Profit', usd: '$23', rama: 145 },
-                { title: "Generated ID's", totalId: "$29" },
-              ].map((item, index) => (
+              {(() => {
+                const matchedMatrix = MatrixDetails?.find(
+                  val => val.matrixID?.toString() === currentMatrix?.id?.toString()
+                );
 
-                item?.title !== "Generated ID's" && item?.title !== 'view Matrix' ?
-                  (
-                    <div key={index} style={{
-                      background:
-                        "linear-gradient(45deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
-                    }} className="p-3 rounded-2xl shadow hover:shadow-lg transition">
+                const detail = matchedMatrix?.u5MatrixDetail || {};
+
+                const cards = [
+                  {
+                    title: 'Received',
+                    rama: detail.totalReceivedAmountInRAMA?.toString() || "0"
+                  },
+                  {
+                    title: 'Upgraded',
+                    rama: detail.totalRegenerationAmount?.toString() || "0"
+                  },
+                  {
+                    title: 'Generated',
+                    rama: detail.totalRegeneratedMatrices?.toString() || "0"
+                  },
+                  {
+                    title: 'Net Profit',
+                    rama: detail.netProfit?.toString() || "0" // use correct key here if exists
+                  },
+                  {
+                    title: "Generated ID's",
+                    totalId: detail.totalRegeneratedMatrices?.toString() || "0"
+                  }
+                ];
+
+                return cards.map((item, index) =>
+                  item.title !== "Generated ID's" && item.title !== 'view Matrix' ? (
+                    <div
+                      key={index}
+                      style={{
+                        background:
+                          "linear-gradient(45deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
+                      }}
+                      className="p-3 rounded-2xl shadow hover:shadow-lg transition"
+                    >
                       <h3 className="text-sm font-semibold text-white mb-2 ">{item.title}</h3>
                       <div className="text-yellow-500 space-y-1">
-                        <p><span className=" text-[13px] font-bold">USD:</span> {item.usd}</p>
-                        <p><span className="font- text-[13px]">Rama:</span> {item.rama}</p>
+                        <p>
+                          <span className="font- text-[13px]">Rama:</span> {item.rama}
+                        </p>
                       </div>
                     </div>
-                  ) :
-                  (
-                    item?.title === 'view Matrix' ? (
-                      <button key={index} style={{
+                  ) : item.title === 'view Matrix' ? (
+                    <button
+                      key={index}
+                      style={{
                         background:
                           "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
-                      }} className="p-3 rounded-2xl shadow hover:shadow-lg transition">
-
-                        <div className="text-yellow-500 flex justify-center gap-4">
-
-                        </div>
-                      </button>
-                    ) : <div key={index} style={{
-                      background:
-                        "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
-                    }} className="p-5 rounded-2xl shadow hover:shadow-lg transition">
+                      }}
+                      className="p-3 rounded-2xl shadow hover:shadow-lg transition"
+                    >
+                      <div className="text-yellow-500 flex justify-center gap-4"></div>
+                    </button>
+                  ) : (
+                    <div
+                      key={index}
+                      style={{
+                        background:
+                          "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
+                      }}
+                      className="p-5 rounded-2xl shadow hover:shadow-lg transition"
+                    >
                       <h3 className="text-sm font-semibold text-white mb-2">{item.title}</h3>
                       <div className="text-yellow-500 space-y-1">
-                        <p style={{ FontSize: '15px' }}><span className="font-sm">TotalID :</span> {item.totalId}</p>
-
+                        <p style={{ fontSize: '15px' }}>
+                          <span className="font-sm">TotalID :</span> {item.totalId}
+                        </p>
                       </div>
                     </div>
                   )
-              ))}
+                );
+              })()}
+
 
             </div>
 

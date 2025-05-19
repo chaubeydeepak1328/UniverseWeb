@@ -120,12 +120,23 @@ export default function UserPanel() {
 
   // Filter the Data on the basis of slot and cycles
 
+  // const filterData = Array.isArray(tableData)
+  //   ? tableData.filter(
+  //     (val) =>
+  //       Number(val.cycleNo) === Number(cycleIndex + 1) &&
+  //       Number(val.slotLevel) === Number(slotIndex + 1)
+  //   )
+  //   : [];
+
+
   const filterData = Array.isArray(tableData)
-    ? tableData.filter(
-      (val) =>
-        Number(val.cycleNo) === Number(cycleIndex + 1) &&
-        Number(val.slotLevel) === Number(slotIndex + 1)
-    )
+    ? tableData
+      .filter(
+        (val) =>
+          Number(val.cycleNo) === Number(cycleIndex + 1) &&
+          Number(val.slotLevel) === Number(slotIndex + 1)
+      )
+      .sort((a, b) => Number(a.positionIndex) - Number(b.positionIndex)) // Sort by positionIndex ascending
     : [];
 
 
@@ -302,6 +313,8 @@ export default function UserPanel() {
                         <th className="p-3 text-left text-black">Slot</th>
                         <th className="p-3 text-left text-black">Cycle</th>
                         <th className="p-3 text-left text-black">Position</th>
+                        <th className="p-3 text-left text-black">initiatedFrom</th>
+                        <th className="p-3 text-left text-black">finalReceiver</th>
                         <th className="p-3 text-left text-black">USD</th>
                         <th className="p-3 text-left text-black">RAMA</th>
                         <th className="p-3 text-left text-black">Tx Hash</th>
@@ -317,9 +330,11 @@ export default function UserPanel() {
                           <td className="p-3">{tx?.slotLevel}</td>
                           <td className="p-3">{tx?.cycleNo}</td>
                           <td className="p-3">{tx?.positionIndex}</td>
+                          <td className="p-3"> {tx?.initiatedFrom.slice(0, 7) + "....." + tx?.initiatedFrom.slice(-7)}</td>
+                          <td className="p-3"> {tx?.finalReceiver.slice(0, 7) + "....." + tx?.finalReceiver.slice(-7)}</td>
                           <td className="p-3">{tx?.amountInUSD}</td>
                           <td className="p-3">{tx?.amountInRAMA}</td>
-                          <td className="p-3 font-mono text-blue-600 truncate">{tx?.txHash.slice(0, 7) + "....." + tx?.txHash.slice(-7)}</td>
+                          <td className="p-3 font-mono text-blue-600 truncate"> <a target="_blank" href={`https://ramascan.com/tx/${tx?.txHash}`}> {tx?.txHash.slice(0, 7) + "....." + tx?.txHash.slice(-7)}</a></td>
                           <td className="p-3">{convertTimestampToDateTime(tx?.timestamp)}</td>
                           <td className="p-3">{tx?.finalReceiver == address ? "Credit" : "forwarded"}</td>
                           <td className="p-3">{tx?.finalReceiver == address ? tx.amountInUSD : "0"}</td>

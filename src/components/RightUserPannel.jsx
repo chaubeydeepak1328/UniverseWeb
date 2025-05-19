@@ -66,7 +66,7 @@ const RightUserPannel = () => {
     const values = [
         10, 20, 40, 80, 160, 320, 640, 1280, 2560, 5120,
     ];
-    
+
     // Determine last active slot with users > 0
     const lastActiveIndex = slotData.reduce((acc, curr, idx) => curr.users > 0 ? idx : acc, -1);
 
@@ -172,7 +172,11 @@ const RightUserPannel = () => {
                                         navigate('/user-panel-dmatrix1', { state: { slotNumber: slotIndex } })
                                     }
                                     else if (slotIndex == slotData.length) {
-                                        navigate('/user-panel-home/slot-activate');
+
+                                        navigate("/user-panel-home/slot-activate", {
+                                            state: { ActivateSlot: Number(slotIndex + 1) }
+                                        })
+
                                     }
                                 }}
                                 className="relative flex flex-col items-center"
@@ -261,7 +265,7 @@ const RightUserPannel = () => {
                                         ))}
                                     </div>
                                 ))}
-                               
+
 
                                 <div className="flex justify-center gap-2">
                                     {[...Array(4)].map((_, j) => {
@@ -342,9 +346,9 @@ const RightUserPannel = () => {
                                 {name} {name == "U5" ? ">>>>>" : name == "U3 Premium" ? ">>>" : ">>>>"}
                             </span>
                             <br />
-              
+
                         </div>
-                    
+
 
                         {/* Box for Dynamic Data */}
 

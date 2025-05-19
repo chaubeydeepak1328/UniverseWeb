@@ -1327,6 +1327,116 @@ export const useStore = create((set, get) => ({
     },
 
 
+    activateSlotU3: async (Waladdress, SlotNo) => {
+        try {
+            console.log("🟢 Activating U3 Slot:", { Waladdress, SlotNo });
+
+            // Basic input validation
+            if (!web3.utils.isAddress(Waladdress)) {
+                throw new Error("Invalid wallet address provided.");
+            }
+
+            if (typeof SlotNo !== 'number' || SlotNo <= 0) {
+                throw new Error("Slot number must be a positive integer.");
+            }
+
+            // Load contract ABI and address
+            const UIncome = await fetchContractAbi("UIncome");
+            if (!UIncome?.abi || !UIncome?.contractAddress) {
+                throw new Error("Contract ABI or address not found for UIncome.");
+            }
+
+            const contract = new web3.eth.Contract(UIncome.abi, UIncome.contractAddress);
+
+            // Prepare value and transaction data
+            const ramaAmount = web3.utils.toWei('0.04', 'ether'); // Convert to wei (string)
+            const trxData = contract.methods.buyU3plusSlot(SlotNo).encodeABI();
+
+            // Get gas price
+            const gasPrice = await web3.eth.getGasPrice();
+
+            // Estimate gas limit
+            let gasLimit;
+            try {
+                gasLimit = await web3.eth.estimateGas({
+                    from: Waladdress,
+                    to: UIncome.contractAddress,
+                    value: BigInt(ramaAmount),
+                    data: trxData,
+                });
+            } catch (estimateErr) {
+                console.error("❌ Gas estimation failed:", estimateErr);
+                alert("Gas estimation failed. Please check wallet balance and slot eligibility.");
+                return null;
+            }
+
+            console.log("📦 Transaction Details:");
+            console.log("Gas Limit:", gasLimit);
+            console.log("Gas Price (wei):", gasPrice);
+            const gasCostEth = web3.utils.fromWei(
+                (BigInt(gasLimit) * BigInt(gasPrice)).toString(),
+                'ether'
+            );
+            console.log("Estimated Gas Cost in ETH:", gasCostEth);
+
+            // Build transaction object
+            const tx = {
+                from: Waladdress,
+                to: UIncome.contractAddress,
+                data: trxData,
+                gas: gasLimit,
+                gasPrice: gasPrice,
+                value: ramaAmount,
+            };
+
+            return tx;
+
+        } catch (err) {
+            console.error("🚨 Failed to prepare slot activation transaction:", err);
+            alert(`Error: ${err.message}`);
+            return null;
+        }
+    },
+
+
+    getU5MartixInfo: async (address) => {
+        try {
+            console.log("---------------->", address);
+            const { abi, contractAddress } = await fetchContractAbi("U5");
+            const contract = new web3.eth.Contract(abi, contractAddress);
+
+            const genMatrices = await contract.methods.getGeneratedMatrices(address).call();
+
+            // Parallel fetch all matrix details
+            const data = await Promise.all(
+                genMatrices.map(async (matrixID) => {
+                    const u5MatrixDetail = await contract.methods.getU5MatrixBasicInfo(matrixID).call();
+
+
+                    // const data = {
+
+                    // }
+
+
+                    return {
+                        matrixID,
+                        u5MatrixDetail,
+                    };
+                })
+            );
+
+            console.log("data", data);
+            return data;
+
+        } catch (error) {
+            console.error("Error in getU5MartixInfo:", error);
+            return [];
+        }
+    },
+
+
+
+
 
 
 
