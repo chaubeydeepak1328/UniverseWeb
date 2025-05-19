@@ -6,8 +6,11 @@ import { useTransaction } from '../config/register';
 import { useAppKitAccount } from '@reown/appkit/react';
 import { useStore } from '../Store/UserStore';
 
-import { motion } from "framer-motion";
-import { CheckCircle } from "lucide-react";
+
+import SlotActivationModal from './SlotActivationModal';
+
+import { Spinner } from '../util/helpers'
+
 
 export default function Activate() {
   const location = useLocation();
@@ -87,6 +90,7 @@ export default function Activate() {
 
   const ActivateNewMatric = async () => {
 
+    setLoading(true);
 
     if (isConnected) {
 
@@ -114,11 +118,15 @@ export default function Activate() {
   }
 
 
-  const handleConfirm = () => {
-    navigate("/user-panel-home")
-  }
+  // const handleConfirm = () => {
+  //   navigate("/user-panel-home")
+  // }
 
 
+  // To close the modal from the TransactionModal:
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
 
   return (
@@ -160,7 +168,9 @@ export default function Activate() {
           onClick={ActivateNewMatric}
           className="mt-8 inline-block w-full max-w-xs bg-gradient-to-r from-green-600 via-yellow-500 to-green-600 text-white py-4 rounded-xl text-lg sm:text-xl font-semibold shadow-lg hover:scale-[1.03] hover:shadow-xl transition-all duration-300 border border-white/20"
         >
-          Activate
+
+          {loading ? <Spinner /> : "Activate"}
+
         </button>
 
         <div className="mt-10 space-y-4">
@@ -186,7 +196,7 @@ export default function Activate() {
       <div className="mt-8 text-center text-white text-sm opacity-80 bg-black/20 px-6 py-2 rounded-full">
         Telegram Channel: <a href="#" className="underline hover:text-yellow-300 transition-colors">@xyz</a>
       </div>
-
+      {/* 
       {showModal && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -235,7 +245,22 @@ export default function Activate() {
             </div>
           </motion.div>
         </motion.div>
-      )}
+      )} */}
+
+
+
+      {
+        showModal && (
+          <div className='absolute'>
+            <SlotActivationModal
+              isOpen={showModal}
+              hash={hash}
+              userWallet={address}
+              closeModal={handleCloseModal} // Pass close function
+            />
+          </div>
+        )
+      }
 
     </div>
   );

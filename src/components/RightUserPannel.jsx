@@ -246,7 +246,12 @@ const RightUserPannel = () => {
                                         navigate('/user-panel-dmatrix1', { state: { slotNumber: slotIndex } })
                                     }
                                     else if (slotIndex == slotData.length) {
-                                        navigate('/user-panel-home/slot-activate');
+                                        // navigate('/user-panel-home/slot-activate');
+
+
+                                        navigate("/user-panel-home/slot-activate", {
+                                            state: { ActivateSlot: Number(slotIndex + 1) }
+                                        })
                                     }
                                 }}
                                 className="flex flex-col items-center"
