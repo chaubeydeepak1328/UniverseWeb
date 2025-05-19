@@ -1413,9 +1413,13 @@ export const useStore = create((set, get) => ({
                     const u5MatrixDetail = await contract.methods.getU5MatrixBasicInfo(matrixID).call();
 
 
-                    // const data = {
-
-                    // }
+                    const data = {
+                        "Received": u5MatrixDetail,
+                        "Upgraded": u5MatrixDetail,
+                        "Generated": web3.utils.fromWei(u5MatrixDetail?.totalRegenerationAmount.toString(), "ether"),
+                        "NetProfit": web3.utils.fromWei(u5MatrixDetail?.totalProft.toString(), "ether"),
+                        "GeneratedID": u5MatrixDetail?.totalRegeneratedMatrices.toString()
+                    }
 
 
                     return {
@@ -1430,6 +1434,26 @@ export const useStore = create((set, get) => ({
 
         } catch (error) {
             console.error("Error in getU5MartixInfo:", error);
+            return [];
+        }
+    },
+
+
+
+    getPartnerTable: async (address) => {
+        try {
+            console.log("---------------->", address);
+            const { abi, contractAddress } = await fetchContractAbi("UserMang");
+            const contract = new web3.eth.Contract(abi, contractAddress);
+
+            const User = await contract.methods.getUser(address).call();
+
+            const directReferralArray = User.directReferrals;
+
+
+
+        } catch (error) {
+            console.error("Error Message:", error);
             return [];
         }
     },
