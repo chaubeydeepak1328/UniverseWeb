@@ -31,6 +31,45 @@ const fetchContractAbi = async (contractName) => {
 
 
 
+
+// const Contract = {
+//     "UserMang": "0x31bc106aAeF76c20b4801fd88667ee20C557513D",
+//     "U3plus": "0x638B013b469A4166A7631a445C3dB23343cB973d",
+//     "U5": "0xCFc9B18E686ebAEC6328f561f9335c817D00Bb02",
+//     "PriceConv": "0x63f8b2F149133d6294eb90328125962Fa2f3C40b",
+//     "UIncome": "0xfC51a4AfE60b49F291311125f28520465d47c424",
+//     "U4": "0x4D08674c143C178CCC0a0ea443063E252C1D9B83",
+//     "U3prem": "0x211fE3532bB050C34e5FD2d05D2B4693EF4531a9",
+//     "contReg": "0xc6E55AC39b6135Af3bE66F5413C1DAe789EBF481",
+// }
+
+// const fetchContractAbi = async (contractName) => {
+//     try {
+//         const response = await fetch(`https://latest-backendapi.ramascan.com/api/v2/smart-contracts/${Contract[contractName]}`);
+//         const data = await response.json();
+//         console.log("proxy Address, contract Address", Contract[contractName], data?.implementations[0].address);
+
+//         const contractAdress = data?.implementations[0].address
+
+//         if (contractAdress) {
+//             const res = await fetch(`https://latest-backendapi.ramascan.com/api/v2/smart-contracts/${contractAdress}`);
+//             const data1 = await res.json();
+
+//             return {
+//                 abi: data1.abi,
+//                 contractAddress: Contract[contractName]
+//             };
+//         }
+
+//     } catch (error) {
+//         console.error("Error fetching contract ABI:", error);
+//         throw error;
+//     }
+// }
+
+
+
+
 export const trxHashInfo = async () => {
 
     const hashVal = "0x2456943f6eccd2c4e1e903c825cf02ceaaf6dcfdb8e7b76e9529b77b7332e8c8"
@@ -517,6 +556,8 @@ export const useStore = create((set, get) => ({
                         slotInfoArray.push({ users: 0, cycles: 0 });
                         continue;
                     }
+
+                    console.log(walletAdd, i, cycles)
 
                     // wallet address ,same matrix,slotLeve/current slot  current cycle for each slot
                     const positionInfo = await contract.methods.getAllPositionMembers(walletAdd, i, cycles).call();
@@ -1457,6 +1498,26 @@ export const useStore = create((set, get) => ({
             return [];
         }
     },
+
+
+    ramaPriceInUsD: async () => {
+        try {
+
+            const { abi, contractAddress } = await fetchContractAbi("PriceConv");
+            const contract = new web3.eth.Contract(abi, contractAddress);
+
+
+            // Rama Price In Usd ((getting the static value form the method))
+            const priceInUSD = await contract.methods.getReadableRamaPrice().call();
+
+            console.log("----------------> priceInUSD", priceInUSD);
+
+            return priceInUSD.dollars;
+
+        } catch (error) {
+            console.error("Error Message:", error);
+        }
+    }
 
 
 
