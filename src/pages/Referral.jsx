@@ -78,17 +78,17 @@ const Referral = () => {
 
 
     useEffect(() => {
-            if (hash) {
-                console.log("Transaction hash:", hash);
-    
-    
-                // trxHashInfo
-                setMessage('Registration successful!');
-                setLoading(false)
-    
-                setShowModal(true)
-            }
-        }, [hash])
+        if (hash) {
+            console.log("Transaction hash:", hash);
+
+
+            // trxHashInfo
+            setMessage('Registration successful!');
+            setLoading(false)
+
+            setShowModal(true)
+        }
+    }, [hash])
 
 
     useEffect(() => {
@@ -143,8 +143,8 @@ const Referral = () => {
                 console.log("trx response", response)
 
                 setTrxData(response);
-                
-               
+
+
                 setIsVerified(false);
 
                 setLoading(false);
@@ -328,7 +328,14 @@ const Referral = () => {
                 <div className="text-center space-y-2 pt-4 border-t border-white/20">
                     <p className="text-blue-200 text-sm">≫≫≫ Viewing of your account ≪≪≪</p>
                     <p className="text-blue-200 flex items-center justify-center gap-2 text-sm">
-                        <span>👤</span> Check in RamaScan
+                        <span>👤</span> <a
+                            href="https://ramascan.com/"
+                            target="_blank"
+                            className="flex justify-center items-center gap-2"
+                        >
+
+                            Check in RamaScan
+                        </a>
                     </p>
                 </div>
             </div>

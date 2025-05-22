@@ -47,7 +47,7 @@ export default function Login() {
       navigate('/user-panel-home');
     }
     else if ((address && isConnected) && localAddress == "undefined") {
-      
+
       if (walletPrompted && isConnected && address) {
         try {
           const user = await IsUserExist(address);
@@ -265,14 +265,30 @@ export default function Login() {
             <p className="text-sm sm:text-lg">Join if you are not yet with us:</p>
             <div className="mt-2 flex items-center justify-center gap-2 text-sm sm:text-lg cursor-pointer hover:underline">
               <LuUserRound className="text-xl sm:text-2xl" />
-              Check in RamaScan
+              <a
+                href="https://ramascan.com/"
+                target="_blank"
+                className="flex justify-center items-center gap-2"
+              >
+
+                Check in RamaScan
+              </a>
             </div>
           </div>
         </div>
 
         {/* Footer */}
         <div className="mt-6 text-center text-white text-sm sm:text-base">
-          Telegram channel: @xyz
+          <a
+            href="https://t.me/ramauniverse"
+            target="_blank"
+            className="flex justify-center items-center gap-2"
+          >
+            <div>
+              {/* <FaTelegram className="text-blue-500" /> */}
+            </div>
+            <div>Telegram channel : Universe</div>
+          </a>
         </div>
       </div>
     </div>

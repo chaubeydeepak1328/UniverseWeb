@@ -331,23 +331,23 @@ export default function UserPanel() {
                 const cards = [
                   {
                     title: 'Received',
-                    rama: detail.totalReceivedAmountInRAMA?.toString() || "0"
+                    rama: detail.Received?.toString() || "0"
                   },
                   {
                     title: 'Upgraded',
-                    rama: detail.totalRegenerationAmount?.toString() || "0"
+                    rama: detail.Upgraded?.toString() || "0"
                   },
                   {
                     title: 'Generated',
-                    rama: detail.totalRegeneratedMatrices?.toString() || "0"
+                    rama: detail.Generated?.toString() || "0"
                   },
                   {
                     title: 'Net Profit',
-                    rama: detail.netProfit?.toString() || "0" // use correct key here if exists
+                    rama: detail.NetProfit?.toString() || "0" // use correct key here if exists
                   },
                   {
                     title: "Generated ID's",
-                    totalId: detail.totalRegeneratedMatrices?.toString() || "0"
+                    totalId: detail.GeneratedID?.toString() || "0"
                   }
                 ];
 

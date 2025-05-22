@@ -42,7 +42,7 @@ const Header = () => {
     })
     return (
         <div className="flex flex-col md:flex-row justify-between items-center mt-2 mx-4 md:mx-10">
-            <Link to="/" className="rounded-3xl">
+            <Link to="/user-panel-home" className="rounded-3xl">
                 <img src={universeLogo} alt="Logo" className="h-20 md:h-[100px]" />
             </Link>
             <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-sm md:text-xl text-white mt-4 md:mt-0">

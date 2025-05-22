@@ -188,7 +188,7 @@ export default function Activate() {
             className="flex items-center justify-center gap-2 py-3 px-4 rounded-lg text-white border border-white/10 hover:bg-black/30 transition-all"
           >
             {/* <LuUserRound className="text-xl sm:text-2xl" /> */}
-            <span>Check in Ramestta Smart Chain</span>
+            <span>Check in Ramestta Chain</span>
           </a>
         </div>
       </div>

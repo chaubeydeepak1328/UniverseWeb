@@ -52,7 +52,7 @@ const RightUserPannel = () => {
 
                 const formatted = response.map(slot => ({
                     cycles: slot.cycles.length,
-                    user: slot.lastUser
+                    users: slot.lastUser
                 }));
                 setSloatData(formatted);
 

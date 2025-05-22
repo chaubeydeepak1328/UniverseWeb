@@ -69,7 +69,10 @@ import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
 // import { mainnet, arbitrum, sepolia } from '@reown/appkit/networks'
 
 // Get projectId from https://cloud.reown.com
-export const projectId = import.meta.env.VITE_PROJECT_ID || "b56e18d47c72ab683b10814fe9495694" // this is a public projectId only to use on localhost
+// export const projectId = import.meta.env.VITE_PROJECT_ID || "5a7ca96b4c20a6f220b969a9e91203d8" // this is a public projectId only to use on localhost
+
+
+export const projectId = "5a7ca96b4c20a6f220b969a9e91203d8" // this is a public projectId only to use on localhost
 
 const ramesttaNetwork = {
   id: 1370,
@@ -107,9 +110,9 @@ if (!projectId) {
 }
 
 export const metadata = {
-  name: 'AppKit',
-  description: 'AppKit Example',
-  url: 'https://reown.com',
+  name: 'Universe',
+  description: 'A Decentralized Earning Platform',
+  url: 'https://dapp.ramauniverse.io',
   icons: ['https://avatars.githubusercontent.com/u/179229932']
 }
 

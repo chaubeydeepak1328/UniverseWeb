@@ -6,6 +6,7 @@ import { CiYoutube } from "react-icons/ci";
 import { FiLink } from "react-icons/fi"; import { TbLogin } from "react-icons/tb";
 import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 import { useStore } from "../Store/UserStore";
+import { FaTelegram } from "react-icons/fa";
 
 
 
@@ -88,7 +89,7 @@ export default function Home() {
 
         {/* Text Content */}
         <div className="z-10 flex flex-col items-center text-center">
-        
+
 
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row gap-6 mt-10">
@@ -100,13 +101,22 @@ export default function Home() {
               <div>Login</div>
             </Link>
             <div className="flex justify-center items-center h-14 w-64 bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 rounded-lg shadow-lg hover:scale-105 transition-all duration-300 ease-in-out">
-              <Link
-                to="/erv-token-home"
+              <button
+                // to="/erv-token-home"
                 className="px-6 py-3 text-white text-md font-semibold flex justify-center items-center gap-2 "
               >
                 <CiYoutube className="text-3xl" />
-                <div>Join Telegram community</div>
-              </Link>
+                <a
+                  href="https://t.me/ramauniverse"
+                  target="_blank"
+                  className="flex justify-center items-center gap-2"
+                >
+                  <div>
+                    {/* <FaTelegram className="text-blue-500" /> */}
+                  </div>
+                  <div>Join Telegram community</div>
+                </a>
+              </button>
             </div>
             <button
               onClick={handleJoin}
@@ -119,17 +129,17 @@ export default function Home() {
 
           {/* Tagline */}
           <div className="mt-6">
-            
+
           </div>
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute  bottom-[100px] md:bottom-6 animate-bounce text-white text-sm opacity-60">
+        {/* <div className="absolute  bottom-[100px] md:bottom-6 animate-bounce text-white text-sm opacity-60">
           Scroll Down ↓
-        </div>
+        </div> */}
       </div>
 
-      
+
     </div>
   );
 }
