@@ -48,8 +48,13 @@ const RightUserPannel = () => {
                 console.log("response: U3", response);
 
                 setU3Data(response)
-                setSloatData(response.slotinfo)
 
+
+                const formatted = response.map(slot => ({
+                    cycles: slot.cycles.length,
+                    user: slot.lastUser
+                }));
+                setSloatData(formatted);
 
                 const response1 = await generatedId(address)
                 setMatrixInfo(response1)

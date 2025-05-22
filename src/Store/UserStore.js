@@ -2,44 +2,14 @@ import { create } from 'zustand';
 import Web3, { errors } from 'web3';
 import axios from 'axios';
 
-const Contract = {
-    "UserMang": "0x1F34dfCbaD8e3a502e28c8c98f4E48AD047dfb25",
-    "U3plus": "0xc07A43Ad7b68F56955D10C2AFf1dF88Fe5895A50",
-    "U5": "0x5Ec894603bbdC8Ed032B5fd6dE78132c44f8Ae92",
-    "PriceConv": "0x611F0dBf5169dfbaBbeE5830FA3Ea00DE8AeD7E5",
-    "UIncome": "0x1864249F46Fb8E59Dc51FE6cb197bcb66aCbf71C",
-    "U4": "0x83Cf1A072812d5417C5593B638dEdF8Bc5426Daa",
-    "U3prem": "0x56Fba3cFF3Cdd16607a80E6cb779784dFf0bE11a",
-    "contReg": "0xc6E55AC39b6135Af3bE66F5413C1DAe789EBF481",
-}
-
-const fetchContractAbi = async (contractName) => {
-    try {
-        const response = await fetch(`https://latest-backendapi.ramascan.com/api/v2/smart-contracts/${Contract[contractName]}`);
-        const data = await response.json();
-        console.log("Contract ABI:", data.abi); // Log the ABI to the console
-        console.log("Contract Address:", Contract[contractName]); // Log the contract address to the console
-        return {
-            abi: data.abi,
-            contractAddress: Contract[contractName]
-        };
-    } catch (error) {
-        console.error("Error fetching contract ABI:", error);
-        throw error;
-    }
-}
-
-
-
-
 // const Contract = {
-//     "UserMang": "0x31bc106aAeF76c20b4801fd88667ee20C557513D",
-//     "U3plus": "0x638B013b469A4166A7631a445C3dB23343cB973d",
-//     "U5": "0xCFc9B18E686ebAEC6328f561f9335c817D00Bb02",
-//     "PriceConv": "0x63f8b2F149133d6294eb90328125962Fa2f3C40b",
-//     "UIncome": "0xfC51a4AfE60b49F291311125f28520465d47c424",
-//     "U4": "0x4D08674c143C178CCC0a0ea443063E252C1D9B83",
-//     "U3prem": "0x211fE3532bB050C34e5FD2d05D2B4693EF4531a9",
+//     "UserMang": "0x1F34dfCbaD8e3a502e28c8c98f4E48AD047dfb25",
+//     "U3plus": "0xc07A43Ad7b68F56955D10C2AFf1dF88Fe5895A50",
+//     "U5": "0x5Ec894603bbdC8Ed032B5fd6dE78132c44f8Ae92",
+//     "PriceConv": "0x611F0dBf5169dfbaBbeE5830FA3Ea00DE8AeD7E5",
+//     "UIncome": "0x1864249F46Fb8E59Dc51FE6cb197bcb66aCbf71C",
+//     "U4": "0x83Cf1A072812d5417C5593B638dEdF8Bc5426Daa",
+//     "U3prem": "0x56Fba3cFF3Cdd16607a80E6cb779784dFf0bE11a",
 //     "contReg": "0xc6E55AC39b6135Af3bE66F5413C1DAe789EBF481",
 // }
 
@@ -47,25 +17,56 @@ const fetchContractAbi = async (contractName) => {
 //     try {
 //         const response = await fetch(`https://latest-backendapi.ramascan.com/api/v2/smart-contracts/${Contract[contractName]}`);
 //         const data = await response.json();
-//         console.log("proxy Address, contract Address", Contract[contractName], data?.implementations[0].address);
-
-//         const contractAdress = data?.implementations[0].address
-
-//         if (contractAdress) {
-//             const res = await fetch(`https://latest-backendapi.ramascan.com/api/v2/smart-contracts/${contractAdress}`);
-//             const data1 = await res.json();
-
-//             return {
-//                 abi: data1.abi,
-//                 contractAddress: Contract[contractName]
-//             };
-//         }
-
+//         console.log("Contract ABI:", data.abi); // Log the ABI to the console
+//         console.log("Contract Address:", Contract[contractName]); // Log the contract address to the console
+//         return {
+//             abi: data.abi,
+//             contractAddress: Contract[contractName]
+//         };
 //     } catch (error) {
 //         console.error("Error fetching contract ABI:", error);
 //         throw error;
 //     }
 // }
+
+
+
+
+const Contract = {
+    "UserMang": "0x0ad39396FF507a796D7cdDffC161cdEA9bc7F52D",
+    "U3plus": "0xe3bAE2834085180c58CF3DfC0044a3fF2b27B171",
+    "U5": "0xdC7d2466323E7D2D3cb7F35fF176b651ee891384",
+    "PriceConv": "0x6178947474ca70A891AD9373cCb7754d9f89611c",
+    "UIncome": "0x895A125730721bC8B9B1748ad57b91dc059b9593",
+    "U4": "0x61a0eba8D1f899F006022101322fe2c031A65741",
+    "U3prem": "0x680CdaA591AC7bc3d0C0a68c89ea40FbDE5E3696",
+    "contReg": "0xc6E55AC39b6135Af3bE66F5413C1DAe789EBF481",
+    "MatrixDataView": "0x5D070f0F680ED97145370D18321b6301d5e13D70",
+}
+
+const fetchContractAbi = async (contractName) => {
+    try {
+        const response = await fetch(`https://latest-backendapi.ramascan.com/api/v2/smart-contracts/${Contract[contractName]}`);
+        const data = await response.json();
+        console.log("proxy Address, contract Address", Contract[contractName], data?.implementations[0].address);
+
+        const contractAdress = data?.implementations[0].address
+
+        if (contractAdress) {
+            const res = await fetch(`https://latest-backendapi.ramascan.com/api/v2/smart-contracts/${contractAdress}`);
+            const data1 = await res.json();
+
+            return {
+                abi: data1.abi,
+                contractAddress: Contract[contractName]
+            };
+        }
+
+    } catch (error) {
+        console.error("Error fetching contract ABI:", error);
+        throw error;
+    }
+}
 
 
 
@@ -522,71 +523,175 @@ export const useStore = create((set, get) => ({
         }
     },
 
+    // getU3Plus: async (walletAdd) => {
+
+    //     // const dummyData = [
+    //     //     { slotNo: 1,  lastUser:2  ,cycles: [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 0]] },
+    //     //     { slotNo: 2,  lastUser3  ,cycles: [[1, 1, 1, 1]] },
+    //     //     { slotNo: 3,  lastUser:2  ,cycles: [[1, 1, 1, 0]] },
+    //     //     { slotNo: 4,  lastUser:1  ,cycles: [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 0, 0]] },
+    //     //     { slotNo: 5,  lastUser:2 ,cycles: [[1, 0, 0, 0]] },
+    //     //     { slotNo: 6,  lastUser:2 ,cycles: [[1, 1, 0, 0]] },
+    //     //     { slotNo: 7,  lastUser:2, cycles: [[1, 1, 1, 0]] },
+    //     //     { slotNo: 8,  lastUser:2, cycles: [[0, 0, 0, 0]] },
+    //     //     { slotNo: 9,  lastUser:1, cycles: [[0, 0, 0, 0]] },
+    //     //     { slotNo: 10, lastUser:3  ,cycles: [[0, 0, 0, 0]] },
+    //     // ];
+    //     try {
+    //         if (!walletAdd) {
+    //             throw new Error("Invalid wallet address");
+    //         }
+
+    //         const [u3plus, MatrixDataView] = await Promise.all([
+    //             fetchContractAbi("U3plus"),
+    //             fetchContractAbi("MatrixDataView"),
+    //         ]);
+
+    //         const contract = new web3.eth.Contract(u3plus.abi, u3plus.contractAddress);
+    //         const contract1 = new web3.eth.Contract(MatrixDataView.abi, MatrixDataView.contractAddress);
+
+    //         // Activated slot
+    //         // const endSlot = await contract.methods.getLastUpgradedSlot(walletAdd).call();
+
+
+    //         // const lastSloat = endSlot.toString()
+    //         // console.log("lastSloat", lastSloat)
+
+
+    //         // const slotInfoArray = [];
+
+    //         // if (lastSloat) {
+
+
+    //         //     for (let i = 1; i <= Number(lastSloat); i++) {
+    //         //         const activeCycle = await contract.methods.getSlotInfo(walletAdd, i).call();
+
+    //         //         console.log("current cycle info-->", activeCycle)
+
+    //         //         const cycles = activeCycle.currentCycle.toString();
+    //         //         // console.log("curCycle", cycles);
+
+
+    //         //         if (!cycles || !activeCycle.currentCycle) {
+    //         //             console.warn(`Invalid cycle data at level ${i}`, slot);
+    //         //             slotInfoArray.push({ users: 0, cycles: 0 });
+    //         //             continue;
+    //         //         }
+
+    //         //         console.log(walletAdd, i, cycles)
+
+    //         //         // Old Code========================================================================
+
+    //         //         // wallet address ,same matrix,slotLeve/current slot  current cycle for each slot
+    //         //         // const positionInfo = await contract.methods.getAllPositionMembers(walletAdd, i, cycles).call();
+
+    //         //         // // console.log("positionInfo", positionInfo)
+    //         //         // const zeroAddress = "0x0000000000000000000000000000000000000000";
+    //         //         // const usersArray = [0, 1, 2, 3].map(index => positionInfo[index] !== zeroAddress ? 1 : 0);
+    //         //         // const users = usersArray.reduce((sum, val) => sum + val, 0);
+
+    //         //         // New Code========================================================================
+
+    //         //         const positionInfo = await contract.methods.getCycleCurrentPosition(walletAdd, i, cycles).call();
+
+    //         //         const users = Number(positionInfo) - 1;
+
+    //         //         slotInfoArray.push({ users, cycles: cycles });
+    //         //     }
+
+
+    //         //     console.log("u3Plus Dashbpard+++++++++++++++++++++++++", lastSloat, slotInfoArray)
+
+
+
+    //         //     return {
+    //         //         lastSlot: lastSloat,
+    //         //         slotinfo: slotInfoArray,
+    //         //     };
+    //         // }
+
+
+
+    //         const slotInfoArray = [];
+
+    //         const u3plusSlot = await contract1.methods.getActiveSlots(walletAdd).call();
+
+    //         for (let i = 0; i < u3plusSlot.length; i++) {
+    //             const slotNo = i + 1;
+    //             cycles =                 
+    //         }
+
+
+    //         const structureData = u3plusSlot.map((curElm, index) => {
+    //             return (
+    //                 { slotNo: index + 1, lastUser: 2, cycles: [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 0]] },
+    //             )
+    //         })
+
+
+
+    //         console.log("Slots data --------------->", u3plusSlot)
+
+
+
+    //     } catch (error) {
+    //         console.error("Error:", error);
+    //         alert(`Error checking user: ${error.message}`);
+    //     }
+    // },
+
     getU3Plus: async (walletAdd) => {
         try {
-            if (!walletAdd) {
+            if (!walletAdd || walletAdd.length !== 42) {
                 throw new Error("Invalid wallet address");
             }
 
-            const { abi, contractAddress } = await fetchContractAbi("U3plus");
-            const contract = new web3.eth.Contract(abi, contractAddress);
+            // Load both ABIs and contract addresses
+            const matrixDataView = await fetchContractAbi("MatrixDataView");
 
-            // Activated slot
-            const endSlot = await contract.methods.getLastUpgradedSlot(walletAdd).call();
+            const matrixContract = new web3.eth.Contract(
+                matrixDataView.abi,
+                matrixDataView.contractAddress
+            );
 
+            // Call smart contract method to get all slot data
+            const slotDataList = await matrixContract.methods.getActiveSlots(walletAdd).call();
 
-            const lastSloat = endSlot.toString()
-            console.log("lastSloat", lastSloat)
+            // Transform raw blockchain data into structured format
+            const transformed = slotDataList.map((slot) => {
+                const slotNo = Number(slot.slotNo);
+                const currentCycle = Number(slot.currentCycle);
 
+                const cycles = slot.cycles
+                    .filter((cycle) => Number(cycle.cycleID) <= currentCycle)
+                    .map((cycle) => {
+                        const filledArray = (cycle.positions || []).map((pos) =>
+                            pos.positionFilledBy !== "0x0000000000000000000000000000000000000000" ? 1 : 0
+                        );
+                        while (filledArray.length < 4) filledArray.push(0); // Normalize to 4 positions
+                        return filledArray;
+                    });
 
-            const slotInfoArray = [];
-
-            if (lastSloat) {
-
-                for (let i = 1; i <= Number(lastSloat); i++) {
-                    const activeCycle = await contract.methods.getSlotInfo(walletAdd, i).call();
-
-
-                    const cycles = activeCycle.currentCycle.toString();
-                    // console.log("curCycle", cycles);
-
-
-                    if (!cycles || !activeCycle.currentCycle) {
-                        console.warn(`Invalid cycle data at level ${i}`, slot);
-                        slotInfoArray.push({ users: 0, cycles: 0 });
-                        continue;
-                    }
-
-                    console.log(walletAdd, i, cycles)
-
-                    // wallet address ,same matrix,slotLeve/current slot  current cycle for each slot
-                    const positionInfo = await contract.methods.getAllPositionMembers(walletAdd, i, cycles).call();
-
-                    // console.log("positionInfo", positionInfo)
-                    const zeroAddress = "0x0000000000000000000000000000000000000000";
-                    const usersArray = [0, 1, 2, 3].map(index => positionInfo[index] !== zeroAddress ? 1 : 0);
-                    const users = usersArray.reduce((sum, val) => sum + val, 0);
-
-
-                    slotInfoArray.push({ users, cycles: cycles });
-                }
-
-
-                console.log(lastSloat, slotInfoArray)
-
-
+                const lastCycle = cycles[cycles.length - 1] || [];
+                const lastUser = lastCycle.filter((x) => x === 1).length;
 
                 return {
-                    lastSlot: lastSloat,
-                    slotinfo: slotInfoArray,
+                    slotNo,
+                    lastUser,
+                    cycles,
                 };
-            }
+            });
 
-        } catch (error) {
-            console.error("Error:", error);
-            alert(`Error checking user: ${error.message}`);
+            console.log("🔍 Transformed U3Plus Data:", transformed);
+            return transformed;
+        } catch (err) {
+            console.error("❌ Error in getU3Plus:", err.message);
+            return [];
         }
     },
+
+
+
 
     getU3PlusInfo: async (address) => {
         try {
