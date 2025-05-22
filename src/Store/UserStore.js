@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import Web3, { errors } from 'web3';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 // const Contract = {
 //     "UserMang": "0x1F34dfCbaD8e3a502e28c8c98f4E48AD047dfb25",
@@ -322,53 +323,46 @@ export const useStore = create((set, get) => ({
 
     getAllusers: async (userId) => {
         try {
-
-
             const [UserMang, UIncome] = await Promise.all([
                 fetchContractAbi("UserMang"),
                 fetchContractAbi("UIncome"),
             ]);
 
-
             const contract = new web3.eth.Contract(UserMang.abi, UserMang.contractAddress);
-
             const contract1 = new web3.eth.Contract(UIncome.abi, UIncome.contractAddress);
 
             const userAddress = await contract.methods.allUsers(userId).call();
-
-
             const ramaAmount = await contract1.methods.requiredRAMAForRegistration().call();
 
-
             if (userAddress && ramaAmount) {
-
                 const userInfo = await contract.methods.getUser(userAddress).call();
-                console.log(userInfo);
 
                 if (userInfo) {
                     const sponserId = await contract.methods.getUserIDByAddress(userInfo.sponsor).call();
 
-                    console.log("sponser Id", sponserId)
                     const data = {
                         userAddress: userAddress.toString(),
                         userId: userInfo.id.toString(),
                         sponserAdd: userInfo.sponsor.toString(),
                         sponserId: sponserId.toString(),
                         regTime: userInfo.registrationTime,
-                        requireRama: BigInt(ramaAmount).toString(),
+                        requireRama: web3.utils.fromWei(ramaAmount.toString(), "ether"),
                         directReferral: userInfo.directReferrals,
-                    }
+                    };
+
                     return data;
+                } else {
+                    throw new Error("User info not found.");
                 }
-
+            } else {
+                throw new Error("User address or RAMA amount missing.");
             }
-
         } catch (error) {
-            console.error("Error:", error);
-            alert(`user Id Exist ${error.message}`);
-            throw error;
+            console.error("Error in getAllusers:", error);
+            throw error; // remove alert; let the UI layer handle the error
         }
     },
+
 
     IsUserExist: async (walletAdd) => {
         try {
@@ -403,15 +397,15 @@ export const useStore = create((set, get) => ({
 
                     const ramaAmount = await contract1.methods.requiredRAMAForRegistration().call();
 
-                    const requireRama = Number(ramaAmount) / 1e18;
-                    const formattedRama = requireRama.toFixed(4);
+                    // const requireRama = Number(ramaAmount) / 1e18;
+                    // const formattedRama = requireRama.toFixed(4);
 
                     return {
                         isexist: true,
                         walletAdd: walletAdd,
                         userId: user.id.toString(),
                         sponserId: sponserId.toString(),
-                        requireRama: formattedRama.toString(),
+                        requireRama: web3.utils.fromWei(ramaAmount.toString(), "ether"),
                         sponserAdd: user.sponsor,
                         regTime: user.registrationTime,
                         directReferral: user.directReferrals,
@@ -789,70 +783,70 @@ export const useStore = create((set, get) => ({
 
 
 
-    getU3PlusInfo: async (address) => {
-        try {
+    // getU3PlusInfo: async (address) => {
+    //     try {
 
-            // const dummyData = [
-            //     { slotNo: 1, cycles: [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 0]] },
-            //     { slotNo: 2, cycles: [[1, 1, 1, 1]] },
-            //     { slotNo: 3, cycles: [[1, 1, 1, 0]] },
-            //     { slotNo: 4, cycles: [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 0, 0]] },
-            //     { slotNo: 5, cycles: [[1, 0, 0, 0]] },
-            //     { slotNo: 6, cycles: [[1, 1, 0, 0]] },
-            //     { slotNo: 7, cycles: [[1, 1, 1, 0]] },
-            //     { slotNo: 8, cycles: [[0, 0, 0, 0]] },
-            //     { slotNo: 9, cycles: [[0, 0, 0, 0]] },
-            //     { slotNo: 10, cycles: [[0, 0, 0, 0]] },
-            // ];
-
-
-            // const { abi, contractAddress } = await fetchContractAbi("UserMang");
-            // const contract = new web3.eth.Contract(abi, contractAddress);
-
-            // // Activated slot
-            // const lastSloat = await contract.methods.getUsersSlotLevel(walletAdd).call();
-
-            // const slotInfoArray = [];
-
-            // if (lastSloat) {
-
-            //     for (let i = 1; i <= Number(lastSloat); i++) {
-            //         const slot = await contract.methods.getUserSlot(walletAdd, 0, i).call();
-
-            //         if (!slot || !slot.positions) {
-            //             console.warn(`Invalid slot data at level ${i}`, slot);
-            //             slotInfoArray.push({ users: 0, cycles: 0 });
-            //             continue;
-            //         }
-
-            //         // wallet address ,same matrix,slotLeve/current slot  current cycle for each slot
-            //         const currentCycle = await contract.methods.getCurrentCycle(walletAdd, 0, i).call();
-
-            //         const zeroAddress = "0x0000000000000000000000000000000000000000";
-            //         const totalPositions = slot.positions.filter(addr => addr !== zeroAddress).length;
-            //         const cycles = (parseInt(currentCycle) - 1)
-            //         const users = totalPositions % 4;
-
-            //         slotInfoArray.push({ users, cycles });
-            //     }
+    //         // const dummyData = [
+    //         //     { slotNo: 1, cycles: [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 0]] },
+    //         //     { slotNo: 2, cycles: [[1, 1, 1, 1]] },
+    //         //     { slotNo: 3, cycles: [[1, 1, 1, 0]] },
+    //         //     { slotNo: 4, cycles: [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 0, 0]] },
+    //         //     { slotNo: 5, cycles: [[1, 0, 0, 0]] },
+    //         //     { slotNo: 6, cycles: [[1, 1, 0, 0]] },
+    //         //     { slotNo: 7, cycles: [[1, 1, 1, 0]] },
+    //         //     { slotNo: 8, cycles: [[0, 0, 0, 0]] },
+    //         //     { slotNo: 9, cycles: [[0, 0, 0, 0]] },
+    //         //     { slotNo: 10, cycles: [[0, 0, 0, 0]] },
+    //         // ];
 
 
-            //     return {
-            //         lastSlot: lastSloat,
-            //         slotinfo: slotInfoArray,
-            //     };
-            // }
+    //         // const { abi, contractAddress } = await fetchContractAbi("UserMang");
+    //         // const contract = new web3.eth.Contract(abi, contractAddress);
+
+    //         // // Activated slot
+    //         // const lastSloat = await contract.methods.getUsersSlotLevel(walletAdd).call();
+
+    //         // const slotInfoArray = [];
+
+    //         // if (lastSloat) {
+
+    //         //     for (let i = 1; i <= Number(lastSloat); i++) {
+    //         //         const slot = await contract.methods.getUserSlot(walletAdd, 0, i).call();
+
+    //         //         if (!slot || !slot.positions) {
+    //         //             console.warn(`Invalid slot data at level ${i}`, slot);
+    //         //             slotInfoArray.push({ users: 0, cycles: 0 });
+    //         //             continue;
+    //         //         }
+
+    //         //         // wallet address ,same matrix,slotLeve/current slot  current cycle for each slot
+    //         //         const currentCycle = await contract.methods.getCurrentCycle(walletAdd, 0, i).call();
+
+    //         //         const zeroAddress = "0x0000000000000000000000000000000000000000";
+    //         //         const totalPositions = slot.positions.filter(addr => addr !== zeroAddress).length;
+    //         //         const cycles = (parseInt(currentCycle) - 1)
+    //         //         const users = totalPositions % 4;
+
+    //         //         slotInfoArray.push({ users, cycles });
+    //         //     }
+
+
+    //         //     return {
+    //         //         lastSlot: lastSloat,
+    //         //         slotinfo: slotInfoArray,
+    //         //     };
+    //         // }
 
 
 
-            // const tx = await web3.eth.getTransaction()
+    //         // const tx = await web3.eth.getTransaction()
 
 
-        } catch (error) {
-            console.error("Error:", error);
-            alert(`Error checking user: ${error.message}`);
-        }
-    },
+    //     } catch (error) {
+    //         console.error("Error:", error);
+    //         alert(`Error checking user: ${error.message}`);
+    //     }
+    // },
 
     // getU5info: async (address) => {
     //     try {
@@ -1612,49 +1606,63 @@ export const useStore = create((set, get) => ({
 
             const contract = new web3.eth.Contract(UIncome.abi, UIncome.contractAddress);
 
-            // Prepare value and transaction data
-            const ramaAmount = web3.utils.toWei('0.04', 'ether'); // Convert to wei (string)
-            const trxData = contract.methods.buyU3plusSlot(SlotNo).encodeABI();
+            // requiredAmount to Activate slot 
 
-            // Get gas price
-            const gasPrice = await web3.eth.getGasPrice();
+            const ramaAmount = await contract.methods.requiredRAMAForSlotUpgrade(SlotNo).call();
+            console.log(ramaAmount);
+            if (ramaAmount) {
+                // const formatedAmt = web3.utils.fromWei(ramarequired,"ether")
 
-            // Estimate gas limit
-            let gasLimit;
-            try {
-                gasLimit = await web3.eth.estimateGas({
+                // Prepare value and transaction data
+                // const ramaAmount = web3.utils.toWei('0.04', 'ether'); // Convert to wei (string)
+                const trxData = contract.methods.buyU3plusSlot(SlotNo).encodeABI();
+
+                // Get gas price
+                const gasPrice = await web3.eth.getGasPrice();
+
+                // Estimate gas limit
+                let gasLimit;
+                try {
+                    gasLimit = await web3.eth.estimateGas({
+                        from: Waladdress,
+                        to: UIncome.contractAddress,
+                        value: BigInt(ramaAmount).toString(),
+                        data: trxData,
+                    });
+                } catch (estimateErr) {
+                    console.error("❌ Gas estimation failed:", estimateErr);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gas Estimation Failed',
+                        text: 'Please check wallet balance and slot eligibility.',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });
+                    return null;
+                }
+
+                console.log("📦 Transaction Details:");
+                console.log("Gas Limit:", gasLimit);
+                console.log("Gas Price (wei):", gasPrice);
+                const gasCostEth = web3.utils.fromWei(
+                    (BigInt(gasLimit) * BigInt(gasPrice)).toString(),
+                    'ether'
+                );
+                console.log("Estimated Gas Cost in ETH:", gasCostEth);
+
+                // Build transaction object
+                const tx = {
                     from: Waladdress,
                     to: UIncome.contractAddress,
-                    value: BigInt(ramaAmount).toString(),
                     data: trxData,
-                });
-            } catch (estimateErr) {
-                console.error("❌ Gas estimation failed:", estimateErr);
-                alert("Gas estimation failed. Please check wallet balance and slot eligibility.");
-                return null;
+                    gas: gasLimit,
+                    gasPrice: gasPrice,
+                    value: BigInt(ramaAmount).toString(),
+                };
+
+                return tx;
+
             }
-
-            console.log("📦 Transaction Details:");
-            console.log("Gas Limit:", gasLimit);
-            console.log("Gas Price (wei):", gasPrice);
-            const gasCostEth = web3.utils.fromWei(
-                (BigInt(gasLimit) * BigInt(gasPrice)).toString(),
-                'ether'
-            );
-            console.log("Estimated Gas Cost in ETH:", gasCostEth);
-
-            // Build transaction object
-            const tx = {
-                from: Waladdress,
-                to: UIncome.contractAddress,
-                data: trxData,
-                gas: gasLimit,
-                gasPrice: gasPrice,
-                value: BigInt(ramaAmount).toString(),
-            };
-
-            return tx;
-
         } catch (err) {
             console.error("🚨 Failed to prepare slot activation transaction:", err);
             alert(`Error: ${err.message}`);
@@ -1743,9 +1751,99 @@ export const useStore = create((set, get) => ({
         } catch (error) {
             console.error("Error Message:", error);
         }
-    }
+    },
 
 
+
+    getU4MartixInfo: async (address) => {
+        try {
+            console.log("---------------->", address);
+            const { abi, contractAddress } = await fetchContractAbi("U4");
+            const contract = new web3.eth.Contract(abi, contractAddress);
+
+            const genMatrices = await contract.methods.getGeneratedMatrices(address).call();
+
+            // Parallel fetch all matrix details
+            const data = await Promise.all(
+                genMatrices.map(async (matrixID) => {
+                    const res = await contract.methods.getMatrixDetails(matrixID).call();
+
+
+                    const u5MatrixDetail = {
+                        "Received": 0,
+                        "Upgraded": 0,
+                        "Generated": web3.utils.fromWei(res?.totalRegenerationAmount.toString(), "ether"),
+                        "NetProfit": web3.utils.fromWei(res?.totalProfit.toString(), "ether"),
+                        "GeneratedID": res?.totalRegeneratedMatrices.toString()
+                    }
+
+
+                    console.log("getU5MartixInfo", u5MatrixDetail)
+
+
+                    return {
+                        matrixID,
+                        u5MatrixDetail,
+                    };
+                })
+            );
+
+            console.log("data", data);
+            return data;
+
+        } catch (error) {
+            console.error("Error in getU5MartixInfo:", error);
+            return [];
+        }
+    },
+
+
+
+    LeftUserPanInfo: async (address) => {
+        try {
+            console.log("Fetching earnings for address:", address);
+
+            const [PriceConv, MatrixDataView] = await Promise.all([
+                fetchContractAbi("PriceConv"),
+                fetchContractAbi("MatrixDataView")
+            ]);
+
+            const priceConvContract = new web3.eth.Contract(PriceConv.abi, PriceConv.contractAddress);
+            const matrixDataViewContract = new web3.eth.Contract(MatrixDataView.abi, MatrixDataView.contractAddress);
+
+            // Get price in USD object
+            const priceInUSDObject = await priceConvContract.methods.getReadableRamaPrice().call();
+            const priceInUSDFloat = parseFloat(priceInUSDObject.dollars); // Already readable
+
+            // Get earnings
+            const res = await matrixDataViewContract.methods.getTotalMatrixEarnings(address).call();
+
+            // Convert all earnings from wei to ether
+            const grandEarningEther = web3.utils.fromWei(res.grandTotal, 'ether');
+            const totalU3PlusEther = web3.utils.fromWei(res.totalU3Plus, 'ether');
+            const totalU4Ether = web3.utils.fromWei(res.totalU4, 'ether');
+            const totalU5Ether = web3.utils.fromWei(res.totalU5, 'ether');
+            const totalU3PremiumEther = web3.utils.fromWei(res.totalU3Premium, 'ether');
+
+            const earnedDollar = parseFloat(grandEarningEther) * priceInUSDFloat;
+
+            console.log("Grand Total Earnings (ETH):", grandEarningEther, "≈ $", earnedDollar.toFixed(2));
+
+            return {
+                ...res,
+                grandTotal: grandEarningEther,
+                totalU3Plus: totalU3PlusEther,
+                totalU4: totalU4Ether,
+                totalU5: totalU5Ether,
+                totalU3Premium: totalU3PremiumEther,
+                earnedDollar: earnedDollar.toFixed(4),
+                ramaPriceUSD: priceInUSDFloat.toFixed(4)
+            };
+        } catch (error) {
+            console.error("Error in LeftUserPanInfo:", error);
+            return null;
+        }
+    },
 
 
 

@@ -146,7 +146,7 @@ const DashboardInfo = () => {
                     <div><RxCopy onClick={() => handleCopy(`${window.location.origin}/referral/${userId}`)} className="text-3xl  hover:text-[#f9ad13]" /></div>
                 </div>
             </div>
-        </div >
+        </div>
     )
 }
 
