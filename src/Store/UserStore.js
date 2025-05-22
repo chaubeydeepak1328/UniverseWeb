@@ -405,7 +405,7 @@ export const useStore = create((set, get) => ({
 
 
 
-                    const ramaAmount = await contract.methods.requiredRAMAForRegistration().call();
+                    const ramaAmount = await contract1.methods.requiredRAMAForRegistration().call();
 
                     return {
                         isexist: true,
