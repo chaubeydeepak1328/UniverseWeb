@@ -110,7 +110,7 @@ const RightUserPannel = () => {
                         return (
                             <button
                                 key={index}
-                                onClick={() => navigate('/user-panel-dmatrix1', { state: { slotNumber: index } })}
+                                onClick={() => navigate('/user-panel-dmatrix1', { state: { slotNumber: index, u3Data: u3Data } })}
                                 className="flex flex-col items-center"
                             >
 
@@ -174,7 +174,7 @@ const RightUserPannel = () => {
                                 key={slotIndex}
                                 onClick={() => {
                                     if (slotIndex < slotData.length) {
-                                        navigate('/user-panel-dmatrix1', { state: { slotNumber: slotIndex } })
+                                        navigate('/user-panel-dmatrix1', { state: { slotNumber: slotIndex, u3Data: u3Data } })
                                     }
                                     else if (slotIndex == slotData.length) {
 
@@ -248,7 +248,7 @@ const RightUserPannel = () => {
 
                                 onClick={() => {
                                     if (slotIndex < slotData.length) {
-                                        navigate('/user-panel-dmatrix1', { state: { slotNumber: slotIndex } })
+                                        navigate('/user-panel-dmatrix1', { state: { slotNumber: slotIndex, u3Data: u3Data } })
                                     }
                                     else if (slotIndex == slotData.length) {
                                         // navigate('/user-panel-home/slot-activate');

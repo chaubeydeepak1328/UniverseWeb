@@ -19,9 +19,11 @@ import { useStore } from "../../Store/UserStore";
 export default function UserPanel() {
 
   const location = useLocation();
-  const { slotNumber } = location.state || {};
+  const { slotNumber, u3Data } = location.state || {};
 
-  const [isLoadingU3, setIsLoadingU3] = useState(true);
+  // const [isLoadingU3, setIsLoadingU3] = useState(true);
+
+  const isLoadingU3 = !Array.isArray(u3Data) || u3Data.length === 0;
 
 
   const [address, setAddress] = useState(() => {
@@ -34,24 +36,24 @@ export default function UserPanel() {
   });
 
 
-  const getU3Details = useStore((state) => state.getU3Details);
+  // const getU3Details = useStore((state) => state.getU3Details);
 
-  const [u3Data, setU3Data] = useState();
+  // const [u3Data, setU3Data] = useState();
 
-  useEffect(() => {
-    const fetchU3Details = async () => {
+  // useEffect(() => {
+  //   const fetchU3Details = async () => {
 
-      setIsLoadingU3(true);
-      const response = await getU3Details(address);
+  //     setIsLoadingU3(true);
+  //     const response = await getU3Details(address);
 
-      console.log(response);
-      setU3Data(response)
+  //     console.log(response);
+  //     setU3Data(response)
 
-      setIsLoadingU3(false);
-    }
+  //     setIsLoadingU3(false);
+  //   }
 
-    fetchU3Details();
-  }, [])
+  //   fetchU3Details();
+  // }, [])
 
 
   // const dummyData = [
@@ -72,9 +74,9 @@ export default function UserPanel() {
   const [slotIndex, setSlotIndex] = useState(slotNumber ? slotNumber : 0);
   const [cycleIndex, setCycleIndex] = useState(0);
 
-  const slot = u3Data?.[slotIndex];
-  const cycles = slot?.cycles;
-  const currentCycle = cycles?.[cycleIndex];
+  const slot = u3Data?.[slotIndex] ?? { cycles: [] };
+  const cycles = slot.cycles;
+  const currentCycle = cycles?.[cycleIndex] ?? [];
 
   const prevSlot = () => {
     setSlotIndex((prev) => (prev > 0 ? prev - 1 : prev));
@@ -227,7 +229,7 @@ export default function UserPanel() {
                       onClick={isLoadingU3 ? undefined : prevSlot}
                       className={`cursor-pointer text-xl ${isLoadingU3 ? 'opacity-50 cursor-not-allowed' : 'hover:text-blue-500'}`}
                     />
-                    <button onClick={isLoadingU3 ? undefined : nextSlot} className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm cursor-pointer">
+                    <button onClick={isLoadingU3 ? undefined : prevSlot} className="w-10 h-10 bg-[#24b6ca] text-white text-3xl font-bold flex justify-center items-center rounded-sm cursor-pointer">
                       {slot?.slotNo}
                     </button>
                   </div>
