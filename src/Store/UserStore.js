@@ -430,107 +430,6 @@ export const useStore = create((set, get) => ({
     },
 
 
-    registerUser: async (sponsorAddress, userAddress) => {
-        try {
-
-
-
-            console.log("sponsorAddress, userAddress", sponsorAddress, userAddress)
-            const [UIncome, PriceConvs] = await Promise.all([
-                fetchContractAbi("UIncome"),
-                fetchContractAbi("PriceConv"),
-            ]);
-
-            const contract = new web3.eth.Contract(UIncome.abi, UIncome.contractAddress);
-            const priceContract = new web3.eth.Contract(PriceConvs.abi, PriceConvs.contractAddress);
-
-            console.log("====================", sponsorAddress, UIncome.contractAddress);
-
-            // Check wallet balance (for debug/logging)
-            const balanceWei = await web3.eth.getBalance(userAddress);
-            const balanceEth = web3.utils.fromWei(balanceWei, 'ether');
-            console.log("Wallet Balance in ETH:", balanceEth);
-
-            // Get USD → RAMA value
-            // const valueInUSD = 20 * 1e6; // 20 USD in micro USD
-            // const ramaAmount = await priceContract.methods.usdToRama(valueInUSD).call();
-
-            // console.log("value in RAMA is", parseFloat(ramaAmount) / parseFloat(1e18));
-
-
-
-
-            const ramaAmount = await contract.methods.requiredRAMAForRegistration().call();
-
-            console.log("value in RAMA is", ramaAmount);
-
-
-            // Prepare transaction
-            const trxData = contract.methods.register(sponsorAddress).encodeABI();
-
-
-
-
-            const gasPrice = await web3.eth.getGasPrice();
-
-            let gasLimit;
-            try {
-                gasLimit = await web3.eth.estimateGas({
-                    from: userAddress,
-                    to: UIncome.contractAddress,
-                    value: BigInt(ramaAmount).toString(),
-                    data: trxData,
-                });
-            } catch (error) {
-                console.error("❌ Gas estimation failed:", error);
-                alert("Gas estimation failed. Please check contract and inputs.");
-                return;
-            }
-
-            // const gasCost = web3.utils.fromWei((gasLimit * gasPrice).toString(), "ether");
-
-            const gasCost = web3.utils.fromWei(
-                (BigInt(gasLimit) * BigInt(gasPrice)).toString(),
-                "ether"
-            );
-            console.log("Estimated Gas:", gasLimit, UIncome.contractAddress);
-            console.log("Estimated Gas Cost in ETH:", gasCost);
-
-
-
-            const tx = {
-                from: userAddress,
-                to: UIncome.contractAddress,
-                data: trxData,
-                gas: gasLimit,
-                gasPrice: gasPrice,
-                value: BigInt(ramaAmount).toString(),
-            };
-
-            // web3.eth
-            //     .sendTransaction(tx)
-            //     .on("transactionHash", (hash) => {
-            //         console.log("✅ Transaction Hash:", hash);
-            //     })
-            //     .on("receipt", (receipt) => {
-            //         console.log("🎉 Transaction Receipt:", receipt);
-            //         alert(`Transaction successful! Hash: ${receipt.transactionHash}`);
-            //     })
-            //     .on("error", (err) => {
-            //         console.error("❌ Transaction failed:", err);
-            //         alert(`Transaction failed: ${err.message}`);
-            //     });
-
-
-            return tx;
-
-        } catch (error) {
-            console.error("❌ Error in registerUser:", error);
-            alert(`Transaction failed: ${error.message}`);
-            throw error;
-        }
-    },
-
     // registerUser: async (sponsorAddress, userAddress) => {
     //     try {
 
@@ -553,18 +452,25 @@ export const useStore = create((set, get) => ({
     //         console.log("Wallet Balance in ETH:", balanceEth);
 
     //         // Get USD → RAMA value
-    //         const valueInUSD = 20 * 1e6; // 20 USD in micro USD
-    //         const ramaAmount = await priceContract.methods.usdToRama(valueInUSD).call();
+    //         // const valueInUSD = 20 * 1e6; // 20 USD in micro USD
+    //         // const ramaAmount = await priceContract.methods.usdToRama(valueInUSD).call();
 
-    //         console.log("value in RAMA is", parseFloat(ramaAmount) / parseFloat(1e18));
+    //         // console.log("value in RAMA is", parseFloat(ramaAmount) / parseFloat(1e18));
 
-    //         // const maybeWei = "20000000000000000";
-    //         const inEth = web3.utils.fromWei(ramaAmount, 'ether');
-    //         console.log("Converted to ETH:", inEth);
+
+
+
+    //         const ramaAmount = await contract.methods.requiredRAMAForRegistration().call();
+
+    //         console.log("value in RAMA is", ramaAmount);
 
 
     //         // Prepare transaction
     //         const trxData = contract.methods.register(sponsorAddress).encodeABI();
+
+
+
+
     //         const gasPrice = await web3.eth.getGasPrice();
 
     //         let gasLimit;
@@ -572,7 +478,7 @@ export const useStore = create((set, get) => ({
     //             gasLimit = await web3.eth.estimateGas({
     //                 from: userAddress,
     //                 to: UIncome.contractAddress,
-    //                 value: BigInt(ramaAmount),
+    //                 value: BigInt(ramaAmount).toString(),
     //                 data: trxData,
     //             });
     //         } catch (error) {
@@ -581,9 +487,15 @@ export const useStore = create((set, get) => ({
     //             return;
     //         }
 
-    //         console.log("Estimated Gas:", gasLimit);
-    //         const gasCost = web3.utils.fromWei((BigInt(gasLimit) * BigInt(gasPrice)).toString(), "ether");
+    //         // const gasCost = web3.utils.fromWei((gasLimit * gasPrice).toString(), "ether");
+
+    //         const gasCost = web3.utils.fromWei(
+    //             (BigInt(gasLimit) * BigInt(gasPrice)).toString(),
+    //             "ether"
+    //         );
+    //         console.log("Estimated Gas:", gasLimit, UIncome.contractAddress);
     //         console.log("Estimated Gas Cost in ETH:", gasCost);
+
 
 
     //         const tx = {
@@ -592,10 +504,9 @@ export const useStore = create((set, get) => ({
     //             data: trxData,
     //             gas: gasLimit,
     //             gasPrice: gasPrice,
-    //             value: ramaAmount,
+    //             value: BigInt(ramaAmount).toString(),
     //         };
 
-    //         // Send transaction
     //         // web3.eth
     //         //     .sendTransaction(tx)
     //         //     .on("transactionHash", (hash) => {
@@ -610,6 +521,7 @@ export const useStore = create((set, get) => ({
     //         //         alert(`Transaction failed: ${err.message}`);
     //         //     });
 
+
     //         return tx;
 
     //     } catch (error) {
@@ -618,6 +530,94 @@ export const useStore = create((set, get) => ({
     //         throw error;
     //     }
     // },
+
+    registerUser: async (sponsorAddress, userAddress) => {
+        try {
+
+
+
+            console.log("sponsorAddress, userAddress", sponsorAddress, userAddress)
+            const [UIncome, PriceConvs] = await Promise.all([
+                fetchContractAbi("UIncome"),
+                fetchContractAbi("PriceConv"),
+            ]);
+
+            const contract = new web3.eth.Contract(UIncome.abi, UIncome.contractAddress);
+            const priceContract = new web3.eth.Contract(PriceConvs.abi, PriceConvs.contractAddress);
+
+            console.log("====================", sponsorAddress, UIncome.contractAddress);
+
+            // Check wallet balance (for debug/logging)
+            const balanceWei = await web3.eth.getBalance(userAddress);
+            const balanceEth = web3.utils.fromWei(balanceWei, 'ether');
+            console.log("Wallet Balance in ETH:", balanceEth);
+
+            // Get USD → RAMA value
+            const valueInUSD = 20 * 1e6; // 20 USD in micro USD
+            const ramaAmount = await priceContract.methods.usdToRama(valueInUSD).call();
+
+            console.log("value in RAMA is", parseFloat(ramaAmount) / parseFloat(1e18));
+
+            // const maybeWei = "20000000000000000";
+            const inEth = web3.utils.fromWei(ramaAmount, 'ether');
+            console.log("Converted to ETH:", inEth);
+
+
+            // Prepare transaction
+            const trxData = contract.methods.register(sponsorAddress).encodeABI();
+            const gasPrice = await web3.eth.getGasPrice();
+
+            let gasLimit;
+            try {
+                gasLimit = await web3.eth.estimateGas({
+                    from: userAddress,
+                    to: UIncome.contractAddress,
+                    value: BigInt(ramaAmount),
+                    data: trxData,
+                });
+            } catch (error) {
+                console.error("❌ Gas estimation failed:", error);
+                alert("Gas estimation failed. Please check contract and inputs.");
+                return;
+            }
+
+            console.log("Estimated Gas:", gasLimit);
+            const gasCost = web3.utils.fromWei((BigInt(gasLimit) * BigInt(gasPrice)).toString(), "ether");
+            console.log("Estimated Gas Cost in ETH:", gasCost);
+
+
+            const tx = {
+                from: userAddress,
+                to: UIncome.contractAddress,
+                data: trxData,
+                gas: gasLimit,
+                gasPrice: gasPrice,
+                value: ramaAmount,
+            };
+
+            // Send transaction
+            // web3.eth
+            //     .sendTransaction(tx)
+            //     .on("transactionHash", (hash) => {
+            //         console.log("✅ Transaction Hash:", hash);
+            //     })
+            //     .on("receipt", (receipt) => {
+            //         console.log("🎉 Transaction Receipt:", receipt);
+            //         alert(`Transaction successful! Hash: ${receipt.transactionHash}`);
+            //     })
+            //     .on("error", (err) => {
+            //         console.error("❌ Transaction failed:", err);
+            //         alert(`Transaction failed: ${err.message}`);
+            //     });
+
+            return tx;
+
+        } catch (error) {
+            console.error("❌ Error in registerUser:", error);
+            alert(`Transaction failed: ${error.message}`);
+            throw error;
+        }
+    },
 
     // getU3Plus: async (walletAdd) => {
 
