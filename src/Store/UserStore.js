@@ -355,7 +355,7 @@ export const useStore = create((set, get) => ({
                         sponserAdd: userInfo.sponsor.toString(),
                         sponserId: sponserId.toString(),
                         regTime: userInfo.registrationTime,
-                        requireRama: ramaAmount,
+                        requireRama: BigInt(ramaAmount).toString(),
                         directReferral: userInfo.directReferrals,
                     }
                     return data;
@@ -403,12 +403,15 @@ export const useStore = create((set, get) => ({
 
                     const ramaAmount = await contract1.methods.requiredRAMAForRegistration().call();
 
+                    const requireRama = Number(ramaAmount) / 1e18;
+                    const formattedRama = requireRama.toFixed(4);
+
                     return {
                         isexist: true,
                         walletAdd: walletAdd,
                         userId: user.id.toString(),
                         sponserId: sponserId.toString(),
-                        requireRama: ramaAmount.toString(),
+                        requireRama: formattedRama.toString(),
                         sponserAdd: user.sponsor,
                         regTime: user.registrationTime,
                         directReferral: user.directReferrals,
@@ -1623,7 +1626,7 @@ export const useStore = create((set, get) => ({
                 gasLimit = await web3.eth.estimateGas({
                     from: Waladdress,
                     to: UIncome.contractAddress,
-                    value: BigInt(ramaAmount),
+                    value: BigInt(ramaAmount).toString(),
                     data: trxData,
                 });
             } catch (estimateErr) {
@@ -1648,7 +1651,7 @@ export const useStore = create((set, get) => ({
                 data: trxData,
                 gas: gasLimit,
                 gasPrice: gasPrice,
-                value: ramaAmount,
+                value: BigInt(ramaAmount).toString(),
             };
 
             return tx;
