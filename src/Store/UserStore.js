@@ -503,7 +503,6 @@ export const useStore = create((set, get) => ({
                 to: UIncome.contractAddress,
                 data: trxData,
                 gas: gasLimit,
-                type: '0x2', // 🔥 explicitly EIP-1559
                 gasPrice: gasPrice,
                 value: BigInt(ramaAmount).toString(),
             };
