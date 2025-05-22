@@ -324,25 +324,21 @@ export const useStore = create((set, get) => ({
         try {
 
 
-            const [UserMang, PriceConvs] = await Promise.all([
+            const [UserMang, UIncome] = await Promise.all([
                 fetchContractAbi("UserMang"),
-                fetchContractAbi("PriceConv"),
+                fetchContractAbi("UIncome"),
             ]);
 
 
             const contract = new web3.eth.Contract(UserMang.abi, UserMang.contractAddress);
 
-            const contract1 = new web3.eth.Contract(PriceConvs.abi, PriceConvs.contractAddress);
+            const contract1 = new web3.eth.Contract(UIncome.abi, UIncome.contractAddress);
 
             const userAddress = await contract.methods.allUsers(userId).call();
 
 
-            // Get USD → RAMA value
-            const valueInUSD = BigInt(20 * 1e6); // 20 USD in micro USD as BigInt
-            const ramaAmount = await contract1.methods.usdToRama(valueInUSD).call();
+            const ramaAmount = await contract1.methods.requiredRAMAForRegistration().call();
 
-            const requireRama = Number(ramaAmount) / 1e18;
-            const formattedRama = requireRama.toFixed(4);
 
             if (userAddress && ramaAmount) {
 
@@ -359,7 +355,7 @@ export const useStore = create((set, get) => ({
                         sponserAdd: userInfo.sponsor.toString(),
                         sponserId: sponserId.toString(),
                         regTime: userInfo.registrationTime,
-                        requireRama: formattedRama,
+                        requireRama: ramaAmount,
                         directReferral: userInfo.directReferrals,
                     }
                     return data;
@@ -382,14 +378,14 @@ export const useStore = create((set, get) => ({
             }
             // const { abi, contractAddress } = await fetchContractAbi("UserMang");
 
-            const [UserMang, PriceConvs] = await Promise.all([
+            const [UserMang, UIncome] = await Promise.all([
                 fetchContractAbi("UserMang"),
-                fetchContractAbi("PriceConv"),
+                fetchContractAbi("UIncome"),
             ]);
 
             const contract = new web3.eth.Contract(UserMang.abi, UserMang.contractAddress);
 
-            const contract1 = new web3.eth.Contract(PriceConvs.abi, PriceConvs.contractAddress);
+            const contract1 = new web3.eth.Contract(UIncome.abi, UIncome.contractAddress);
 
             const isExist = await contract.methods.isRegistered(walletAdd).call();
 
@@ -412,7 +408,7 @@ export const useStore = create((set, get) => ({
                         walletAdd: walletAdd,
                         userId: user.id.toString(),
                         sponserId: sponserId.toString(),
-                        requireRama: ramaAmount,
+                        requireRama: ramaAmount.toString(),
                         sponserAdd: user.sponsor,
                         regTime: user.registrationTime,
                         directReferral: user.directReferrals,
