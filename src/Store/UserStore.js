@@ -1399,7 +1399,7 @@ export const useStore = create((set, get) => ({
             const { abi, contractAddress } = await fetchContractAbi("U3plus");
 
 
-            const TOPIC0 = "0x2bbc8d9aa6da5698030aa4a655c975f5a89fa1d065a2c99d64be4e93d746c388";
+            const TOPIC0 = "0xb33790cd3098de54cda8ce6c69264da35751cc71987bfe44c41eaf84bcb239c2";
             // const TOPIC3 = "0x" + Waladdress.toLowerCase().replace("0x", "").padStart(64, "0");
 
 
@@ -1425,11 +1425,11 @@ export const useStore = create((set, get) => ({
 
 
 
-            console.log("🔍 Unfiltered logs:", logsByInitiator, logsByReceiver);
+            console.log("🔍 Unfiltered logs:", logsByReceiver);
 
 
 
-            const allLogs = [...logsByInitiator, ...logsByReceiver];
+            const allLogs = logsByReceiver;
 
             // Deduplicate logs by transactionHash
             const uniqueLogsMap = new Map();
@@ -1437,25 +1437,44 @@ export const useStore = create((set, get) => ({
             const uniqueLogs = Array.from(uniqueLogsMap.values());
 
             // Decode
-            const eventAbi = abi.find(e => e.name === "PaymentReceivedInCurrentCyclePosition" && e.type === "event");
+            const eventAbi = abi.find(e => e.name === "PositionCompleted" && e.type === "event");
+
+
+            // identify the payment type:
+            const Purpose = ["MatrixGeneration", "Split", "Reinvest", "Credit"]
+
+            const PaymentType = ["Direct", "Reinvest", "Bounce"]
+
 
             const decoded = await Promise.all(
                 uniqueLogs.map(async (log) => {
                     const decodedLog = web3.eth.abi.decodeLog(eventAbi.inputs, log.data, log.topics.slice(1));
                     const block = await web3.eth.getBlock(log.blockNumber);
 
+
+
                     return {
-                        initiatedFrom: decodedLog.initiatedFrom,
-                        forwardedFrom: decodedLog.forwardedFrom,
+                        initiatedFrom: decodedLog.slotOwner,
+                        forwardedFrom: decodedLog.slotFilledBy,
                         finalReceiver: decodedLog.finalReceiver,
                         slotLevel: decodedLog.slotLevel,
-                        positionIndex: decodedLog.positionIndex,
-                        cycleNo: decodedLog.cycleNo,
-                        amountInUSD: decodedLog.amountInUSD,
-                        amountInRAMA: web3.utils.fromWei(decodedLog.amountInRAMA.toString(), "ether"),
+                        positionIndex: decodedLog.positionFilled,
+                        cycleNo: decodedLog.cycleNumber,
+                        // timestamp: decodedLog.timestamp,
+
+                        purpose: Purpose[decodedLog.purpose],
+                        paymentType: PaymentType[decodedLog.paymentType],
+                        totalReceivedAmount: web3.utils.fromWei(decodedLog.totalReceivedAmount.toString(), "ether"),
+                        amountDebitedForPurpose: decodedLog.purpose == 3 ? 0 : web3.utils.fromWei(decodedLog.amountDebitedForPurpose.toString(), "ether"),
+                        netProfit: web3.utils.fromWei(decodedLog.netProfit.toString(), "ether"),
+
+
+
+                        // amountInUSD: decodedLog.amountInUSD,
+                        // amountInRAMA: web3.utils.fromWei(decodedLog.amountInRAMA.toString(), "ether"),
                         txHash: log.transactionHash,
                         blockNumber: log.blockNumber,
-                        timestamp: Number(block.timestamp),
+                        // timestamp: Number(block.timestamp),
                         formattedDate: new Date(Number(block.timestamp) * 1000).toLocaleString(),
                     };
                 })
@@ -1472,6 +1491,9 @@ export const useStore = create((set, get) => ({
         }
     },
 
+    // ===========================================================================================================================
+    // Filtering the Data on the basis of log 
+    // ===========================================================================================================================
 
     activateSlotU3: async (Waladdress, SlotNo) => {
         try {

@@ -114,7 +114,7 @@ export default function UserPanel() {
 
     }
     if (address) fetchTableData()
-  }, [])
+  }, [slotIndex])
 
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -305,61 +305,82 @@ export default function UserPanel() {
 
 
               {/* Table Display */}
-              {tableData?.length > 0 || tableData?.length == null ? (
+              {Array.isArray(currentRecords) && currentRecords.length > 0 ? (
                 <div>
-                  <table className="w-full min-w-[700px] border-collapse text-sm sm:text-base">
+                  <table className="w-full min-w-[1000px] border-collapse text-sm sm:text-base">
                     <thead>
                       <tr className="bg-gray-100">
-
                         <th className="p-3 text-left text-black">Sno</th>
                         <th className="p-3 text-left text-black">Slot</th>
                         <th className="p-3 text-left text-black">Cycle</th>
                         <th className="p-3 text-left text-black">Position</th>
-                        <th className="p-3 text-left text-black">initiatedFrom</th>
-                        <th className="p-3 text-left text-black">finalReceiver</th>
-                        <th className="p-3 text-left text-black">USD</th>
-                        <th className="p-3 text-left text-black">RAMA</th>
-                        <th className="p-3 text-left text-black">Tx Hash</th>
-                        <th className="p-3 text-left text-black">Date & Time</th>
-                        <th className="p-3 text-left text-black">Status</th>
+                        <th className="p-3 text-left text-black">Initiated From</th>
+                        <th className="p-3 text-left text-black">Final Receiver</th>
+                        <th className="p-3 text-left text-black">Type</th>
+                        <th className="p-3 text-left text-black">Purpose</th>
+                        <th className="p-3 text-left text-black">Total Received</th>
+                        <th className="p-3 text-left text-black">Debited</th>
                         <th className="p-3 text-left text-black">Net Profit</th>
+                        <th className="p-3 text-left text-black">Tx Hash</th>
+                        <th className="p-3 text-left text-black">Date</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {currentRecords?.map((tx, index) => (
+                      {currentRecords.map((tx, index) => (
                         <tr key={index} className="border-t">
                           <td className="p-3">{index + 1}</td>
-                          <td className="p-3">{tx?.slotLevel}</td>
-                          <td className="p-3">{tx?.cycleNo}</td>
-                          <td className="p-3">{tx?.positionIndex}</td>
-                          <td className="p-3"> {tx?.initiatedFrom.slice(0, 7) + "....." + tx?.initiatedFrom.slice(-7)}</td>
-                          <td className="p-3"> {tx?.finalReceiver.slice(0, 7) + "....." + tx?.finalReceiver.slice(-7)}</td>
-                          <td className="p-3">{tx?.amountInUSD}</td>
-                          <td className="p-3">{tx?.amountInRAMA}</td>
-                          <td className="p-3 font-mono text-blue-600 truncate"> <a target="_blank" href={`https://ramascan.com/tx/${tx?.txHash}`}> {tx?.txHash.slice(0, 7) + "....." + tx?.txHash.slice(-7)}</a></td>
-                          <td className="p-3">{convertTimestampToDateTime(tx?.timestamp)}</td>
-                          <td className="p-3">{tx?.finalReceiver == address ? "Credit" : "forwarded"}</td>
-                          <td className="p-3">{tx?.finalReceiver == address ? tx.amountInUSD : "0"}</td>
+                          <td className="p-3">{tx?.slotLevel ?? "-"}</td>
+                          <td className="p-3">{tx?.cycleNo ?? "-"}</td>
+                          <td className="p-3">{tx?.positionIndex ?? "-"}</td>
+                          <td className="p-3">
+                            {tx?.initiatedFrom
+                              ? `${tx.initiatedFrom.slice(0, 6)}...${tx.initiatedFrom.slice(-4)}`
+                              : "-"}
+                          </td>
+                          <td className="p-3">
+                            {tx?.finalReceiver
+                              ? `${tx.finalReceiver.slice(0, 6)}...${tx.finalReceiver.slice(-4)}`
+                              : "-"}
+                          </td>
+                          <td className="p-3">{tx?.paymentType ?? "-"}</td>
+                          <td className="p-3">{tx?.purpose ?? "-"}</td>
+                          <td className="p-3">{tx?.totalReceivedAmount ?? "0"} RAMA</td>
+                          <td className="p-3">{tx?.amountDebitedForPurpose ?? "0"} RAMA</td>
+                          <td className="p-3">{tx?.netProfit ?? "0"} RAMA</td>
+                          <td className="p-3 font-mono text-blue-600 truncate">
+                            <a
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              href={`https://ramascan.com/tx/${tx?.txHash}`}
+                            >
+                              {tx?.txHash
+                                ? `${tx.txHash.slice(0, 7)}...${tx.txHash.slice(-7)}`
+                                : "-"}
+                            </a>
+                          </td>
+                          <td className="p-3">{tx?.formattedDate ?? "-"}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
 
                   {/* Pagination Controls */}
-                  <div className="flex  justify-center lg:justify-end gap-6 items-center mt-4">
+                  <div className="flex justify-center lg:justify-end gap-6 items-center mt-4">
                     <button
                       className="px-4 py-2 text-black bg-gray-100 rounded disabled:opacity-50 cursor-pointer"
-                      onClick={() => setCurrentPage(p => p - 1)}
+                      onClick={() => setCurrentPage((p) => p - 1)}
                       disabled={currentPage === 1}
                     >
                       Previous
                     </button>
 
-                    <span>Page {currentPage} of {Number(totalPages)}</span>
+                    <span>
+                      Page {currentPage} of {totalPages}
+                    </span>
 
                     <button
                       className="px-4 py-2 text-black bg-gray-100 rounded disabled:opacity-50 cursor-pointer"
-                      onClick={() => setCurrentPage(p => p + 1)}
+                      onClick={() => setCurrentPage((p) => p + 1)}
                       disabled={currentPage === totalPages}
                     >
                       Next
@@ -368,9 +389,11 @@ export default function UserPanel() {
                 </div>
               ) : (
                 <div className="text-center p-8 text-gray-500">
-                  Select a Slot and Position to view transactions
+                  No transactions found for this slot and cycle.
                 </div>
               )}
+
+
             </div>
 
 
