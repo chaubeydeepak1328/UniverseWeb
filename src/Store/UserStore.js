@@ -464,6 +464,10 @@ export const useStore = create((set, get) => ({
 
             // Prepare transaction
             const trxData = contract.methods.register(sponsorAddress).encodeABI();
+
+
+
+
             const gasPrice = await web3.eth.getGasPrice();
 
             let gasLimit;
