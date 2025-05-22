@@ -85,7 +85,7 @@ const LeftUserPannel = () => {
 
 
         <div
-            className=" bg-transparent border border-cyan-400 text-cyan-400 px-4 py-1 text-sm font-medium  items-center justify-center flex flex-col rounded-2xl w-full lg:w-[350px] p-10 text-center backdrop-blur-md shadow-xl  lg:h-[102vh]"
+            className=" bg-transparent border border-cyan-400 text-cyan-400 px-4  text-sm font-medium  items-center justify-center flex flex-col rounded-2xl w-full lg:w-[350px] p-10 text-center backdrop-blur-md shadow-xl py-5  lg:h-[102vh]"
         // style={{
         //     background:
         //         "linear-gradient(180deg, rgba(11, 11, 142, 1) 0%, rgba(115, 118, 120, 1) 100%)",

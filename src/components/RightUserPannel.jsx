@@ -259,8 +259,11 @@ const RightUserPannel = () => {
                                         })
                                     }
                                 }}
-                                className="flex flex-col items-center"
+                                className="relative flex flex-col items-center"
                             >
+                                <div className='absolute top-[-6px] rotate-[30deg] right-0'>
+                                    {slotIndex == slotData.length ? <img src={cart} className='w-6' alt="" /> : ""}
+                                </div>
 
                                 <div className={`h-10 w-20 sm:w-24 md:w-28 lg:w-26 bg-[#DED8C8] rounded-xl flex justify-center items-center text-black text-lg sm:text-xl cursor-pointer ${slotIndex < slotData.length ? 'bg-green-500' : ''
                                     }`}>
