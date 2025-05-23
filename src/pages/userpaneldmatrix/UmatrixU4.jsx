@@ -126,10 +126,9 @@ export default function UserPanel() {
 
 
     const fetchmatrixInfo = async () => {
-        setLoading(true);
+
         const res = await getU4MartixInfo(address);
         setMatrixDetails(res);
-        setLoading(false);
     };
 
     useEffect(() => {
@@ -407,7 +406,6 @@ export default function UserPanel() {
                                     )
                                 );
                             })()}
-
 
                         </div>
 

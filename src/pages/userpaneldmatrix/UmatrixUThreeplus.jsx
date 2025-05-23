@@ -85,6 +85,33 @@ export default function UserPanel() {
 
 
 
+    // ==================================================================
+    // Basic Matric Info 
+    // ==================================================================
+
+    const getU3PremMartixInfo = useStore((state) => state.getU3PremMartixInfo)
+
+    const [MatrixDetails, setMatrixDetails] = useState();
+
+
+
+
+    const fetchmatrixInfo = async () => {
+
+        const res = await getU3PremMartixInfo(address);
+        setMatrixDetails(res);
+    };
+
+    useEffect(() => {
+        if (address) fetchmatrixInfo();
+    }, [address]);
+
+
+
+
+
+
+
     return (
         <div
             className="rounded-3xl"
@@ -284,50 +311,84 @@ export default function UserPanel() {
                         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-6 mt-6">
 
                             {/* Box */}
-                            {[
-                                { title: 'Received', usd: '$23', rama: 145 },
-                                { title: 'Upgraded', usd: '$23', rama: 145 },
-                                { title: 'Generated', usd: "$20", rama: 145 },
-                                { title: 'Net Profit', usd: '$23', rama: 145 },
-                                { title: "Generated ID's", totalId: "$29" },
-                            ].map((item, index) => (
+                            {/* Box */}
+                            {(() => {
+                                const matchedMatrix = MatrixDetails?.find(
+                                    val => val.matrixID?.toString() === currentMatrix?.id?.toString()
+                                );
 
-                                item?.title !== "Generated ID's" && item?.title !== 'view Matrix' ?
-                                    (
-                                        <div key={index} style={{
-                                            background:
-                                                "linear-gradient(45deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
-                                        }} className="p-3 rounded-2xl shadow hover:shadow-lg transition">
+                                const detail = matchedMatrix?.u5MatrixDetail || {};
+
+                                const cards = [
+                                    {
+                                        title: 'Received',
+                                        rama: detail.Received?.toString() || "0"
+                                    },
+                                    {
+                                        title: 'Upgraded',
+                                        rama: detail.Upgraded?.toString() || "0"
+                                    },
+                                    {
+                                        title: 'Generated',
+                                        rama: detail.Generated?.toString() || "0"
+                                    },
+                                    {
+                                        title: 'Net Profit',
+                                        rama: detail.NetProfit?.toString() || "0" // use correct key here if exists
+                                    },
+                                    {
+                                        title: "Generated ID's",
+                                        totalId: detail.GeneratedID?.toString() || "0"
+                                    }
+                                ];
+
+                                return cards.map((item, index) =>
+                                    item.title !== "Generated ID's" && item.title !== 'view Matrix' ? (
+                                        <div
+                                            key={index}
+                                            style={{
+                                                background:
+                                                    "linear-gradient(45deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
+                                            }}
+                                            className="p-3 rounded-2xl shadow hover:shadow-lg transition"
+                                        >
                                             <h3 className="text-sm font-semibold text-white mb-2 ">{item.title}</h3>
                                             <div className="text-yellow-500 space-y-1">
-                                                <p><span className=" text-[13px] font-bold">USD:</span> {item.usd}</p>
-                                                <p><span className="font-bold text-[13px]">Rama:</span> {item.rama}</p>
+                                                <p>
+                                                    <span className="font- text-[13px]">Rama:</span> {item.rama}
+                                                </p>
                                             </div>
                                         </div>
-                                    ) :
-                                    (
-                                        item?.title === 'view Matrix' ? (
-                                            <button key={index} style={{
+                                    ) : item.title === 'view Matrix' ? (
+                                        <button
+                                            key={index}
+                                            style={{
                                                 background:
                                                     "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
-                                            }} className="p-3 rounded-2xl shadow hover:shadow-lg transition">
-
-                                                <div className="text-yellow-500 flex justify-center gap-4">
-
-                                                </div>
-                                            </button>
-                                        ) : <div key={index} style={{
-                                            background:
-                                                "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
-                                        }} className="p-5 rounded-2xl shadow hover:shadow-lg transition">
+                                            }}
+                                            className="p-3 rounded-2xl shadow hover:shadow-lg transition"
+                                        >
+                                            <div className="text-yellow-500 flex justify-center gap-4"></div>
+                                        </button>
+                                    ) : (
+                                        <div
+                                            key={index}
+                                            style={{
+                                                background:
+                                                    "linear-gradient(90deg, rgba(65, 238, 12, 1) 0%, rgba(112, 88, 206, 1) 63%)",
+                                            }}
+                                            className="p-5 rounded-2xl shadow hover:shadow-lg transition"
+                                        >
                                             <h3 className="text-sm font-semibold text-white mb-2">{item.title}</h3>
                                             <div className="text-yellow-500 space-y-1">
-                                                <p style={{ FontSize: '15px' }}><span className="font-sm">TotalID :</span> {item.totalId}</p>
-
+                                                <p style={{ fontSize: '15px' }}>
+                                                    <span className="font-sm">TotalID :</span> {item.totalId}
+                                                </p>
                                             </div>
                                         </div>
                                     )
-                            ))}
+                                );
+                            })()}
 
                         </div>
                     </div>

@@ -56,7 +56,7 @@ export default function UplineBonus() {
                 <table className="w-full min-w-[600px] border-collapse text-white text-sm">
                   <thead>
                     <tr>
-                      <th className="p-2 border">ID</th>
+                      <th className="p-2 border">Sno</th>
                       <th className="p-2 border">Date</th>
                       <th className="p-2 border">My Partners</th>
                       {/* <th className="p-2 border">Tx Hash</th> */}

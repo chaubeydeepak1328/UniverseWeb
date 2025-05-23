@@ -66,7 +66,7 @@ const DashboardInfo = () => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Link
-                className=" bg-transparent border border-cyan-400 text-cyan-400 px-4 py-1 text-sm font-medium  items-center justify-center flex flex-col rounded-2xl w-full lg:w-[350px] p-10 py-4 text-center backdrop-blur-md shadow-xl "
+                className=" bg-transparent border border-cyan-400 text-cyan-400 px-4 text-sm font-medium  items-center justify-center flex flex-col rounded-2xl w-full lg:w-[350px] p-10 py-4 text-center backdrop-blur-md shadow-xl "
                 to="/user-panel-home/upline-bonus"
             // className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl  text-black p-4"
             // style={{
@@ -86,7 +86,7 @@ const DashboardInfo = () => {
             </Link>
             <Link
                 to="/user-panel-home/split-bonus"
-                className=" bg-transparent border border-cyan-400 text-cyan-400 px-4 py-1 text-sm font-medium  items-center justify-center flex flex-col rounded-2xl w-full lg:w-[350px] p-10 py-4 text-center backdrop-blur-md shadow-xl "
+                className=" bg-transparent border border-cyan-400 text-cyan-400 px-4 text-sm font-medium  items-center justify-center flex flex-col rounded-2xl w-full lg:w-[350px] p-10 py-4 text-center backdrop-blur-md shadow-xl "
             // to="/user-panel-home/upline-bonus"
             // className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl  text-black p-4"
             // style={{
@@ -112,7 +112,7 @@ const DashboardInfo = () => {
                         });
                     }
                 }}
-                className=" bg-transparent border border-cyan-400 text-cyan-400 px-4 py-1 text-sm font-medium  items-center justify-center flex flex-col rounded-2xl w-full lg:w-[350px] p-10 py-4 text-center backdrop-blur-md shadow-xl "
+                className=" bg-transparent border border-cyan-400 text-cyan-400 px-4 text-sm font-medium  items-center justify-center flex flex-col rounded-2xl w-full lg:w-[350px] p-10 py-4 text-center backdrop-blur-md shadow-xl "
 
             // to="/user-panel-home/slot-activate" ActivatedSlot
             // className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl bg-blue-500 text-black p-4 cursor-pointer"
@@ -132,7 +132,7 @@ const DashboardInfo = () => {
                 </div>
             </button>
             <div
-                className=" bg-transparent border border-cyan-400 text-cyan-400 px-4 py-1 text-sm font-medium  items-center justify-center flex flex-col rounded-2xl w-full lg:w-[350px] p-10 py-4 text-center backdrop-blur-md shadow-xl "
+                className=" bg-transparent border border-cyan-400 text-cyan-400 px-4 text-sm font-medium  items-center justify-center flex flex-col rounded-2xl w-full lg:w-[350px] p-10 py-4 text-center backdrop-blur-md shadow-xl "
                 to="/user-panel-home/upline-bonus"
             // className="flex justify-center items-center h-20 w-full md:w-[320px] rounded-xl bg-blue-500 text-black p-4 cursor-pointer"
             // style={{
