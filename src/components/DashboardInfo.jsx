@@ -106,9 +106,11 @@ const DashboardInfo = () => {
             </Link>
             <button
                 onClick={() => {
-                    ActivatedSlot ? navigate("/user-panel-home/slot-activate", {
-                        state: { ActivateSlot: Number(ActivatedSlot + 1) }
-                    }) : ""
+                    if (ActivatedSlot < 10) {
+                        navigate("/user-panel-home/slot-activate", {
+                            state: { ActivateSlot: Number(ActivatedSlot + 1) }
+                        });
+                    }
                 }}
                 className=" bg-transparent border border-cyan-400 text-cyan-400 px-4 py-1 text-sm font-medium  items-center justify-center flex flex-col rounded-2xl w-full lg:w-[350px] p-10 py-4 text-center backdrop-blur-md shadow-xl "
 

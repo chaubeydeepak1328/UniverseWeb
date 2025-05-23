@@ -1847,6 +1847,148 @@ export const useStore = create((set, get) => ({
 
 
 
+    partnerTable: async (address) => {
+        try {
+            console.log("🔍 Fetching earnings for:", address);
+
+            const { abi, contractAddress } = await fetchContractAbi("UserMang");
+            const contract = new web3.eth.Contract(abi, contractAddress);
+
+            const userDetails = await contract.methods.getUser(address).call();
+
+            console.log(userDetails?.directReferrals)
+
+            if (!userDetails?.directReferrals) {
+                console.warn("No direct referrals found.");
+                return [];
+            }
+
+            const directReferrals = userDetails.directReferrals;
+            const partnerArr = [];
+
+            for (let i = 0; i < directReferrals.length; i++) {
+                const refUserDetails = await contract.methods.users(directReferrals[i]).call();
+
+                partnerArr.push({
+                    wallet: refUserDetails.wallet.toString(),
+                    registrationTime: refUserDetails.registrationTime,
+                    formattedDate: new Date(Number(refUserDetails.registrationTime) * 1000).toLocaleString(), // <-- formatted
+                    totalProfit: refUserDetails.totalProfit,
+                });
+                  
+            }
+
+            console.log("|||||||||||||||||||||||||||||||||partnerArr", partnerArr)
+
+            return partnerArr;
+
+        } catch (error) {
+            console.error("❌ Error in partnerTable:", error);
+            return null;
+        }
+    },
+
+
+    // partnerTable: async (Waladdress) => {
+    //     try {
+    //         console.log("🔍 Wallet Address:", Waladdress);
+
+    //         // Validate the address
+    //         if (!web3.utils.isAddress(Waladdress)) {
+    //             throw new Error("❌ Invalid Ethereum wallet address");
+    //         }
+
+    //         // Fetch ABI and contract address
+    //         const { abi, contractAddress } = await fetchContractAbi("U3plus");
+
+    //         // PositionCompleted topic0
+    //         const TOPIC0 = "0xb33790cd3098de54cda8ce6c69264da35751cc71987bfe44c41eaf84bcb239c2";
+
+    //         // Encode the address as a topic (slotOwner indexed parameter)
+    //         const cleanAddress = Waladdress.toLowerCase().replace(/^0x/, "");
+    //         const topicEncodedAddress = "0x" + cleanAddress.padStart(64, "0");
+
+    //         // Validate topic format
+    //         if (!/^0x[0-9a-f]{64}$/.test(topicEncodedAddress)) {
+    //             throw new Error("❌ topicEncodedAddress is not a valid 32-byte hex string");
+    //         }
+
+    //         console.log("🧠 Using topicEncodedAddress:", topicEncodedAddress);
+
+    //         // Query logs
+    //         const logsByReceiver = await web3.eth.getPastLogs({
+    //             fromBlock: "0",
+    //             toBlock: "latest",
+    //             address: contractAddress,
+    //             topics: [TOPIC0, topicEncodedAddress, undefined, undefined], // topics[1] = slotOwner
+    //         });
+
+    //         console.log("🧾 Retrieved logs:", logsByReceiver.length);
+
+    //         // Deduplicate by tx hash
+    //         const uniqueLogsMap = new Map();
+    //         logsByReceiver.forEach((log) => uniqueLogsMap.set(log.transactionHash, log));
+    //         const uniqueLogs = Array.from(uniqueLogsMap.values());
+
+    //         // Find event ABI
+    //         const eventAbi = abi.find((e) => e.name === "PositionCompleted" && e.type === "event");
+    //         if (!eventAbi) {
+    //             throw new Error("❌ Event ABI for PositionCompleted not found in ABI");
+    //         }
+
+    //         // Decode logs
+    //         const decoded = await Promise.all(
+    //             uniqueLogs.map(async (log) => {
+    //                 const decodedLog = web3.eth.abi.decodeLog(
+    //                     eventAbi.inputs,
+    //                     log.data,
+    //                     log.topics.slice(1)
+    //                 );
+
+    //                 const block = await web3.eth.getBlock(log.blockNumber);
+
+    //                 return {
+    //                     slotOwner: decodedLog.slotOwner,
+    //                     slotFilledBy: decodedLog.slotFilledBy,
+    //                     positionFilled: decodedLog.positionFilled,
+    //                     cycleNumber: decodedLog.cycleNumber,
+    //                     slotLevel: decodedLog.slotLevel,
+    //                     amountPaid: web3.utils.fromWei(decodedLog.amountPaid.toString(), "ether"),
+    //                     doesReferrerReceive: decodedLog.doesReferrerReceive,
+
+    //                     txHash: log.transactionHash,
+    //                     blockNumber: log.blockNumber,
+    //                     timestamp: Number(block.timestamp),
+    //                     formattedDate: new Date(Number(block.timestamp) * 1000).toLocaleString(),
+    //                 };
+    //             })
+    //         );
+
+    //         console.log("✅ Decoded logs:", decoded);
+    //         return decoded;
+
+    //     } catch (error) {
+    //         console.error("❌ Error in partnerTable:", error);
+    //         return null;
+    //     }
+    // },
+
+
+
+    GetFirstId: async () => {
+        try {
+            const { abi, contractAddress } = await fetchContractAbi("UserMang");
+            const contract = new web3.eth.Contract(abi, contractAddress);
+            const userAddress = await contract.methods.allUsers(0).call();
+            return userAddress;
+        } catch (error) {
+            console.error("❌ GetFirstId error:", error);
+            return null;
+        }
+    },
+
+
+
 
 
 

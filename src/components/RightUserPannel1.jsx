@@ -24,6 +24,26 @@ const RightUserPannel1 = () => {
     const { handleSendTx, hash } = useTransaction(trxData !== null && trxData);
 
 
+    const [Referal, SetReferal] = useState('N/a');
+
+
+    const GetFirstId = useStore((state) => state.GetFirstId)
+
+
+    useEffect(() => {
+        const fetchFirstId = async () => {
+            const res = await GetFirstId();
+            console.log("==============================")
+            console.log(res)
+            console.log("==============================")
+
+            SetReferal(res)
+        }
+
+        fetchFirstId();
+    }, [])
+
+
 
     useEffect(() => {
         if (hash) {
@@ -160,8 +180,6 @@ const RightUserPannel1 = () => {
     }
 
 
-    const staticReferal = "0x43e76a14e75ae2DE6c8D8799112f11e5E62b767d";
-
 
 
     const handlePast = async () => {
@@ -191,7 +209,7 @@ const RightUserPannel1 = () => {
     }
 
     const handleCopy = () => {
-        navigator.clipboard.writeText(staticReferal)
+        navigator.clipboard.writeText(Referal)
             .then(() =>
                 toast.success("Referral address copied!", {
                     position: "top-right",
@@ -309,7 +327,7 @@ const RightUserPannel1 = () => {
                         <p>Don't have Referal ? </p><button className='p-2 bg-warning cursor-pointer' onClick={handleCopy}>Copy Referral</button>
                     </div>
                     <div className='flex flex-row flex-wrap gap-4'>
-                        <p>{staticReferal.slice(1, 7)} .... {staticReferal.slice(-6)}</p> <FaRegCopy className='cursor-pointer' onClick={handleCopy} />
+                        <p>{Referal.slice(1, 7)} .... {Referal.slice(-6)}</p> <FaRegCopy className='cursor-pointer' onClick={handleCopy} />
                     </div>
                 </div>
 
