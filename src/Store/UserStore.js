@@ -985,19 +985,7 @@ export const useStore = create((set, get) => ({
 
 
 
-    getSplitBonus: async () => {
-        const response = await axios.get(`https://latest-backendapi.ramascan.com/api/v2/addresses/${Contract["U3plus"]}/logs`);
 
-        // filtering the data Payment Spilted
-
-        const data1 = response.data
-
-        const splitPayment = data1.items.filter((val) => val.decoded.method_call.startsWith("PaymentSplited"));
-
-        // const paymentArr = splitPayment.forEach(())
-        console.log(splitPayment)
-        return splitPayment
-    },
 
     getU5table: async (matrixId, slotIndex, selectedPos) => {
 
@@ -1023,7 +1011,7 @@ export const useStore = create((set, get) => ({
                 forwardedFrom: tableData.forwardedFrom[i].toString(),
                 forwardedTo: tableData.forwardedTo[i].toString(),
                 receivedAmountInRAMA: web3.utils.fromWei(tableData.receivedAmountInRAMA[i].toString(), 'ether'),
-                totalAmountAccountedForRegenerationInRAMA: tableData.totalAmountAccountedForRegenerationInRAMA[i].toString(),
+                totalAmountAccountedForRegenerationInRAMA: web3.utils.fromWei(tableData.totalAmountAccountedForRegenerationInRAMA[i].toString(), "ether"),
                 totalAmountForwardedForSlotUpgradeInRAMA: web3.utils.fromWei(tableData.totalAmountForwardedForSlotUpgradeInRAMA[i].toString(), 'ether'),
                 totalProfitInRAMA: web3.utils.fromWei(tableData.totalProfitInRAMA[i].toString(), 'ether'),
                 receivedDate: tableData.receivedDate[i].toString(),
@@ -1167,7 +1155,7 @@ export const useStore = create((set, get) => ({
                 forwardedFrom: tableData.forwardedFrom[i].toString(),
                 forwardedTo: tableData.forwardedTo[i].toString(),
                 receivedAmountInRAMA: web3.utils.fromWei(tableData.receivedAmountInRAMA[i].toString(), 'ether'),
-                totalAmountAccountedForRegenerationInRAMA: tableData.totalAmountAccountedForRegenerationInRAMA[i].toString(),
+                totalAmountAccountedForRegenerationInRAMA: web3.utils.fromWei(tableData.totalAmountAccountedForRegenerationInRAMA[i].toString(), "ether"),
                 totalAmountForwardedForSlotUpgradeInRAMA: web3.utils.fromWei(tableData.totalAmountForwardedForSlotUpgradeInRAMA[i].toString(), 'ether'),
                 totalProfitInRAMA: web3.utils.fromWei(tableData.totalProfitInRAMA[i].toString(), 'ether'),
                 receivedDate: tableData.receivedDate[i].toString(),
@@ -1207,7 +1195,7 @@ export const useStore = create((set, get) => ({
                 forwardedFrom: tableData.forwardedFrom[i].toString(),
                 forwardedTo: tableData.forwardedTo[i].toString(),
                 receivedAmountInRAMA: web3.utils.fromWei(tableData.receivedAmountInRAMA[i].toString(), 'ether'),
-                totalAmountAccountedForRegenerationInRAMA: tableData.totalAmountAccountedForRegenerationInRAMA[i].toString(),
+                totalAmountAccountedForRegenerationInRAMA: web3.utils.fromWei(tableData.totalAmountAccountedForRegenerationInRAMA[i].toString(), "ether"),
                 totalAmountForwardedForSlotUpgradeInRAMA: web3.utils.fromWei(tableData.totalAmountForwardedForSlotUpgradeInRAMA[i].toString(), 'ether'),
                 totalProfitInRAMA: web3.utils.fromWei(tableData.totalProfitInRAMA[i].toString(), 'ether'),
                 receivedDate: tableData.receivedDate[i].toString(),
@@ -1677,85 +1665,49 @@ export const useStore = create((set, get) => ({
 
     // partnerTable: async (Waladdress) => {
     //     try {
-    //         console.log("🔍 Wallet Address:", Waladdress);
+    //         const { abi, contractAddress } = await fetchContractAbi("UserMang");
 
-    //         // Validate the address
-    //         if (!web3.utils.isAddress(Waladdress)) {
-    //             throw new Error("❌ Invalid Ethereum wallet address");
-    //         }
+    //         const contract = new web3.eth.Contract(abi, contractAddress);
 
-    //         // Fetch ABI and contract address
-    //         const { abi, contractAddress } = await fetchContractAbi("U3plus");
+    //         const userDetails = await contract.methods.getUser(address).call();
 
-    //         // PositionCompleted topic0
+    //        const referralArr = userDetails?.directReferrals
+
+
     //         const TOPIC0 = "0xb33790cd3098de54cda8ce6c69264da35751cc71987bfe44c41eaf84bcb239c2";
+    //         const topicEncodedAddress = "0x" + Waladdress.toLowerCase().replace("0x", "").padStart(64, "0");
 
-    //         // Encode the address as a topic (slotOwner indexed parameter)
-    //         const cleanAddress = Waladdress.toLowerCase().replace(/^0x/, "");
-    //         const topicEncodedAddress = "0x" + cleanAddress.padStart(64, "0");
-
-    //         // Validate topic format
-    //         if (!/^0x[0-9a-f]{64}$/.test(topicEncodedAddress)) {
-    //             throw new Error("❌ topicEncodedAddress is not a valid 32-byte hex string");
-    //         }
-
-    //         console.log("🧠 Using topicEncodedAddress:", topicEncodedAddress);
-
-    //         // Query logs
-    //         const logsByReceiver = await web3.eth.getPastLogs({
-    //             fromBlock: "0",
+    //         // Get logs where the wallet is the initiator
+    //         const logs = await web3.eth.getPastLogs({
+    //             fromBlock: 0,
     //             toBlock: "latest",
     //             address: contractAddress,
-    //             topics: [TOPIC0, topicEncodedAddress, undefined, undefined], // topics[1] = slotOwner
+    //             topics: [TOPIC0, topicEncodedAddress]
     //         });
 
-    //         console.log("🧾 Retrieved logs:", logsByReceiver.length);
-
-    //         // Deduplicate by tx hash
-    //         const uniqueLogsMap = new Map();
-    //         logsByReceiver.forEach((log) => uniqueLogsMap.set(log.transactionHash, log));
-    //         const uniqueLogs = Array.from(uniqueLogsMap.values());
-
-    //         // Find event ABI
-    //         const eventAbi = abi.find((e) => e.name === "PositionCompleted" && e.type === "event");
-    //         if (!eventAbi) {
-    //             throw new Error("❌ Event ABI for PositionCompleted not found in ABI");
-    //         }
+    //         // Deduplicate logs by transactionHash
+    //         const uniqueLogs = Array.from(
+    //             new Map(logs.map(log => [log.transactionHash, log])).values()
+    //         );
 
     //         // Decode logs
+    //         const eventAbi = abi.find(e => e.name === "PositionCompleted" && e.type === "event");
+
     //         const decoded = await Promise.all(
     //             uniqueLogs.map(async (log) => {
-    //                 const decodedLog = web3.eth.abi.decodeLog(
-    //                     eventAbi.inputs,
-    //                     log.data,
-    //                     log.topics.slice(1)
-    //                 );
-
-    //                 const block = await web3.eth.getBlock(log.blockNumber);
-
+    //                 const decodedLog = web3.eth.abi.decodeLog(eventAbi.inputs, log.data, log.topics.slice(1));
     //                 return {
-    //                     slotOwner: decodedLog.slotOwner,
-    //                     slotFilledBy: decodedLog.slotFilledBy,
-    //                     positionFilled: decodedLog.positionFilled,
-    //                     cycleNumber: decodedLog.cycleNumber,
-    //                     slotLevel: decodedLog.slotLevel,
-    //                     amountPaid: web3.utils.fromWei(decodedLog.amountPaid.toString(), "ether"),
-    //                     doesReferrerReceive: decodedLog.doesReferrerReceive,
-
-    //                     txHash: log.transactionHash,
-    //                     blockNumber: log.blockNumber,
-    //                     timestamp: Number(block.timestamp),
-    //                     formattedDate: new Date(Number(block.timestamp) * 1000).toLocaleString(),
+    //                     wallet: decodedLog.slotFilledBy,
+    //                     registrationTime: decodedLog.registrationTime,
+    //                     formattedDate: new Date(Number(decodedLog.timestamp) * 1000).toLocaleString(),
+    //                     totalProfit: web3.utils.fromWei(decodedLog.totalReceivedAmount, "ether")
     //                 };
     //             })
     //         );
 
-    //         console.log("✅ Decoded logs:", decoded);
     //         return decoded;
-
-    //     } catch (error) {
-    //         console.error("❌ Error in partnerTable:", error);
-    //         return null;
+    //     } catch (err) {
+    //         console.error("❌ Error fetching U3 logs:", err.message);
     //     }
     // },
 
@@ -1773,6 +1725,120 @@ export const useStore = create((set, get) => ({
         }
     },
 
+
+
+    // getSplitBonus: async (walletAdd) => {
+    //     try {
+    //         if (!walletAdd || walletAdd.length !== 42 || !walletAdd.startsWith("0x")) {
+    //             throw new Error("Invalid wallet address");
+    //         }
+
+    //         // Load MatrixDataView contract
+    //         const matrixDataView = await fetchContractAbi("MatrixDataView");
+    //         const contract = new web3.eth.Contract(matrixDataView.abi, matrixDataView.contractAddress);
+
+    //         // Fetch all active slots for this wallet
+    //         const slotDataList = await contract.methods.getActiveSlots(walletAdd).call();
+
+    //         const result = [];
+
+    //         // Loop over each slot
+    //         for (const slot of slotDataList) {
+    //             const slotNo = Number(slot.slotNo);
+    //             const currentCycle = Number(slot.currentCycle);
+
+    //             // Loop over each cycle from 1 to currentCycle
+    //             const cycleResults = [];
+
+    //             for (let cycle = 1; cycle <= currentCycle; cycle++) {
+    //                 try {
+    //                     const splits = await contract.methods.getSplitPayments(walletAdd, slotNo, cycle).call();
+
+    //                     // Normalize to array if single object is returned
+    //                     const splitArray = Array.isArray(splits) ? splits : [splits];
+
+    //                     // Format the splits
+    //                     const formattedSplits = splitArray.map(split => ({
+    //                         initiatedFrom: split.initiatedFrom,
+    //                         splitedWith: split.splitedWith,
+    //                         isReceiverSecondUpline: split.isReceiverSecondUpline,
+    //                         amountInRAMA: split.amountInRAMA,
+    //                         amountInUSD: split.amountInUSD,
+    //                         receiver: split.receiver,
+    //                         timeStamp: Number(split.timeStamp)
+    //                     }));
+
+    //                     // Only add if there are actual payments
+    //                     if (formattedSplits.length > 0) {
+    //                         cycleResults.push({
+    //                             cycle: cycle,
+    //                             splitPayment: formattedSplits
+    //                         });
+    //                     }
+
+    //                 } catch (innerErr) {
+    //                     console.warn(`Cycle ${cycle} for slot ${slotNo} failed:`, innerErr.message);
+    //                     continue; // skip this cycle if error
+    //                 }
+    //             }
+
+    //             if (cycleResults.length > 0) {
+    //                 result.push({
+    //                     slot: slotNo,
+    //                     cycles: cycleResults
+    //                 });
+    //             }
+    //         }
+
+    //         return result;
+    //     } catch (error) {
+    //         console.error("❌ Error in getSplitBonus:", error.message);
+    //         return [];
+    //     }
+    // }
+
+
+    getSplitBonus: async (walletAdd) => {
+        try {
+            if (!walletAdd || walletAdd.length !== 42 || !walletAdd.startsWith("0x")) {
+                throw new Error("Invalid wallet address");
+            }
+
+            const matrixDataView = await fetchContractAbi("MatrixDataView");
+            const matrixContract = new web3.eth.Contract(matrixDataView.abi, matrixDataView.contractAddress);
+
+            const activeSlots = await matrixContract.methods.getActiveSlots(walletAdd).call();
+
+            const result = [];
+
+            for (const slot of activeSlots) {
+                const slotNo = Number(slot.slotNo);
+                const currentCycle = Number(slot.currentCycle);
+                const payments = [];
+
+                for (let i = 1; i <= currentCycle; i++) {
+                    const paymentsForCycle = await matrixContract.methods.getSplitPayments(walletAdd, slotNo, i).call();
+                    paymentsForCycle.forEach(p => {
+                        payments.push({ ...p, cycle: i });
+                    });
+                }
+
+                // Add `cycleList` to support UI filtering
+                const cycleList = [...new Set(payments.map(p => Number(p.cycle)))];
+
+                result.push({
+                    slot: slotNo,
+                    splitPayments: payments,
+                    cycleList,
+                });
+            }
+
+            return result;
+        } catch (err) {
+            console.error("Error fetching split bonus:", err.message);
+            return [];
+        }
+    },
 
 
 
